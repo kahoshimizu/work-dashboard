@@ -27,7 +27,7 @@ h1{font-size:18px;font-weight:500}
 .box{background:#fff;border-radius:12px;padding:14px 18px;border:1px solid #eee}
 .box-title{font-size:13px;font-weight:500;margin-bottom:10px;color:#444}
 .bar-wrap{position:relative;margin-bottom:6px}
-.bar-row{display:flex;align-items:center;gap:8px;font-size:13px}
+.bar-row{display:flex;align-items:center;gap:8px;font-size:13px;cursor:grab}
 .bar-label{width:86px;text-align:right;color:#666;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;padding:4px 0}
 .bar-track{flex:1;background:#f0f0f0;border-radius:4px;height:16px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px}
@@ -36,32 +36,24 @@ h1{font-size:18px;font-weight:500}
 .detail-box{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:8px 12px;margin:4px 0 8px 0;font-size:11px}
 .detail-row{display:grid;grid-template-columns:72px 1fr 44px;gap:6px;padding:3px 0;color:#555;border-bottom:0.5px solid #eee}
 .detail-row:last-child{border-bottom:none}
-.detail-date{color:#999;flex-shrink:0;font-size:10px;padding-top:1px}
+.detail-date{color:#999;font-size:10px;padding-top:1px}
 .detail-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .detail-dur{text-align:right;flex-shrink:0;font-weight:500}
 .drop-zone{border:2px dashed transparent;border-radius:8px;transition:border-color 0.2s,background 0.2s;padding:2px}
-.drop-zone.drag-over{border-color:#378ADD;background:rgba(55,138,221,0.06)}
+.drop-zone.drag-over{border-color:#54C3F1;background:rgba(84,195,241,0.06)}
 .dragging .bar-row{opacity:0.4}
-.drag-ghost{position:fixed;pointer-events:none;background:#fff;border:1px solid #ddd;border-radius:6px;padding:4px 10px;font-size:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:9999;white-space:nowrap}
 .legend{display:flex;flex-direction:column;gap:5px;font-size:12px}
 .legend-item{display:flex;align-items:center;gap:6px}
 .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 .loc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:8px}
 .loc-box{background:#fff;border-radius:12px;padding:14px 18px;border:1px solid #eee}
-.loc-card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.loc-card{background:#f9f9f9;border-radius:8px;padding:8px 10px;text-align:center;border:1px solid #eee;cursor:pointer}
-.loc-card.active{border-color:#378ADD;background:#e8f2fb}
-.loc-card-label{font-size:11px;color:#888;margin-bottom:3px}
-.loc-card-value{font-size:16px;font-weight:500}
-.loc-card-sub{font-size:11px;color:#aaa}
-.loc-bar-row{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:6px}
-.loc-bar-label{width:60px;text-align:right;color:#666;flex-shrink:0}
+.loc-bar-row{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:6px;cursor:pointer}
+.loc-bar-label{width:64px;text-align:right;color:#666;flex-shrink:0}
 .loc-bar-track{flex:1;background:#f0f0f0;border-radius:4px;height:14px;overflow:hidden}
 .loc-bar-fill{height:100%;border-radius:4px}
-.loc-bar-val{font-size:11px;color:#444;min-width:60px}
-.loc-detail{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:8px 12px;margin-top:8px;font-size:11px}
-.loc-detail-title{font-weight:500;color:#555;margin-bottom:4px}
-.loc-detail-dates{display:flex;flex-wrap:wrap;gap:4px}
+.loc-bar-val{font-size:11px;color:#444;min-width:70px}
+.loc-detail{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:8px 12px;margin:4px 0 8px 72px;font-size:11px}
+.loc-detail-dates{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .loc-date-chip{background:#fff;border:1px solid #ddd;border-radius:10px;padding:2px 8px;font-size:11px;color:#555}
 .ai-box{background:#f9f9f9;border-radius:12px;padding:14px 18px;border:1px solid #eee;margin-top:14px}
 .ai-title{font-size:14px;font-weight:500;margin-bottom:6px}
@@ -76,27 +68,21 @@ button:hover{background:#f5f5f5}
 </head>
 <body>
 <div id="app"><div class="loading">読み込み中…</div></div>
-<div class="drag-ghost" id="drag-ghost" style="display:none"></div>
 <script>
 const CLIENT_ID="729656531255-stonbhee0o8m10gfbqckf1bp2fump90g.apps.googleusercontent.com";
 const SCOPES="https://www.googleapis.com/auth/calendar.readonly";
 const COLORS={
-  "PJ":"#54C3F1",
-  "foobar*":"#F9C270",
-  "未分類":"#C1DB81",
-  "イベント":"#61C1BE",
-  "新卒 1on1":"#EF858C",
-  "UM 1on1":"#EF845C",
-  "PMP":"#796BAF",
+  "PJ":"#54C3F1","foobar*":"#F9C270","未分類":"#C1DB81",
+  "新卒 1on1":"#EF858C","UM 1on1":"#EF845C","PMP":"#796BAF"
 };
-const LOC_COLORS={"オフィス":"#6C9BD2","自宅":"#69BD83","その他":"#C1DB81"};
-const ALL_CATS=["PJ","イベント","新卒 1on1","UM 1on1","PMP","foobar*","未分類"];
+const LOC_COLORS={"オフィス":"#6C9BD2","自宅":"#69BD83","その他":"#EF845C"};
+const ALL_CATS=["PJ","新卒 1on1","UM 1on1","PMP","foobar*","未分類"];
 const DAYS=["日","月","火","水","木","金","土"];
 
+// イベントカテゴリ削除・foobar*に統合
 const RULES=[
   {m:t=>/JMB/i.test(t)||/^タスク確認/.test(t)||/JAL/i.test(t)||/SSNB/i.test(t)||/定例/.test(t)||/リリース/.test(t)||/Liquid/i.test(t)||/サーバ/.test(t),c:"PJ"},
-  {m:t=>/Monthly Mixer/i.test(t)||/CTOs Beer/i.test(t)||/Designer.*s Creative Circle/i.test(t)||/イベント/.test(t)||/Circle/i.test(t),c:"イベント"},
-  {m:t=>/foobar/i.test(t)||/foobar\*/i.test(t)||/MM/.test(t)||/DCC/.test(t)||/KAITEKI/i.test(t)||/カクヤス/.test(t),c:"foobar*"},
+  {m:t=>/foobar/i.test(t)||/foobar\*/i.test(t)||/MM/.test(t)||/DCC/.test(t)||/KAITEKI/i.test(t)||/カクヤス/.test(t)||/Monthly Mixer/i.test(t)||/CTOs Beer/i.test(t)||/Designer.*s Creative Circle/i.test(t)||/イベント/.test(t)||/Circle/i.test(t),c:"foobar*"},
   {m:t=>/^Kaho \/ Miu/.test(t)||/^Kaho \/ Emiri/.test(t)||/^Emiri \/ Kaho/.test(t)||/^Miu \/ Kaho/.test(t)||/^Miu\/Kaho/.test(t),c:"新卒 1on1"},
   {m:t=>/^Masanori \/ Kaho/.test(t)||/^Satoshi \/ Kaho/.test(t)||/^\[上期評価FB\]/.test(t),c:"UM 1on1"},
   {m:t=>/\[FY26\]PMP1[：:].*定例/.test(t)||/General MTG for PMPs/.test(t),c:"PMP"},
@@ -106,34 +92,39 @@ function isExcluded(ev){return ev.colorId==="4"||ev.colorId==="8";}
 function categorize(t){for(const r of RULES)if(r.m(t))return r.c;return"未分類";}
 function fmtH(h){return h<0.05?"0h":h.toFixed(1)+"h";}
 function fmtDate(d){return`${d.getMonth()+1}/${d.getDate()}(${DAYS[d.getDay()]})`;}
-function fmtDateKey(s){const d=new Date(s);return fmtDate(d);}
+function fmtDateKey(s){return fmtDate(new Date(s));}
+function isWeekend(dateStr){const d=new Date(dateStr);return d.getDay()===0||d.getDay()===6;}
 
 function getRange(p){
   const now=new Date();
-  if(p==="day"){const s=new Date(now);s.setHours(0,0,0,0);const e=new Date(now);e.setHours(23,59,59,999);return{start:s,end:e};}
-  if(p==="week"){const s=new Date(now);s.setDate(now.getDate()-6);s.setHours(0,0,0,0);const e=new Date(now);e.setHours(23,59,59,999);return{start:s,end:e};}
-  const s=new Date(now);s.setDate(now.getDate()-29);s.setHours(0,0,0,0);const e=new Date(now);e.setHours(23,59,59,999);return{start:s,end:e};
+  const base=new Date(now);
+  if(p==="day"){
+    base.setDate(base.getDate()+periodOffset);
+    const s=new Date(base);s.setHours(0,0,0,0);
+    const e=new Date(base);e.setHours(23,59,59,999);
+    return{start:s,end:e};
+  }
+  if(p==="week"){
+    base.setDate(base.getDate()+periodOffset*7);
+    const e=new Date(base);e.setHours(23,59,59,999);
+    const s=new Date(base);s.setDate(base.getDate()-6);s.setHours(0,0,0,0);
+    return{start:s,end:e};
+  }
+  // month
+  base.setMonth(base.getMonth()+periodOffset);
+  const e=new Date(base);e.setHours(23,59,59,999);
+  const s=new Date(base);s.setDate(base.getDate()-29);s.setHours(0,0,0,0);
+  return{start:s,end:e};
 }
 function getPeriodLabel(p){const{start,end}=getRange(p);if(p==="day")return fmtDate(start);return`${fmtDate(start)}〜${fmtDate(end)}`;}
 
-let period="week",tokenClient,gapiDone=false,gisDone=false;
+let period="week",periodOffset=0,tokenClient,gapiDone=false,gisDone=false;
 let calData=[],taskData=[],locData={},updatedAt="";
 let openDetails={ev:{},tk:{},all:{}};
 let filters={all:{},ev:{},tk:{}};
 let overrides={ev:{},tk:{}};
 let locOpenDetail=null;
-
-// D&D state
 let dragState=null;
-
-function detectLocation(ev){
-  const loc=(ev.location||"").toLowerCase();
-  const all=loc+" "+(ev.summary||"").toLowerCase()+" "+(ev.description||"").toLowerCase();
-  if(/オフィス|office|大手町|出社|会社/.test(all))return"オフィス";
-  if(/自宅|home|リモート|remote|wfh/.test(all))return"自宅";
-  if(ev.location&&ev.location.trim())return"その他";
-  return null;
-}
 
 function tryReady(){
   if(!gapiDone||!gisDone)return;
@@ -148,16 +139,70 @@ function showError(msg){let el=document.getElementById("err");if(!el){el=documen
 async function fetchData(){
   try{
     const{start,end}=getRange(period);
-    const calRes=await gapi.client.calendar.events.list({calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),singleEvents:true,orderBy:"startTime",maxResults:500});
+
+    // 通常イベント取得
+    const calRes=await gapi.client.calendar.events.list({
+      calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),
+      singleEvents:true,orderBy:"startTime",maxResults:500
+    });
     const items=calRes.result.items||[];
     let myEmail="";
     try{myEmail=(await gapi.client.calendar.calendarList.get({calendarId:"primary"})).result.id;}catch(e){}
 
+    // 勤務場所イベント取得（eventType=workingLocation）
+    let locItems=[];
+    try{
+      const locRes=await gapi.client.calendar.events.list({
+        calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),
+        singleEvents:true,orderBy:"startTime",maxResults:500,
+        eventTypes:["workingLocation"]
+      });
+      locItems=locRes.result.items||[];
+    }catch(e){
+      // フォールバック：eventTypesが未対応の場合
+      locItems=items.filter(ev=>ev.eventType==="workingLocation");
+    }
+
     const catMap={},taskMap={};
     const locDays={オフィス:new Map(),自宅:new Map(),その他:new Map()};
 
+    // 勤務場所イベントを日付→場所にマッピング
+    locItems.forEach(ev=>{
+      const dateStr=ev.start?.date||ev.start?.dateTime?.slice(0,10);
+      if(!dateStr)return;
+      if(isWeekend(dateStr))return;
+      // workingLocation の場所判定
+      const wl=ev.workingLocation;
+      let loc=null;
+      if(wl){
+        if(wl.type==="homeOffice"||wl.homeOffice!=null)loc="自宅";
+        else if(wl.type==="officeLocation"||wl.office!=null||wl.officeLocation!=null)loc="オフィス";
+        else if(wl.type==="customLocation"||wl.customLocation!=null)loc="その他";
+      }
+      // フォールバック：タイトルで判定
+      if(!loc){
+        const t=(ev.summary||"").toLowerCase();
+        if(/自宅|home|リモート|remote|wfh/.test(t))loc="自宅";
+        else if(/オフィス|office|出社/.test(t))loc="オフィス";
+        else loc="その他";
+      }
+      const label=fmtDate(new Date(dateStr));
+      // 同じ日に複数設定がある場合は最初のものを優先
+      if(!locDays[loc].has(dateStr))locDays[loc].set(dateStr,label);
+    });
+
+    const totalLocDays=new Set([...locDays.オフィス.keys(),...locDays.自宅.keys(),...locDays.その他.keys()]).size||1;
+    locData={
+      オフィス:{days:locDays.オフィス.size,pct:Math.round(locDays.オフィス.size/totalLocDays*100),dates:[...locDays.オフィス.values()].sort()},
+      自宅:{days:locDays.自宅.size,pct:Math.round(locDays.自宅.size/totalLocDays*100),dates:[...locDays.自宅.values()].sort()},
+      その他:{days:locDays.その他.size,pct:Math.round(locDays.その他.size/totalLocDays*100),dates:[...locDays.その他.values()].sort()},
+      total:totalLocDays
+    };
+
+    // 通常予定・タスク集計
     items.forEach(ev=>{
       if(isExcluded(ev))return;
+      if(ev.eventType==="workingLocation"||ev.eventType==="outOfOffice")return;
       if(ev.start?.date&&!ev.start?.dateTime)return;
       if(!ev.start?.dateTime||!ev.end?.dateTime)return;
       const dur=(new Date(ev.end.dateTime)-new Date(ev.start.dateTime))/3600000;
@@ -165,21 +210,12 @@ async function fetchData(){
       const title=ev.summary||"",desc=ev.description||"";
       const isTask=desc.includes("tasks.google.com/task/");
       if(!isTask&&(/^不在$/.test(title.trim())||/^移動$/.test(title.trim())))return;
-
-      const loc=detectLocation(ev);
-      if(loc){
-        const dk=ev.start.dateTime.slice(0,10);
-        if(!locDays[loc].has(dk))locDays[loc].set(dk,fmtDateKey(ev.start.dateTime));
-      }
-
       const dateLabel=fmtDateKey(ev.start.dateTime);
       const dateSort=ev.start.dateTime;
-
       if(isTask){
         const cat=categorize(title);
         if(!taskMap[cat])taskMap[cat]={value:0,count:0,items:[]};
-        taskMap[cat].value+=dur;taskMap[cat].count++;
-        taskMap[cat].items.push({title,dur,dateLabel,dateSort});
+        taskMap[cat].value+=dur;taskMap[cat].count++;taskMap[cat].items.push({title,dur,dateLabel,dateSort});
         return;
       }
       if(ev.attendees&&ev.attendees.length>0){
@@ -188,20 +224,11 @@ async function fetchData(){
       }
       const cat=categorize(title);
       if(!catMap[cat])catMap[cat]={value:0,count:0,items:[]};
-      catMap[cat].value+=dur;catMap[cat].count++;
-      catMap[cat].items.push({title,dur,dateLabel,dateSort});
+      catMap[cat].value+=dur;catMap[cat].count++;catMap[cat].items.push({title,dur,dateLabel,dateSort});
     });
 
     calData=Object.entries(catMap).map(([label,d])=>({label,value:d.value,count:d.count,items:d.items})).sort((a,b)=>b.value-a.value);
     taskData=Object.entries(taskMap).map(([label,d])=>({label,value:d.value,count:d.count,items:d.items})).sort((a,b)=>b.value-a.value);
-
-    const totalDays=new Set([...locDays.オフィス.keys(),...locDays.自宅.keys(),...locDays.その他.keys()]).size||1;
-    locData={
-      オフィス:{days:locDays.オフィス.size,pct:Math.round(locDays.オフィス.size/totalDays*100),dates:[...locDays.オフィス.values()].sort()},
-      自宅:{days:locDays.自宅.size,pct:Math.round(locDays.自宅.size/totalDays*100),dates:[...locDays.自宅.values()].sort()},
-      その他:{days:locDays.その他.size,pct:Math.round(locDays.その他.size/totalDays*100),dates:[...locDays.その他.values()].sort()},
-      total:totalDays
-    };
 
     overrides={ev:{},tk:{}};openDetails={ev:{},tk:{},all:{}};
     const allCats=[...new Set([...calData,...taskData].map(d=>d.label))];
@@ -230,17 +257,13 @@ function toggleFilter(sec,cat){filters[sec][cat]=!filters[sec][cat];render();}
 function moveItem(type,fromIdx,newCat){overrides[type][fromIdx]=newCat;openDetails={ev:{},tk:{},all:{}};render();}
 function toggleLocDetail(loc){locOpenDetail=locOpenDetail===loc?null:loc;render();}
 
-// D&D
 function onDragStart(e,type,idx,label){
   dragState={type,idx,label};
   e.dataTransfer.effectAllowed="move";
   e.dataTransfer.setData("text/plain",label);
-  const ghost=document.getElementById("drag-ghost");
-  ghost.textContent="→ "+label;ghost.style.display="block";
-  setTimeout(()=>{ghost.style.display="none";},0);
-  e.currentTarget.closest(".bar-wrap").classList.add("dragging");
+  setTimeout(()=>{const w=e.currentTarget.closest(".bar-wrap");if(w)w.classList.add("dragging");},0);
 }
-function onDragEnd(e){
+function onDragEnd(){
   dragState=null;
   document.querySelectorAll(".bar-wrap").forEach(el=>el.classList.remove("dragging"));
   document.querySelectorAll(".drop-zone").forEach(el=>el.classList.remove("drag-over"));
@@ -250,45 +273,40 @@ function onDragLeave(e){e.currentTarget.classList.remove("drag-over");}
 function onDrop(e,type,newCat){
   e.preventDefault();e.currentTarget.classList.remove("drag-over");
   if(!dragState||dragState.type!==type||dragState.label===newCat)return;
-  moveItem(type,dragState.idx,newCat);
-  dragState=null;
+  moveItem(type,dragState.idx,newCat);dragState=null;
 }
 
 function filterBar(sec,allCats){
   return`<div class="filter-bar">${allCats.map(c=>`<label><input type="checkbox" ${filters[sec][c]!==false?"checked":""} onchange="toggleFilter('${sec}','${c}')">${c}</label>`).join("")}</div>`;
 }
-
 function detailBox(items){
   const sorted=items.slice().sort((a,b)=>a.dateSort<b.dateSort?-1:1);
   return`<div class="detail-box">${sorted.map(it=>`<div class="detail-row"><span class="detail-date">${it.dateLabel}</span><span class="detail-title">${it.title}</span><span class="detail-dur">${fmtH(it.dur)}</span></div>`).join("")}</div>`;
 }
-
 function barChart(rawData,type){
   const data=applyOverrides(rawData,type);
   const filtered=filterData(data,type);
   if(!filtered.length)return'<div class="empty">データなし</div>';
   const max=Math.max(...filtered.map(d=>d.value),0.1);
-  return filtered.map((d,i)=>{
+  return`<div style="font-size:10px;color:#bbb;text-align:right;margin-bottom:6px">← ドラッグ＆ドロップで移動</div>`+filtered.map((d,i)=>{
     const isOpen=openDetails[type]&&openDetails[type][i];
     return`<div class="bar-wrap drop-zone" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'${type}','${d.label}')">
-      <div class="bar-row" draggable="true" ondragstart="onDragStart(event,'${type}',${i},'${d.label}')" ondragend="onDragEnd(event)" style="cursor:grab">
+      <div class="bar-row" draggable="true" ondragstart="onDragStart(event,'${type}',${i},'${d.label}')" ondragend="onDragEnd()">
         <div class="bar-label" title="${d.label}">${d.label}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#888"}"></div></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#aaa"}"></div></div>
         <button class="bar-btn" onclick="toggleDetail('${type}',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button>
       </div>
       ${isOpen?detailBox(d.items):""}
     </div>`;
   }).join("");
 }
-
-function pieChart(data){
+function pieChart(data,colorMap){
+  const cm=colorMap||COLORS;
   const total=data.reduce((s,d)=>s+d.value,0);
   if(!total)return'<div class="empty">データなし</div>';
   let paths="";
   if(data.length===1){
-    // 100%の場合は円全体を描画
-    const c=COLORS[data[0].label]||"#888";
-    paths=`<circle cx="75" cy="75" r="65" fill="${c}"/>`;
+    paths=`<circle cx="75" cy="75" r="65" fill="${cm[data[0].label]||"#aaa"}"/>`;
   }else{
     let cum=-Math.PI/2;
     paths=data.map(d=>{
@@ -296,45 +314,43 @@ function pieChart(data){
       const r=65,cx=75,cy=75;
       const x1=cx+r*Math.cos(sx),y1=cy+r*Math.sin(sx);
       const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);
-      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${COLORS[d.label]||"#888"}" stroke="#fff" stroke-width="1.5"/>`;
+      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${cm[d.label]||"#aaa"}" stroke="#fff" stroke-width="1.5"/>`;
     }).join("");
   }
-  const leg=data.map(d=>{const pct=Math.round(d.value/total*100);return`<div class="legend-item"><div class="legend-dot" style="background:${COLORS[d.label]||"#888"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${fmtH(d.value)}）</span></div>`;}).join("");
+  const leg=data.map(d=>{const pct=Math.round(d.value/total*100);return`<div class="legend-item"><div class="legend-dot" style="background:${cm[d.label]||"#aaa"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${fmtH(d.value)}）</span></div>`;}).join("");
   return`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><svg viewBox="0 0 150 150" width="120" height="120" style="flex-shrink:0">${paths}</svg><div class="legend">${leg}</div></div>`;
 }
-
 function locPieChart(){
   const locs=["オフィス","自宅","その他"].filter(l=>(locData[l]||{days:0}).days>0);
   const total=locs.reduce((s,l)=>s+(locData[l]||{days:0}).days,0);
   if(!total)return'<div class="empty">データなし</div>';
+  const data=locs.map(l=>({label:l,value:(locData[l]||{days:0}).days}));
   let paths="";
-  if(locs.length===1){
-    paths=`<circle cx="75" cy="75" r="65" fill="${LOC_COLORS[locs[0]]}"/>`;
-  }else{
+  if(data.length===1){paths=`<circle cx="75" cy="75" r="65" fill="${LOC_COLORS[data[0].label]}"/>`;}
+  else{
     let cum=-Math.PI/2;
-    paths=locs.map(l=>{
-      const v=(locData[l]||{days:0}).days;
-      const a=(v/total)*2*Math.PI;const sx=cum;cum+=a;
+    paths=data.map(d=>{
+      const a=(d.value/total)*2*Math.PI;const sx=cum;cum+=a;
       const r=65,cx=75,cy=75;
       const x1=cx+r*Math.cos(sx),y1=cy+r*Math.sin(sx);
       const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);
-      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${LOC_COLORS[l]}" stroke="#fff" stroke-width="1.5"/>`;
+      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${LOC_COLORS[d.label]}" stroke="#fff" stroke-width="1.5"/>`;
     }).join("");
   }
-  const leg=locs.map(l=>{const d=locData[l]||{days:0,pct:0};return`<div class="legend-item"><div class="legend-dot" style="background:${LOC_COLORS[l]}"></div><span style="color:#666">${l}</span><span style="font-weight:500;margin-left:4px">${d.pct}%（${d.days}日）</span></div>`;}).join("");
+  const leg=data.map(d=>{const pct=Math.round(d.value/total*100);return`<div class="legend-item"><div class="legend-dot" style="background:${LOC_COLORS[d.label]}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${d.value}日）</span></div>`;}).join("");
   return`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><svg viewBox="0 0 150 150" width="120" height="120" style="flex-shrink:0">${paths}</svg><div class="legend">${leg}</div></div>`;
 }
-
 function locationSection(){
   const locs=["オフィス","自宅","その他"];
   const bars=locs.map(l=>{
     const d=locData[l]||{days:0,pct:0,dates:[]};
-    const detail=locOpenDetail===l&&d.dates.length?`<div class="loc-detail"><div class="loc-detail-title">${l}の日程</div><div class="loc-detail-dates">${d.dates.map(dt=>`<span class="loc-date-chip">${dt}</span>`).join("")}</div></div>`:"";
+    const isOpen=locOpenDetail===l;
+    const detail=isOpen&&d.dates.length?`<div class="loc-detail"><div class="loc-detail-dates">${d.dates.map(dt=>`<span class="loc-date-chip">${dt}</span>`).join("")}</div></div>`:"";
     return`<div>
-      <div class="loc-bar-row" style="cursor:pointer" onclick="toggleLocDetail('${l}')">
+      <div class="loc-bar-row" onclick="toggleLocDetail('${l}')">
         <div class="loc-bar-label">${l}</div>
         <div class="loc-bar-track"><div class="loc-bar-fill" style="width:${d.pct}%;background:${LOC_COLORS[l]}"></div></div>
-        <div class="loc-bar-val">${d.days}日 (${d.pct}%) ${locOpenDetail===l?"▲":"▼"}</div>
+        <div class="loc-bar-val">${d.days}日 (${d.pct}%) ${isOpen?"▲":"▼"}</div>
       </div>${detail}</div>`;
   }).join("");
   return`<div class="section-title">勤務場所</div>
@@ -343,13 +359,11 @@ function locationSection(){
     <div class="loc-box"><div class="box-title">割合</div>${locPieChart()}</div>
   </div>`;
 }
-
 function sectionHTML(title,rawData,type,allCats){
   const applied=applyOverrides(rawData,type);
   const filtered=filterData(applied,type);
-  return`<div class="section-title">${title}</div>${filterBar(type,allCats)}<div class="grid"><div class="box"><div class="box-title">カテゴリ別時間 <span style="font-size:10px;color:#bbb;font-weight:400">← ドラッグ&ドロップで移動</span></div>${barChart(rawData,type)}</div><div class="box"><div class="box-title">割合</div>${pieChart(filtered)}</div></div>`;
+  return`<div class="section-title">${title}</div>${filterBar(type,allCats)}<div class="grid"><div class="box"><div class="box-title">カテゴリ別時間</div>${barChart(rawData,type)}</div><div class="box"><div class="box-title">割合</div>${pieChart(filtered)}</div></div>`;
 }
-
 function copyForAI(){
   const labels={day:"1日",week:"直近1週間",month:"直近1ヶ月"};
   const evD=applyOverrides(calData,"ev"),tkD=applyOverrides(taskData,"tk");
@@ -359,36 +373,36 @@ function copyForAI(){
   const text=`${labels[period]}（${getPeriodLabel(period)}）の作業データです。\n予定: ${ev||"なし"}\nタスク: ${tk||"なし"}\n勤務場所: ${loc}\n\n上記データをもとに100〜150字で振り返りコメントをください。`;
   navigator.clipboard.writeText(text).then(()=>{const b=document.getElementById("copy-btn");if(b){b.textContent="コピーしました！";setTimeout(()=>{if(b)b.textContent="Claudeへのプロンプトをコピー";},2000);}});
 }
-
 function render(){
   const evApplied=applyOverrides(calData,"ev");
   const tkApplied=applyOverrides(taskData,"tk");
   const allData=mergeData(evApplied,tkApplied);
   const allCats=[...new Set(allData.map(d=>d.label))];
   ["all","ev","tk"].forEach(k=>{allCats.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});});
-
   const totalEv=evApplied.reduce((s,d)=>s+d.value,0);
   const totalTk=tkApplied.reduce((s,d)=>s+d.value,0);
   const countEv=evApplied.reduce((s,d)=>s+d.count,0);
   const countTk=tkApplied.reduce((s,d)=>s+d.count,0);
-
   const tabs=["month","week","day"].map(t=>`<button class="tab${period===t?" active":""}" onclick="changePeriod('${t}')">${{month:"1ヶ月",week:"1週間",day:"1日"}[t]}</button>`).join("");
-
   const allFiltered=filterData(allData,"all");
   const allBarHTML=allFiltered.length?allFiltered.map((d,i)=>{
     const max=Math.max(...allFiltered.map(x=>x.value),0.1);
     const isOpen=openDetails.all&&openDetails.all[i];
-    return`<div><div class="bar-row"><div class="bar-label" title="${d.label}">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#888"}"></div></div><button class="bar-btn" onclick="toggleDetail('all',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button></div>${isOpen?detailBox(d.items):""}</div>`;
+    return`<div><div class="bar-row"><div class="bar-label" title="${d.label}">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#aaa"}"></div></div><button class="bar-btn" onclick="toggleDetail('all',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button></div>${isOpen?detailBox(d.items):""}</div>`;
   }).join(""):'<div class="empty">データなし</div>';
 
   document.getElementById("app").innerHTML=`
     <div class="header"><h1>作業レポート</h1><div class="header-right">${updatedAt?`<span class="meta">${updatedAt} 更新</span>`:""}<button onclick="fetchData()">更新</button><button onclick="signOut()" style="opacity:0.6">ログアウト</button></div></div>
     <div class="tabs">${tabs}</div>
-    <div class="period-label">${getPeriodLabel(period)}</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <button onclick="shiftPeriod(-1)" style="padding:2px 10px;font-size:14px">&#8249;</button>
+      <span style="font-size:12px;color:#999;min-width:160px;text-align:center">${getPeriodLabel(period)}</span>
+      <button onclick="shiftPeriod(1)" style="padding:2px 10px;font-size:14px;${periodOffset>=0?'opacity:0.3;pointer-events:none':''}"  ${periodOffset>=0?"disabled":""}>&#8250;</button>
+    </div>
     <div class="summary-grid">
-      <div class="summary-col"><div class="summary-col-title">合計</div><div class="summary-item"><div class="summary-label">合計時間</div><div class="summary-value">${fmtH(totalEv+totalTk)}</div></div><div class="summary-item"><div class="summary-label">合計件数</div><div class="summary-value">${countEv+countTk}件</div></div></div>
-      <div class="summary-col"><div class="summary-col-title">予定</div><div class="summary-item"><div class="summary-label">予定時間</div><div class="summary-value">${fmtH(totalEv)}</div></div><div class="summary-item"><div class="summary-label">予定件数</div><div class="summary-value">${countEv}件</div></div></div>
-      <div class="summary-col"><div class="summary-col-title">タスク</div><div class="summary-item"><div class="summary-label">タスク時間</div><div class="summary-value">${fmtH(totalTk)}</div></div><div class="summary-item"><div class="summary-label">タスク件数</div><div class="summary-value">${countTk}件</div></div></div>
+      <div class="summary-col"><div class="summary-col-title">合計</div><div><div class="summary-label">合計時間</div><div class="summary-value">${fmtH(totalEv+totalTk)}</div></div><div><div class="summary-label">合計件数</div><div class="summary-value">${countEv+countTk}件</div></div></div>
+      <div class="summary-col"><div class="summary-col-title">予定</div><div><div class="summary-label">予定時間</div><div class="summary-value">${fmtH(totalEv)}</div></div><div><div class="summary-label">予定件数</div><div class="summary-value">${countEv}件</div></div></div>
+      <div class="summary-col"><div class="summary-col-title">タスク</div><div><div class="summary-label">タスク時間</div><div class="summary-value">${fmtH(totalTk)}</div></div><div><div class="summary-label">タスク件数</div><div class="summary-value">${countTk}件</div></div></div>
     </div>
     <div class="section-title">合計</div>${filterBar("all",allCats)}
     <div class="grid"><div class="box"><div class="box-title">カテゴリ別時間</div>${allBarHTML}</div><div class="box"><div class="box-title">割合</div>${pieChart(allFiltered)}</div></div>
@@ -402,8 +416,13 @@ function render(){
       <div class="copy-hint">コピー後、claude.ai のチャットに貼り付けてください。</div>
     </div>`;
 }
-
-function changePeriod(p){period=p;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
+function shiftPeriod(dir){
+  if(dir===1&&periodOffset>=0)return;
+  periodOffset+=dir;
+  openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;
+  fetchData();
+}
+function changePeriod(p){period=p;periodOffset=0;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
 setInterval(()=>{try{if(gapi.client.getToken())fetchData();}catch(e){}},300000);
 </script>
 <script src="https://apis.google.com/js/api.js" onload="gapiInit()"></script>
