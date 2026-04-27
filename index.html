@@ -100,7 +100,7 @@ const DAYS=["日","月","火","水","木","金","土"];
 const RULES=[
   {m:t=>/JMB/i.test(t)||/^タスク確認/.test(t)||/JAL/i.test(t)||/SSNB/i.test(t)||/定例/.test(t)||/リリース/.test(t)||/Liquid/i.test(t)||/サーバ/.test(t),c:"PJ"},
   {m:t=>/foobar/i.test(t)||/foobar\*/i.test(t)||/MM/.test(t)||/DCC/.test(t)||/KAITEKI/i.test(t)||/カクヤス/.test(t)||/Monthly Mixer/i.test(t)||/CTOs Beer/i.test(t)||/Designer.*s Creative Circle/i.test(t)||/イベント/.test(t)||/Circle/i.test(t),c:"foobar*"},
-  {m:t=>/^Kaho \/ Miu/.test(t)||/^Kaho \/ Emiri/.test(t)||/^Emiri \/ Kaho/.test(t)||/^Miu \/ Kaho/.test(t)||/^Miu\/Kaho/.test(t),c:"新卒 1on1"},
+  {m:t=>/^Kaho \/ Miu/.test(t)||/^Kaho \/ Emiri/.test(t)||/^Emiri \/ Kaho/.test(t)||/^Miu \/ Kaho/.test(t)||/^Miu\/Kaho/.test(t)||/新卒/.test(t),c:"新卒 1on1"},
   {m:t=>/^Masanori \/ Kaho/.test(t)||/^Satoshi \/ Kaho/.test(t)||/^\[上期評価FB\]/.test(t),c:"UM 1on1"},
   {m:t=>/\[FY26\]PMP1[：:].*定例/.test(t)||/General MTG for PMPs/.test(t),c:"PMP"},
 ];
