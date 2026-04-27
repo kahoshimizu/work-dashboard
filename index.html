@@ -59,6 +59,23 @@ h1{font-size:18px;font-weight:500}
 .ai-title{font-size:14px;font-weight:500;margin-bottom:6px}
 .ai-text{font-size:13px;color:#555;line-height:1.7}
 .copy-hint{font-size:11px;color:#888;margin-top:6px}
+.cal-picker{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3)}
+.cal-box{background:#fff;border-radius:14px;padding:16px;width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.18)}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-month-label{font-size:14px;font-weight:500}
+.cal-nav{background:none;border:none;font-size:18px;cursor:pointer;padding:2px 8px;border-radius:6px;color:#555}
+.cal-nav:hover{background:#f0f0f0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-dow{font-size:10px;color:#aaa;text-align:center;padding:2px 0}
+.cal-day{font-size:12px;text-align:center;padding:5px 2px;border-radius:6px;cursor:pointer;border:none;background:none;color:#1a1a1a}
+.cal-day:hover{background:#f0f0f0}
+.cal-day.today{font-weight:700;color:#1a73e8}
+.cal-day.selected{background:#1a73e8;color:#fff}
+.cal-day.in-range{background:#e8f2fb}
+.cal-day.faded{color:#ccc}
+.cal-day.weekend{color:#e08}
+.cal-close{margin-top:12px;width:100%;padding:7px;font-size:13px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer}
+.cal-close:hover{background:#f0f0f0}
 button{background:#fff;border:1px solid #ddd;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:13px}
 button:hover{background:#f5f5f5}
 .loading{text-align:center;padding:48px;color:#888;font-size:14px}
@@ -95,30 +112,43 @@ function fmtDate(d){return`${d.getMonth()+1}/${d.getDate()}(${DAYS[d.getDay()]})
 function fmtDateKey(s){return fmtDate(new Date(s));}
 function isWeekend(dateStr){const d=new Date(dateStr);return d.getDay()===0||d.getDay()===6;}
 
+// 直近の月曜を返す（今日が月曜ならそのまま）
+function lastMonday(base){
+  const d=new Date(base);
+  const dow=d.getDay();
+  const diff=dow===0?6:dow-1;
+  d.setDate(d.getDate()-diff);
+  d.setHours(0,0,0,0);
+  return d;
+}
+
 function getRange(p){
   const now=new Date();
-  const base=new Date(now);
   if(p==="day"){
+    const base=customStart?new Date(customStart):new Date(now);
     base.setDate(base.getDate()+periodOffset);
     const s=new Date(base);s.setHours(0,0,0,0);
     const e=new Date(base);e.setHours(23,59,59,999);
     return{start:s,end:e};
   }
   if(p==="week"){
-    base.setDate(base.getDate()+periodOffset*7);
-    const e=new Date(base);e.setHours(23,59,59,999);
-    const s=new Date(base);s.setDate(base.getDate()-6);s.setHours(0,0,0,0);
+    // 月曜始まり
+    const mon=customStart?new Date(customStart):lastMonday(now);
+    mon.setDate(mon.getDate()+periodOffset*7);
+    const s=new Date(mon);s.setHours(0,0,0,0);
+    const e=new Date(mon);e.setDate(mon.getDate()+6);e.setHours(23,59,59,999);
     return{start:s,end:e};
   }
-  // month
-  base.setMonth(base.getMonth()+periodOffset);
-  const e=new Date(base);e.setHours(23,59,59,999);
-  const s=new Date(base);s.setDate(base.getDate()-29);s.setHours(0,0,0,0);
+  // month: 月曜始まりの週から4週間
+  const mon=customStart?new Date(customStart):lastMonday(now);
+  mon.setDate(mon.getDate()+periodOffset*28);
+  const s=new Date(mon);s.setHours(0,0,0,0);
+  const e=new Date(mon);e.setDate(mon.getDate()+27);e.setHours(23,59,59,999);
   return{start:s,end:e};
 }
 function getPeriodLabel(p){const{start,end}=getRange(p);if(p==="day")return fmtDate(start);return`${fmtDate(start)}〜${fmtDate(end)}`;}
 
-let period="week",periodOffset=0,tokenClient,gapiDone=false,gisDone=false;
+let period="week",periodOffset=0,customStart=null,tokenClient,gapiDone=false,gisDone=false;
 let calData=[],taskData=[],locData={},updatedAt="";
 let openDetails={ev:{},tk:{},all:{}};
 let filters={all:{},ev:{},tk:{}};
@@ -395,9 +425,9 @@ function render(){
     <div class="header"><h1>作業レポート</h1><div class="header-right">${updatedAt?`<span class="meta">${updatedAt} 更新</span>`:""}<button onclick="fetchData()">更新</button><button onclick="signOut()" style="opacity:0.6">ログアウト</button></div></div>
     <div class="tabs">${tabs}</div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-      <button onclick="shiftPeriod(-1)" style="padding:2px 10px;font-size:14px">&#8249;</button>
-      <span style="font-size:12px;color:#999;min-width:160px;text-align:center">${getPeriodLabel(period)}</span>
-      <button onclick="shiftPeriod(1)" style="padding:2px 10px;font-size:14px;${periodOffset>=0?'opacity:0.3;pointer-events:none':''}"  ${periodOffset>=0?"disabled":""}>&#8250;</button>
+      <button onclick="shiftPeriod(-1)" style="padding:2px 10px;font-size:16px">&#8249;</button>
+      <button onclick="openPicker()" style="font-size:12px;color:#555;border:1px solid #ddd;background:#fff;border-radius:8px;padding:4px 12px;min-width:160px;text-align:center;cursor:pointer">${getPeriodLabel(period)}</button>
+      <button onclick="shiftPeriod(1)" style="padding:2px 10px;font-size:16px;opacity:${(()=>{const{end}=getRange(period);const now=new Date();now.setHours(23,59,59,999);return end>=now?0.3:1})()}">&#8250;</button>
     </div>
     <div class="summary-grid">
       <div class="summary-col"><div class="summary-col-title">合計</div><div><div class="summary-label">合計時間</div><div class="summary-value">${fmtH(totalEv+totalTk)}</div></div><div><div class="summary-label">合計件数</div><div class="summary-value">${countEv+countTk}件</div></div></div>
@@ -416,13 +446,88 @@ function render(){
       <div class="copy-hint">コピー後、claude.ai のチャットに貼り付けてください。</div>
     </div>`;
 }
+// カレンダーピッカー
+let pickerMonth=new Date();
+function openPicker(){
+  const{start}=getRange(period);
+  pickerMonth=new Date(start.getFullYear(),start.getMonth(),1);
+  renderPicker();
+}
+function closePicker(){const el=document.getElementById("cal-picker");if(el)el.remove();}
+function renderPicker(){
+  const existing=document.getElementById("cal-picker");
+  if(existing)existing.remove();
+  const{start,end}=getRange(period);
+  const y=pickerMonth.getFullYear(),m=pickerMonth.getMonth();
+  const firstDay=new Date(y,m,1).getDay();// 0=Sun
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const today=new Date();today.setHours(0,0,0,0);
+  // 月曜始まりオフセット
+  const offset=(firstDay===0?6:firstDay-1);
+  let cells="";
+  // 空白
+  for(let i=0;i<offset;i++)cells+=`<div class="cal-day faded"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const dt=new Date(y,m,d);
+    const isToday=dt.getTime()===today.getTime();
+    const isSel=dt>=start&&dt<=end;
+    const isWe=dt.getDay()===0||dt.getDay()===6;
+    const cls=["cal-day",isToday?"today":"",isSel?"selected":"",isWe?"weekend":""].filter(Boolean).join(" ");
+    cells+=`<button class="${cls}" onclick="pickDate(${y},${m},${d})">${d}</button>`;
+  }
+  const dows=["月","火","水","木","金","土","日"].map(d=>`<div class="cal-dow">${d}</div>`).join("");
+  const html=`<div class="cal-picker" id="cal-picker" onclick="if(event.target===this)closePicker()">
+    <div class="cal-box">
+      <div class="cal-header">
+        <button class="cal-nav" onclick="pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()-1,1);renderPicker()">&#8249;</button>
+        <span class="cal-month-label">${y}年${m+1}月</span>
+        <button class="cal-nav" onclick="pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()+1,1);renderPicker()">&#8250;</button>
+      </div>
+      <div class="cal-grid">${dows}${cells}</div>
+      <button class="cal-close" onclick="closePicker()">閉じる</button>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML("beforeend",html);
+}
+function pickDate(y,m,d){
+  const picked=new Date(y,m,d);
+  const now=new Date();now.setHours(0,0,0,0);
+  if(picked>now){closePicker();return;}// 未来は選択不可
+  if(period==="day"){
+    customStart=new Date(y,m,d);
+    // offsetをリセットして選択日を基準に
+    periodOffset=0;
+  }else if(period==="week"){
+    // 選択日を含む月曜に合わせる
+    const dow=picked.getDay();
+    const diff=dow===0?6:dow-1;
+    const mon=new Date(picked);mon.setDate(picked.getDate()-diff);
+    customStart=mon;periodOffset=0;
+  }else{
+    // 選択日を含む月曜を起点に28日
+    const dow=picked.getDay();
+    const diff=dow===0?6:dow-1;
+    const mon=new Date(picked);mon.setDate(picked.getDate()-diff);
+    customStart=mon;periodOffset=0;
+  }
+  closePicker();
+  openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;
+  fetchData();
+}
 function shiftPeriod(dir){
-  if(dir===1&&periodOffset>=0)return;
+  const{start}=getRange(period);
+  // 未来方向チェック
+  if(dir===1){
+    const now=new Date();now.setHours(23,59,59,999);
+    const{end}=getRange(period);
+    if(end>=now)return;
+  }
+  customStart=null;// customStartリセットしてoffsetで動かす
   periodOffset+=dir;
   openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;
   fetchData();
 }
-function changePeriod(p){period=p;periodOffset=0;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
+function changePeriod(p){period=p;periodOffset=0;customStart=null;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
 setInterval(()=>{try{if(gapi.client.getToken())fetchData();}catch(e){}},300000);
 </script>
 <script src="https://apis.google.com/js/api.js" onload="gapiInit()"></script>
