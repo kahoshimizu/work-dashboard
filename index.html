@@ -93,6 +93,7 @@ function gisInit(){
       fetchData();
     }
   });
+  gisDone=true;tryReady();
 }
 
 const CLIENT_ID="729656531255-stonbhee0o8m10gfbqckf1bp2fump90g.apps.googleusercontent.com";
@@ -287,10 +288,9 @@ function render(){
 
 function changePeriod(p){period=p;openDetails={ev:{},tk:{}};fetchData();}
 
-window.onload=()=>{gapiInit();gisInit();};
-setInterval(()=>{if(gapi.client.getToken())fetchData();},300000);
+setInterval(()=>{try{if(gapi.client.getToken())fetchData();}catch(e){}},300000);
 </script>
-<script src="https://apis.google.com/js/api.js"></script>
-<script src="https://accounts.google.com/gsi/client"></script>
+<script src="https://apis.google.com/js/api.js" onload="gapiInit()"></script>
+<script src="https://accounts.google.com/gsi/client" onload="gisInit()"></script>
 </body>
 </html>
