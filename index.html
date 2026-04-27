@@ -113,25 +113,30 @@ function fmtDateKey(s){return fmtDate(new Date(s));}
 function isWeekend(dateStr){const d=new Date(dateStr);return d.getDay()===0||d.getDay()===6;}
 
 function getRange(p){
-  const now=new Date();now.setHours(23,59,59,999);
+  const now=new Date();
   // カスタム期間が設定されている場合
   if(customStart&&customEnd){
     const s=new Date(customStart);s.setHours(0,0,0,0);
     const e=new Date(customEnd);e.setHours(23,59,59,999);
     return{start:s,end:e};
   }
-  // 今日を最終日として計算
-  const end=new Date(now);
-  end.setDate(end.getDate()+periodOffset*(p==="day"?1:p==="week"?7:30));
-  const endDay=new Date(end);endDay.setHours(23,59,59,999);
-  const startDay=new Date(end);
-  if(p==="day"){startDay.setHours(0,0,0,0);}
-  else if(p==="week"){startDay.setDate(end.getDate()-6);startDay.setHours(0,0,0,0);}
-  else{startDay.setDate(end.getDate()-29);startDay.setHours(0,0,0,0);}
-  return{start:startDay,end:endDay};
+  // 今日を最終日として計算（offsetで過去/未来にシフト）
+  const endBase=new Date(now);
+  if(p==="day")endBase.setDate(endBase.getDate()+periodOffset);
+  else if(p==="week")endBase.setDate(endBase.getDate()+periodOffset*7);
+  else endBase.setDate(endBase.getDate()+periodOffset*30);
+  const e=new Date(endBase);e.setHours(23,59,59,999);
+  const s=new Date(endBase);
+  if(p==="day")s.setHours(0,0,0,0);
+  else if(p==="week"){s.setDate(endBase.getDate()-6);s.setHours(0,0,0,0);}
+  else{s.setDate(endBase.getDate()-29);s.setHours(0,0,0,0);}
+  return{start:s,end:e};
 }
-function getPeriodLabel(p){const{start,end}=getRange(p);if(p==="day")return fmtDate(start);return`${fmtDate(start)}〜${fmtDate(end)}`;}
-
+function getPeriodLabel(p){
+  const{start,end}=getRange(p);
+  if(p==="day")return fmtDate(start);
+  return`${fmtDate(start)}〜${fmtDate(end)}`;
+}
 let period="week",periodOffset=0,customStart=null,customEnd=null,tokenClient,gapiDone=false,gisDone=false;
 let pickerState=null;// {step:"start"|"end", start:Date|null}
 let calData=[],taskData=[],locData={},updatedAt="";
