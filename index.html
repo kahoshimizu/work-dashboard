@@ -58,7 +58,8 @@ const SCOPES="https://www.googleapis.com/auth/calendar.readonly";
 const COLORS={"PJ":"#378ADD","イベント":"#1D9E75","新卒 1on1":"#D4537E","UM 1on1":"#D85A30","PMP":"#7F77DD","未分類":"#888780","foobar*":"#3B6D11"};
 const RULES=[
   {m:t=>/JMB/i.test(t)||/^タスク確認/.test(t),c:"PJ"},
-  {m:t=>/^foobar/i.test(t)||/Monthly Mixer/i.test(t)||/^CTOs Beer/i.test(t)||/^Designer.*s Creative Circle/i.test(t)||/イベント/.test(t),c:"イベント"},
+  {m:t=>/Monthly Mixer/i.test(t)||/^CTOs Beer/i.test(t)||/^Designer.*s Creative Circle/i.test(t)||/イベント/.test(t),c:"イベント"},
+  {m:t=>/foobar/i.test(t),c:"foobar*"},
   {m:t=>/^Kaho \/ Miu/.test(t)||/^Kaho \/ Emiri/.test(t)||/^Emiri \/ Kaho/.test(t)||/^Miu \/ Kaho/.test(t)||/^Miu\/Kaho/.test(t),c:"新卒 1on1"},
   {m:t=>/^Masanori \/ Kaho/.test(t)||/^Satoshi \/ Kaho/.test(t)||/^\[上期評価FB\]/.test(t),c:"UM 1on1"},
   {m:t=>/^\[FY26\]PMP1[：:].*定例/.test(t)||/^General MTG for PMPs/.test(t),c:"PMP"},
@@ -272,7 +273,10 @@ function pieChart(data){
     const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);
     return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${COLORS[d.label]||"#888"}" stroke="#fff" stroke-width="1.5"/>`;
   }).join("");
-  const leg=data.map(d=>`<div class="legend-item"><div class="legend-dot" style="background:${COLORS[d.label]||"#888"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${fmtH(d.value)}</span></div>`).join("");
+  const leg=data.map(d=>{
+    const pct=total>0?Math.round(d.value/total*100):0;
+    return`<div class="legend-item"><div class="legend-dot" style="background:${COLORS[d.label]||"#888"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${fmtH(d.value)}）</span></div>`;
+  }).join("");
   return`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><svg viewBox="0 0 160 160" width="130" height="130" style="flex-shrink:0">${paths}</svg><div class="legend">${leg}</div></div>`;
 }
 
