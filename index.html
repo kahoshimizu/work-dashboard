@@ -23,7 +23,7 @@ h1{font-size:20px;font-weight:500;margin-bottom:20px}
 .bar-label{width:90px;text-align:right;color:#666;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar-track{flex:1;background:#f0f0f0;border-radius:4px;height:18px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px;transition:width 0.4s}
-.bar-btn{border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:500;color:#1a1a1a;padding:2px 6px;border-radius:4px;white-space:nowrap;text-align:left}
+.bar-btn{border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:500;color:#1a1a1a;padding:2px 6px;border-radius:4px;white-space:nowrap}
 .bar-btn:hover{background:#f0f0f0}
 .detail-box{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:10px 14px;margin:4px 0 10px 100px;font-size:12px}
 .detail-row{display:flex;justify-content:space-between;padding:2px 0;color:#555}
@@ -48,18 +48,21 @@ button:hover{background:#f5f5f5}
 <div id="app"><div class="loading">読み込み中…</div></div>
 
 <script>
-const COLORS={
-  "PJ":"#378ADD","イベント":"#1D9E75","新卒 1on1":"#D4537E",
-  "UM 1on1":"#D85A30","PMP":"#7F77DD","未分類":"#888780",
-  "foobar*":"#3B6D11"
-};
+const CLIENT_ID="729656531255-stonbhee0o8m10gfbqckf1bp2fump90g.apps.googleusercontent.com";
+const SCOPES="https://www.googleapis.com/auth/calendar.readonly";
+const COLORS={"PJ":"#378ADD","イベント":"#1D9E75","新卒 1on1":"#D4537E","UM 1on1":"#D85A30","PMP":"#7F77DD","未分類":"#888780","foobar*":"#3B6D11"};
 const RULES=[
-  {m:t=>/JMB/i.test(t)||/^タスク確認/.test(t), c:"PJ"},
-  {m:t=>/^foobar/i.test(t)||/Monthly Mixer/i.test(t)||/^CTOs Beer/i.test(t)||/^Designer.*s Creative Circle/i.test(t)||/^Sun\* Monthly Mixer/i.test(t), c:"イベント"},
-  {m:t=>/^Kaho \/ Miu/.test(t)||/^Kaho \/ Emiri/.test(t)||/^Emiri \/ Kaho/.test(t)||/^Miu \/ Kaho/.test(t)||/^Miu\/Kaho/.test(t), c:"新卒 1on1"},
-  {m:t=>/^Masanori \/ Kaho/.test(t)||/^Satoshi \/ Kaho/.test(t)||/^\[上期評価FB\]/.test(t), c:"UM 1on1"},
-  {m:t=>/^\[FY26\]PMP1[：:].*定例/.test(t)||/^General MTG for PMPs/.test(t), c:"PMP"},
+  {m:t=>/JMB/i.test(t)||/^タスク確認/.test(t),c:"PJ"},
+  {m:t=>/^foobar/i.test(t)||/Monthly Mixer/i.test(t)||/^CTOs Beer/i.test(t)||/^Designer.*s Creative Circle/i.test(t),c:"イベント"},
+  {m:t=>/^Kaho \/ Miu/.test(t)||/^Kaho \/ Emiri/.test(t)||/^Emiri \/ Kaho/.test(t)||/^Miu \/ Kaho/.test(t)||/^Miu\/Kaho/.test(t),c:"新卒 1on1"},
+  {m:t=>/^Masanori \/ Kaho/.test(t)||/^Satoshi \/ Kaho/.test(t)||/^\[上期評価FB\]/.test(t),c:"UM 1on1"},
+  {m:t=>/^\[FY26\]PMP1[：:].*定例/.test(t)||/^General MTG for PMPs/.test(t),c:"PMP"},
 ];
+
+let period="week",tokenClient,calData=[],taskData=[],updatedAt="";
+let openDetails={ev:{},tk:{}};
+let gapiDone=false,gisDone=false;
+
 function categorize(t){for(const r of RULES)if(r.m(t))return r.c;return"未分類";}
 function isFlamingo(ev){return ev.colorId==="4";}
 function fmtH(h){return h<0.05?"0h":h.toFixed(1)+"h";}
@@ -79,9 +82,21 @@ function getRange(p){
   }
 }
 
+function tryReady(){
+  if(!gapiDone||!gisDone)return;
+  document.getElementById("app").innerHTML=`
+    <div class="loading">
+      <div style="font-size:15px;font-weight:500;margin-bottom:8px">作業レポートダッシュボード</div>
+      <div style="font-size:13px;color:#888;margin-bottom:20px">Googleアカウントでログインしてください</div>
+      <button onclick="signIn()" style="font-size:14px;padding:10px 28px;font-weight:500;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">Googleでログイン</button>
+    </div>`;
+}
+
 function gapiInit(){
   gapi.load("client",async()=>{
     await gapi.client.load("https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest");
+    gapiDone=true;
+    tryReady();
   });
 }
 
@@ -93,21 +108,22 @@ function gisInit(){
       fetchData();
     }
   });
-  gisDone=true;tryReady();
+  gisDone=true;
+  tryReady();
 }
 
-const CLIENT_ID="729656531255-stonbhee0o8m10gfbqckf1bp2fump90g.apps.googleusercontent.com";
-const SCOPES="https://www.googleapis.com/auth/calendar.readonly";
-let period="week",tokenClient,calData=[],taskData=[],updatedAt="";
-let openDetails={ev:{},tk:{}};
-
 function signIn(){tokenClient.requestAccessToken({prompt:"consent"});}
+
 function signOut(){
   const t=gapi.client.getToken();
   if(t)google.accounts.oauth2.revoke(t.access_token,()=>{});
   gapi.client.setToken(null);
   calData=[];taskData=[];
-  document.getElementById("app").innerHTML=`<div class="loading">ログアウトしました。<br><button onclick="signIn()" style="margin-top:12px">再ログイン</button></div>`;
+  document.getElementById("app").innerHTML=`
+    <div class="loading">
+      <div style="margin-bottom:12px">ログアウトしました</div>
+      <button onclick="signIn()" style="font-size:14px;padding:10px 28px;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">再ログイン</button>
+    </div>`;
 }
 
 function showError(msg){
@@ -119,7 +135,6 @@ function showError(msg){
 async function fetchData(){
   try{
     const{start,end}=getRange(period);
-
     const calRes=await gapi.client.calendar.events.list({
       calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),
       singleEvents:true,orderBy:"startTime",maxResults:500
@@ -164,7 +179,7 @@ async function fetchData(){
 }
 
 function toggleDetail(type,idx){
-  if(type==="ev") openDetails.ev[idx]=!openDetails.ev[idx];
+  if(type==="ev")openDetails.ev[idx]=!openDetails.ev[idx];
   else openDetails.tk[idx]=!openDetails.tk[idx];
   render();
 }
@@ -174,12 +189,12 @@ function barChart(data,type){
   return data.map((d,i)=>{
     const isOpen=(type==="ev"?openDetails.ev:openDetails.tk)[i];
     const detail=isOpen?`<div class="detail-box">${
-      d.items.sort((a,b)=>b.dur-a.dur).map(it=>`<div class="detail-row"><span>${it.title}</span><span>${fmtH(it.dur)}</span></div>`).join("")
+      d.items.slice().sort((a,b)=>b.dur-a.dur).map(it=>`<div class="detail-row"><span>${it.title}</span><span>${fmtH(it.dur)}</span></div>`).join("")
     }</div>`:"";
     return`<div>
       <div class="bar-row">
         <div class="bar-label" title="${d.label}">${d.label}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2)}%;background:${COLORS[d.label]||"#888"}"></div></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#888"}"></div></div>
         <button class="bar-btn" onclick="toggleDetail('${type}',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button>
       </div>${detail}</div>`;
   }).join("");
@@ -191,16 +206,16 @@ function pieChart(data){
   let cum=-Math.PI/2;
   const paths=data.map(d=>{
     const a=(d.value/total)*2*Math.PI;
-    const s=cum;cum+=a;
+    const sx=cum;cum+=a;
     const r=70,cx=80,cy=80;
-    const x1=cx+r*Math.cos(s),y1=cy+r*Math.sin(s);
+    const x1=cx+r*Math.cos(sx),y1=cy+r*Math.sin(sx);
     const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);
-    return`<path d="M${cx},${cy} L${x1},${y1} A${r},${r},0,${a>Math.PI?1:0},1,${x2},${y2} Z" fill="${COLORS[d.label]||"#888"}" stroke="#fff" stroke-width="1.5"/>`;
+    return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${COLORS[d.label]||"#888"}" stroke="#fff" stroke-width="1.5"/>`;
   }).join("");
   return`<svg viewBox="0 0 160 160" width="130" height="130" style="flex-shrink:0">${paths}</svg>`;
 }
 
-function legend(data){
+function makeLegend(data){
   return data.map(d=>`<div class="legend-item"><div class="legend-dot" style="background:${COLORS[d.label]||"#888"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${d.count}件</span></div>`).join("");
 }
 
@@ -220,7 +235,7 @@ async function genAI(){
     });
     const data=await res.json();
     out.textContent=data.content?.map(c=>c.text||"").join("")||"生成できませんでした。";
-  }catch{out.textContent="AI コメントの取得に失敗しました。";}
+  }catch{out.textContent="AIコメントの取得に失敗しました。";}
   btn.disabled=false;btn.textContent="再生成";
 }
 
@@ -229,7 +244,6 @@ function render(){
   const totalTk=taskData.reduce((s,d)=>s+d.value,0);
   const topEv=calData.length?calData[0]:null;
   const countEv=calData.reduce((s,d)=>s+d.count,0);
-  const countTk=taskData.reduce((s,d)=>s+d.count,0);
   const tabs=["month","week","day"].map(t=>`<button class="tab${period===t?" active":""}" onclick="changePeriod('${t}')">${{month:"1ヶ月",week:"1週間",day:"1日"}[t]}</button>`).join("");
 
   document.getElementById("app").innerHTML=`
@@ -258,7 +272,7 @@ function render(){
       <div class="box">
         <div class="box-title">割合</div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-          ${pieChart(calData)}<div class="legend">${legend(calData)}</div>
+          ${pieChart(calData)}<div class="legend">${makeLegend(calData)}</div>
         </div>
       </div>
     </div>
@@ -272,7 +286,7 @@ function render(){
       <div class="box">
         <div class="box-title">割合</div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-          ${pieChart(taskData)}<div class="legend">${legend(taskData)}</div>
+          ${pieChart(taskData)}<div class="legend">${makeLegend(taskData)}</div>
         </div>
       </div>
     </div>
@@ -287,7 +301,6 @@ function render(){
 }
 
 function changePeriod(p){period=p;openDetails={ev:{},tk:{}};fetchData();}
-
 setInterval(()=>{try{if(gapi.client.getToken())fetchData();}catch(e){}},300000);
 </script>
 <script src="https://apis.google.com/js/api.js" onload="gapiInit()"></script>
