@@ -5,169 +5,277 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>作業レポートダッシュボード</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#1a1a1a;padding:24px}
-  h1{font-size:20px;font-weight:500;margin-bottom:20px}
-  .tabs{display:flex;gap:4px;border-bottom:1px solid #ddd;margin-bottom:20px}
-  .tab{padding:8px 20px;border:none;background:transparent;cursor:pointer;font-size:14px;color:#666;border-bottom:2px solid transparent;margin-bottom:-1px}
-  .tab.active{color:#1a1a1a;font-weight:500;border-bottom-color:#1a1a1a}
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
-  .card{background:#fff;border-radius:8px;padding:12px 16px;border:1px solid #eee}
-  .card-label{font-size:12px;color:#888;margin-bottom:4px}
-  .card-value{font-size:20px;font-weight:500}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:16px}
-  .box{background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #eee}
-  .box-title{font-size:14px;font-weight:500;margin-bottom:12px}
-  .bar-row{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:8px}
-  .bar-label{width:90px;text-align:right;color:#666;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .bar-track{flex:1;background:#f0f0f0;border-radius:4px;height:18px;overflow:hidden}
-  .bar-fill{height:100%;border-radius:4px;transition:width 0.4s}
-  .bar-val{width:60px;font-weight:500;font-size:12px;flex-shrink:0}
-  .legend{display:flex;flex-direction:column;gap:5px;font-size:12px}
-  .legend-item{display:flex;align-items:center;gap:6px}
-  .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-  .ai-box{background:#f9f9f9;border-radius:12px;padding:16px 20px;border:1px solid #eee;margin-top:16px}
-  .ai-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .ai-title{font-size:14px;font-weight:500}
-  .ai-text{font-size:14px;color:#555;line-height:1.7}
-  button{background:#fff;border:1px solid #ddd;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:13px}
-  button:hover{background:#f5f5f5}
-  .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px}
-  .header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .meta{font-size:12px;color:#999}
-  .loading{text-align:center;padding:48px;color:#888;font-size:14px}
-  .error{background:#fff0f0;border:1px solid #fcc;color:#c33;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px}
-  .empty{font-size:13px;color:#aaa;text-align:center;padding:16px 0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#1a1a1a;padding:24px}
+h1{font-size:20px;font-weight:500;margin-bottom:20px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid #ddd;margin-bottom:20px}
+.tab{padding:8px 20px;border:none;background:transparent;cursor:pointer;font-size:14px;color:#666;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.active{color:#1a1a1a;font-weight:500;border-bottom-color:#1a1a1a}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.card{background:#fff;border-radius:8px;padding:12px 16px;border:1px solid #eee}
+.card-label{font-size:12px;color:#888;margin-bottom:4px}
+.card-value{font-size:20px;font-weight:500}
+.section-title{font-size:15px;font-weight:500;margin:20px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:8px}
+.box{background:#fff;border-radius:12px;padding:16px 20px;border:1px solid #eee}
+.box-title{font-size:14px;font-weight:500;margin-bottom:12px}
+.bar-row{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:8px}
+.bar-label{width:90px;text-align:right;color:#666;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{flex:1;background:#f0f0f0;border-radius:4px;height:18px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width 0.4s}
+.bar-btn{border:none;background:transparent;cursor:pointer;font-size:12px;font-weight:500;color:#1a1a1a;padding:2px 6px;border-radius:4px;white-space:nowrap;text-align:left}
+.bar-btn:hover{background:#f0f0f0}
+.detail-box{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:10px 14px;margin:4px 0 10px 100px;font-size:12px}
+.detail-row{display:flex;justify-content:space-between;padding:2px 0;color:#555}
+.legend{display:flex;flex-direction:column;gap:5px;font-size:12px}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.ai-box{background:#f9f9f9;border-radius:12px;padding:16px 20px;border:1px solid #eee;margin-top:16px}
+.ai-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ai-title{font-size:14px;font-weight:500}
+.ai-text{font-size:14px;color:#555;line-height:1.7}
+button{background:#fff;border:1px solid #ddd;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:13px}
+button:hover{background:#f5f5f5}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+.header-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.meta{font-size:12px;color:#999}
+.loading{text-align:center;padding:48px;color:#888;font-size:14px}
+.error{background:#fff0f0;border:1px solid #fcc;color:#c33;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px}
+.empty{font-size:13px;color:#aaa;text-align:center;padding:16px 0}
 </style>
 </head>
 <body>
 <div id="app"><div class="loading">読み込み中…</div></div>
 
 <script>
-const COLORS = {
+const COLORS={
   "PJ":"#378ADD","イベント":"#1D9E75","新卒 1on1":"#D4537E",
   "UM 1on1":"#D85A30","PMP":"#7F77DD","未分類":"#888780",
-  "My Tasks":"#BA7517","foobar":"#3B6D11"
+  "foobar*":"#3B6D11"
 };
+const RULES=[
+  {m:t=>/JMB/i.test(t)||/^タスク確認/.test(t), c:"PJ"},
+  {m:t=>/^foobar/i.test(t)||/Monthly Mixer/i.test(t)||/^CTOs Beer/i.test(t)||/^Designer.*s Creative Circle/i.test(t)||/^Sun\* Monthly Mixer/i.test(t), c:"イベント"},
+  {m:t=>/^Kaho \/ Miu/.test(t)||/^Kaho \/ Emiri/.test(t)||/^Emiri \/ Kaho/.test(t)||/^Miu \/ Kaho/.test(t)||/^Miu\/Kaho/.test(t), c:"新卒 1on1"},
+  {m:t=>/^Masanori \/ Kaho/.test(t)||/^Satoshi \/ Kaho/.test(t)||/^\[上期評価FB\]/.test(t), c:"UM 1on1"},
+  {m:t=>/^\[FY26\]PMP1[：:].*定例/.test(t)||/^General MTG for PMPs/.test(t), c:"PMP"},
+];
+function categorize(t){for(const r of RULES)if(r.m(t))return r.c;return"未分類";}
+function isFlamingo(ev){return ev.colorId==="4";}
+function fmtH(h){return h<0.05?"0h":h.toFixed(1)+"h";}
 
-let period = "week";
-let calData = [], taskData = [], updatedAt = "";
-
-function load() {
-  document.getElementById("app").innerHTML = '<div class="loading">データ取得中…</div>';
-  google.script.run
-    .withSuccessHandler(raw => {
-      const d = JSON.parse(raw);
-      calData = d.calData;
-      taskData = d.taskData;
-      updatedAt = d.updatedAt;
-      render();
-    })
-    .withFailureHandler(e => {
-      document.getElementById("app").innerHTML = `<div class="error">エラー: ${e.message}</div>`;
-    })
-    .getDashboardData(period);
+function getRange(p){
+  const now=new Date();
+  if(p==="day"){
+    const s=new Date(now);s.setHours(0,0,0,0);
+    const e=new Date(now);e.setHours(23,59,59,999);
+    return{start:s,end:e};
+  }else if(p==="week"){
+    const s=new Date(now);s.setDate(now.getDate()-now.getDay());s.setHours(0,0,0,0);
+    const e=new Date(s);e.setDate(s.getDate()+6);e.setHours(23,59,59,999);
+    return{start:s,end:e};
+  }else{
+    return{start:new Date(now.getFullYear(),now.getMonth(),1),end:new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59,999)};
+  }
 }
 
-function fmtH(h) { return h < 0.05 ? "0h" : h.toFixed(1) + "h"; }
-
-function barChart(data) {
-  const max = Math.max(...data.map(d => d.value), 0.1);
-  return data.map(d => `
-    <div class="bar-row">
-      <div class="bar-label" title="${d.label}">${d.label}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2)}%;background:${COLORS[d.label]||"#888"}"></div></div>
-      <div class="bar-val">${fmtH(d.value)}${d.count!=null?` (${d.count})`:""}</div>
-    </div>`).join("");
+function gapiInit(){
+  gapi.load("client",async()=>{
+    await gapi.client.load("https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest");
+  });
 }
 
-function pieChart(data) {
-  const total = data.reduce((s,d) => s+d.value, 0);
-  if (!total) return "";
-  let cum = -Math.PI/2;
-  const paths = data.map(d => {
-    const a = (d.value/total)*2*Math.PI;
-    const s = cum; cum += a;
+function gisInit(){
+  tokenClient=google.accounts.oauth2.initTokenClient({
+    client_id:CLIENT_ID,scope:SCOPES,
+    callback:(resp)=>{
+      if(resp.error){showError("認証エラー: "+resp.error);return;}
+      fetchData();
+    }
+  });
+}
+
+const CLIENT_ID="729656531255-stonbhee0o8m10gfbqckf1bp2fump90g.apps.googleusercontent.com";
+const SCOPES="https://www.googleapis.com/auth/calendar.readonly";
+let period="week",tokenClient,calData=[],taskData=[],updatedAt="";
+let openDetails={ev:{},tk:{}};
+
+function signIn(){tokenClient.requestAccessToken({prompt:"consent"});}
+function signOut(){
+  const t=gapi.client.getToken();
+  if(t)google.accounts.oauth2.revoke(t.access_token,()=>{});
+  gapi.client.setToken(null);
+  calData=[];taskData=[];
+  document.getElementById("app").innerHTML=`<div class="loading">ログアウトしました。<br><button onclick="signIn()" style="margin-top:12px">再ログイン</button></div>`;
+}
+
+function showError(msg){
+  let el=document.getElementById("err");
+  if(!el){el=document.createElement("div");el.id="err";el.className="error";document.getElementById("app").prepend(el);}
+  el.textContent=msg;
+}
+
+async function fetchData(){
+  try{
+    const{start,end}=getRange(period);
+
+    const calRes=await gapi.client.calendar.events.list({
+      calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),
+      singleEvents:true,orderBy:"startTime",maxResults:500
+    });
+    const items=calRes.result.items||[];
+    const catMap={};
+    items.forEach(ev=>{
+      if(isFlamingo(ev))return;
+      const desc=ev.description||"";
+      if(desc.includes("tasks.google.com/task/"))return;
+      if(!ev.start?.dateTime||!ev.end?.dateTime)return;
+      const dur=(new Date(ev.end.dateTime)-new Date(ev.start.dateTime))/3600000;
+      if(dur<=0)return;
+      const cat=categorize(ev.summary||"");
+      if(!catMap[cat])catMap[cat]={value:0,count:0,items:[]};
+      catMap[cat].value+=dur;catMap[cat].count++;
+      catMap[cat].items.push({title:ev.summary||"(無題)",dur});
+    });
+    calData=Object.entries(catMap).map(([label,d])=>({label,value:d.value,count:d.count,items:d.items})).sort((a,b)=>b.value-a.value);
+
+    const taskMap={};
+    items.forEach(ev=>{
+      const desc=ev.description||"";
+      if(!desc.includes("tasks.google.com/task/"))return;
+      if(!ev.start?.dateTime||!ev.end?.dateTime)return;
+      const dur=(new Date(ev.end.dateTime)-new Date(ev.start.dateTime))/3600000;
+      if(dur<=0)return;
+      const title=ev.summary||"";
+      const cat=/^foobar/i.test(title)||desc.includes("foobar")?"foobar*":"PJ";
+      if(!taskMap[cat])taskMap[cat]={value:0,count:0,items:[]};
+      taskMap[cat].value+=dur;taskMap[cat].count++;
+      taskMap[cat].items.push({title,dur});
+    });
+    taskData=Object.entries(taskMap).map(([label,d])=>({label,value:d.value,count:d.count,items:d.items}));
+
+    updatedAt=new Date().toLocaleTimeString("ja-JP");
+    openDetails={ev:{},tk:{}};
+    render();
+  }catch(e){
+    showError("データ取得エラー: "+(e.result?.error?.message||e.message||JSON.stringify(e)));
+  }
+}
+
+function toggleDetail(type,idx){
+  if(type==="ev") openDetails.ev[idx]=!openDetails.ev[idx];
+  else openDetails.tk[idx]=!openDetails.tk[idx];
+  render();
+}
+
+function barChart(data,type){
+  const max=Math.max(...data.map(d=>d.value),0.1);
+  return data.map((d,i)=>{
+    const isOpen=(type==="ev"?openDetails.ev:openDetails.tk)[i];
+    const detail=isOpen?`<div class="detail-box">${
+      d.items.sort((a,b)=>b.dur-a.dur).map(it=>`<div class="detail-row"><span>${it.title}</span><span>${fmtH(it.dur)}</span></div>`).join("")
+    }</div>`:"";
+    return`<div>
+      <div class="bar-row">
+        <div class="bar-label" title="${d.label}">${d.label}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2)}%;background:${COLORS[d.label]||"#888"}"></div></div>
+        <button class="bar-btn" onclick="toggleDetail('${type}',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button>
+      </div>${detail}</div>`;
+  }).join("");
+}
+
+function pieChart(data){
+  const total=data.reduce((s,d)=>s+d.value,0);
+  if(!total)return"";
+  let cum=-Math.PI/2;
+  const paths=data.map(d=>{
+    const a=(d.value/total)*2*Math.PI;
+    const s=cum;cum+=a;
     const r=70,cx=80,cy=80;
     const x1=cx+r*Math.cos(s),y1=cy+r*Math.sin(s);
     const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);
-    return `<path d="M${cx},${cy} L${x1},${y1} A${r},${r},0,${a>Math.PI?1:0},1,${x2},${y2} Z" fill="${COLORS[d.label]||"#888"}" stroke="#fff" stroke-width="1.5"/>`;
+    return`<path d="M${cx},${cy} L${x1},${y1} A${r},${r},0,${a>Math.PI?1:0},1,${x2},${y2} Z" fill="${COLORS[d.label]||"#888"}" stroke="#fff" stroke-width="1.5"/>`;
   }).join("");
-  return `<svg viewBox="0 0 160 160" width="130" height="130" style="flex-shrink:0">${paths}</svg>`;
+  return`<svg viewBox="0 0 160 160" width="130" height="130" style="flex-shrink:0">${paths}</svg>`;
 }
 
-async function genAI() {
-  const btn = document.getElementById("ai-btn");
-  const out = document.getElementById("ai-out");
-  btn.disabled = true; btn.textContent = "生成中…";
-  const labels = {day:"1日",week:"1週間",month:"1ヶ月"};
-  const ev = calData.map(d=>`${d.label}:${d.value.toFixed(1)}h(${d.count||0}件)`).join(", ");
-  const tk = taskData.map(d=>`${d.label}:${d.value.toFixed(1)}h`).join(", ");
-  try {
-    const res = await fetch("https://api.anthropic.com/v1/messages", {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({
-        model:"claude-sonnet-4-20250514", max_tokens:1000,
+function legend(data){
+  return data.map(d=>`<div class="legend-item"><div class="legend-dot" style="background:${COLORS[d.label]||"#888"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${d.count}件</span></div>`).join("");
+}
+
+async function genAI(){
+  const btn=document.getElementById("ai-btn");
+  const out=document.getElementById("ai-out");
+  btn.disabled=true;btn.textContent="生成中…";
+  const labels={day:"1日",week:"1週間",month:"1ヶ月"};
+  const ev=calData.map(d=>`${d.label}:${d.value.toFixed(1)}h(${d.count}件)`).join(", ");
+  const tk=taskData.map(d=>`${d.label}:${d.value.toFixed(1)}h(${d.count}件)`).join(", ");
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,
         messages:[{role:"user",content:`${labels[period]}の作業データです。\n予定:${ev||"なし"}\nタスク:${tk||"なし"}\n\n100〜150字で振り返りコメントを日本語でください。`}]
       })
     });
-    const data = await res.json();
-    out.textContent = data.content?.map(c=>c.text||"").join("") || "生成できませんでした。";
-  } catch { out.textContent = "AI コメントの取得に失敗しました。"; }
-  btn.disabled = false; btn.textContent = "再生成";
+    const data=await res.json();
+    out.textContent=data.content?.map(c=>c.text||"").join("")||"生成できませんでした。";
+  }catch{out.textContent="AI コメントの取得に失敗しました。";}
+  btn.disabled=false;btn.textContent="再生成";
 }
 
-function changePeriod(p) { period = p; load(); }
+function render(){
+  const totalEv=calData.reduce((s,d)=>s+d.value,0);
+  const totalTk=taskData.reduce((s,d)=>s+d.value,0);
+  const topEv=calData.length?calData[0]:null;
+  const countEv=calData.reduce((s,d)=>s+d.count,0);
+  const countTk=taskData.reduce((s,d)=>s+d.count,0);
+  const tabs=["month","week","day"].map(t=>`<button class="tab${period===t?" active":""}" onclick="changePeriod('${t}')">${{month:"1ヶ月",week:"1週間",day:"1日"}[t]}</button>`).join("");
 
-function render() {
-  const totalEv   = calData.reduce((s,d)=>s+d.value,0);
-  const totalTask = taskData.reduce((s,d)=>s+d.value,0);
-  const top       = calData.length ? calData.reduce((a,b)=>a.value>b.value?a:b) : null;
-  const totalCount= calData.reduce((s,d)=>s+(d.count||0),0);
-
-  const tabs = ["month","week","day"].map(t =>
-    `<button class="tab${period===t?" active":""}" onclick="changePeriod('${t}')">${{month:"1ヶ月",week:"1週間",day:"1日"}[t]}</button>`
-  ).join("");
-
-  const legend = calData.map(d =>
-    `<div class="legend-item"><div class="legend-dot" style="background:${COLORS[d.label]||"#888"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${d.count}件</span></div>`
-  ).join("");
-
-  const taskSection = taskData.length ? `
-    <div class="box" style="margin-bottom:16px">
-      <div class="box-title">タスク — カテゴリ別時間（時間指定あり）</div>
-      ${barChart(taskData)}
-    </div>` : "";
-
-  document.getElementById("app").innerHTML = `
+  document.getElementById("app").innerHTML=`
     <div class="header">
       <h1>作業レポート</h1>
       <div class="header-right">
-        ${updatedAt ? `<span class="meta">${updatedAt} 更新</span>` : ""}
-        <button onclick="load()">更新</button>
+        ${updatedAt?`<span class="meta">${updatedAt} 更新</span>`:""}
+        <button onclick="fetchData()">更新</button>
+        <button onclick="signOut()" style="opacity:0.6">ログアウト</button>
       </div>
     </div>
     <div class="tabs">${tabs}</div>
     <div class="cards">
       <div class="card"><div class="card-label">予定 合計時間</div><div class="card-value">${fmtH(totalEv)}</div></div>
-      <div class="card"><div class="card-label">最多カテゴリ</div><div class="card-value">${top?top.label:"-"}</div></div>
-      <div class="card"><div class="card-label">イベント件数</div><div class="card-value">${totalCount}件</div></div>
-      <div class="card"><div class="card-label">タスク時間</div><div class="card-value">${fmtH(totalTask)}</div></div>
+      <div class="card"><div class="card-label">最多カテゴリ</div><div class="card-value" style="font-size:16px">${topEv?topEv.label:"-"}</div></div>
+      <div class="card"><div class="card-label">予定件数</div><div class="card-value">${countEv}件</div></div>
+      <div class="card"><div class="card-label">タスク時間</div><div class="card-value">${fmtH(totalTk)}</div></div>
     </div>
+
+    <div class="section-title">予定</div>
     <div class="grid">
       <div class="box">
-        <div class="box-title">予定 — カテゴリ別時間</div>
-        ${calData.length ? barChart(calData) : '<div class="empty">データなし</div>'}
+        <div class="box-title">カテゴリ別時間</div>
+        ${calData.length?barChart(calData,"ev"):'<div class="empty">データなし</div>'}
       </div>
       <div class="box">
         <div class="box-title">割合</div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-          ${pieChart(calData)}
-          <div class="legend">${legend}</div>
+          ${pieChart(calData)}<div class="legend">${legend(calData)}</div>
         </div>
       </div>
     </div>
-    ${taskSection}
+
+    <div class="section-title">タスク</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-title">カテゴリ別時間</div>
+        ${taskData.length?barChart(taskData,"tk"):'<div class="empty">データなし（カレンダーに表示されているタスクが対象です）</div>'}
+      </div>
+      <div class="box">
+        <div class="box-title">割合</div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          ${pieChart(taskData)}<div class="legend">${legend(taskData)}</div>
+        </div>
+      </div>
+    </div>
+
     <div class="ai-box">
       <div class="ai-header">
         <div class="ai-title">AI 振り返りコメント</div>
@@ -177,8 +285,12 @@ function render() {
     </div>`;
 }
 
-window.onload = load;
-setInterval(load, 300000);
+function changePeriod(p){period=p;openDetails={ev:{},tk:{}};fetchData();}
+
+window.onload=()=>{gapiInit();gisInit();};
+setInterval(()=>{if(gapi.client.getToken())fetchData();},300000);
 </script>
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
 </body>
 </html>
