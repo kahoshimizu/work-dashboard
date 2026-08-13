@@ -17,31 +17,34 @@ h1{font-size:18px;font-weight:500}
 .period-label{font-size:12px;color:#999;margin-bottom:14px}
 .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
 .summary-col{background:#fff;border-radius:10px;border:1px solid #eee;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
-.summary-col-title{font-size:11px;color:#aaa;font-weight:500;letter-spacing:0.03em;margin-bottom:2px}
+.summary-col-title{font-size:11px;color:#aaa;font-weight:500;letter-spacing:.03em;margin-bottom:2px}
 .summary-label{font-size:11px;color:#888;margin-bottom:2px}
-.summary-value{font-size:18px;font-weight:500;color:#1a1a1a}
+.summary-value{font-size:18px;font-weight:500}
 .section-title{font-size:15px;font-weight:500;margin:18px 0 8px}
 .filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;background:#fff;border:1px solid #eee;border-radius:8px;padding:8px 12px}
 .filter-bar label{display:flex;align-items:center;gap:4px;font-size:12px;color:#555;cursor:pointer;user-select:none}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:8px}
 .box{background:#fff;border-radius:12px;padding:14px 18px;border:1px solid #eee}
 .box-title{font-size:13px;font-weight:500;margin-bottom:10px;color:#444}
-.bar-wrap{position:relative;margin-bottom:6px}
-.bar-row{display:flex;align-items:center;gap:8px;font-size:13px;cursor:grab}
-.bar-label{width:86px;text-align:right;color:#666;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;padding:4px 0}
+.bar-wrap{margin-bottom:4px}
+.bar-row{display:flex;align-items:center;gap:8px;font-size:13px}
+.bar-label{width:86px;text-align:right;color:#666;flex-shrink:0;font-size:12px;padding:4px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar-track{flex:1;background:#f0f0f0;border-radius:4px;height:16px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px}
 .bar-btn{border:none;background:transparent;cursor:pointer;font-size:11px;font-weight:500;color:#1a1a1a;padding:2px 5px;border-radius:4px;white-space:nowrap;min-width:80px;text-align:left}
 .bar-btn:hover{background:#f0f0f0}
-.detail-box{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:8px 12px;margin:4px 0 8px 0;font-size:11px}
-.detail-row{display:grid;grid-template-columns:72px 1fr 44px;gap:6px;padding:3px 0;color:#555;border-bottom:0.5px solid #eee}
-.detail-row:last-child{border-bottom:none}
-.detail-date{color:#999;font-size:10px;padding-top:1px}
-.detail-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.detail-dur{text-align:right;flex-shrink:0;font-weight:500}
-.drop-zone{border:2px dashed transparent;border-radius:8px;transition:border-color 0.2s,background 0.2s;padding:2px}
-.drop-zone.drag-over{border-color:#54C3F1;background:rgba(84,195,241,0.06)}
-.dragging .bar-row{opacity:0.4}
+/* 個別アイテムのD&D */
+.item-list{margin:4px 0 8px 0}
+.item-row{display:grid;grid-template-columns:64px 1fr 40px 16px;gap:6px;align-items:center;padding:3px 4px;border-radius:6px;font-size:11px;color:#555;cursor:grab;transition:background .15s}
+.item-row:hover{background:#f5f5f5}
+.item-row.drag-over-item{background:#e8f2fb;border:1px dashed #54C3F1}
+.item-row.dragging-item{opacity:.3}
+.item-date{color:#999;font-size:10px}
+.item-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item-dur{text-align:right;font-weight:500}
+.drag-handle{color:#ccc;font-size:12px;cursor:grab}
+.drop-zone{border:2px dashed transparent;border-radius:8px;transition:border-color .2s,background .2s;padding:2px}
+.drop-zone.drag-over{border-color:#54C3F1;background:rgba(84,195,241,.06)}
 .legend{display:flex;flex-direction:column;gap:5px;font-size:12px}
 .legend-item{display:flex;align-items:center;gap:6px}
 .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
@@ -59,8 +62,9 @@ h1{font-size:18px;font-weight:500}
 .ai-title{font-size:14px;font-weight:500;margin-bottom:6px}
 .ai-text{font-size:13px;color:#555;line-height:1.7}
 .copy-hint{font-size:11px;color:#888;margin-top:6px}
-.cal-picker{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3)}
-.cal-box{background:#fff;border-radius:14px;padding:16px;width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.18)}
+/* カレンダーピッカー */
+.cal-picker{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3)}
+.cal-box{background:#fff;border-radius:14px;padding:16px;width:300px;box-shadow:0 8px 32px rgba(0,0,0,.18)}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .cal-month-label{font-size:14px;font-weight:500}
 .cal-nav{background:none;border:none;font-size:18px;cursor:pointer;padding:2px 8px;border-radius:6px;color:#555}
@@ -68,14 +72,33 @@ h1{font-size:18px;font-weight:500}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
 .cal-dow{font-size:10px;color:#aaa;text-align:center;padding:2px 0}
 .cal-day{font-size:12px;text-align:center;padding:5px 2px;border-radius:6px;cursor:pointer;border:none;background:none;color:#1a1a1a}
-.cal-day:hover{background:#f0f0f0}
+.cal-day:hover:not(:disabled){background:#f0f0f0}
 .cal-day.today{font-weight:700;color:#1a73e8}
 .cal-day.selected{background:#1a73e8;color:#fff}
 .cal-day.in-range{background:#e8f2fb}
 .cal-day.faded{color:#ccc}
 .cal-day.weekend{color:#e08}
+.cal-day:disabled{color:#ddd;cursor:default}
 .cal-close{margin-top:12px;width:100%;padding:7px;font-size:13px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer}
 .cal-close:hover{background:#f0f0f0}
+/* 編集画面 */
+.edit-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4)}
+.edit-box{background:#fff;border-radius:14px;padding:20px;width:min(560px,92vw);max-height:85vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.edit-title{font-size:16px;font-weight:500;margin-bottom:16px}
+.edit-cat-block{margin-bottom:16px;border:1px solid #eee;border-radius:10px;overflow:hidden}
+.edit-cat-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f9f9f9;border-bottom:1px solid #eee}
+.edit-cat-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.edit-cat-name{font-size:13px;font-weight:500;flex:1}
+.edit-words{padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px}
+.edit-chip{display:flex;align-items:center;gap:4px;background:#f0f0f0;border-radius:12px;padding:3px 10px;font-size:12px}
+.edit-chip-del{background:none;border:none;cursor:pointer;color:#aaa;font-size:14px;line-height:1;padding:0 0 0 2px}
+.edit-chip-del:hover{color:#c33}
+.edit-add-row{display:flex;gap:6px;padding:0 14px 10px}
+.edit-add-input{flex:1;border:1px solid #ddd;border-radius:6px;padding:5px 8px;font-size:12px}
+.edit-add-btn{border:1px solid #ddd;border-radius:6px;padding:5px 10px;font-size:12px;background:#fff;cursor:pointer;white-space:nowrap}
+.edit-add-btn:hover{background:#f0f0f0}
+.edit-close{margin-top:8px;width:100%;padding:8px;font-size:13px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer}
+.edit-close:hover{background:#f0f0f0}
 button{background:#fff;border:1px solid #ddd;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:13px}
 button:hover{background:#f5f5f5}
 .loading{text-align:center;padding:48px;color:#888;font-size:14px}
@@ -88,39 +111,54 @@ button:hover{background:#f5f5f5}
 <script>
 const CLIENT_ID="729656531255-stonbhee0o8m10gfbqckf1bp2fump90g.apps.googleusercontent.com";
 const SCOPES="https://www.googleapis.com/auth/calendar.readonly";
-const COLORS={
-  "PJ":"#54C3F1","foobar*":"#F9C270","未分類":"#C1DB81",
-  "新卒 1on1":"#EF858C","UM 1on1":"#EF845C","PMP":"#796BAF"
-};
+const COLORS={"PJ":"#54C3F1","foobar*":"#F9C270","未分類":"#C1DB81","新卒 1on1":"#EF858C","UM 1on1":"#EF845C","PMP":"#796BAF"};
 const LOC_COLORS={"オフィス":"#6C9BD2","自宅":"#69BD83","その他":"#EF845C"};
 const ALL_CATS=["PJ","新卒 1on1","UM 1on1","PMP","foobar*","未分類"];
 const DAYS=["日","月","火","水","木","金","土"];
 
-// イベントカテゴリ削除・foobar*に統合
-const RULES=[
-  {m:t=>/JMB/i.test(t)||/^タスク確認/.test(t)||/JAL/i.test(t)||/SSNB/i.test(t)||/定例/.test(t)||/リリース/.test(t)||/Liquid/i.test(t)||/サーバ/.test(t),c:"PJ"},
-  {m:t=>/foobar/i.test(t)||/foobar\*/i.test(t)||/MM/.test(t)||/DCC/.test(t)||/KAITEKI/i.test(t)||/カクヤス/.test(t)||/Monthly Mixer/i.test(t)||/CTOs Beer/i.test(t)||/Designer.*s Creative Circle/i.test(t)||/イベント/.test(t)||/Circle/i.test(t),c:"foobar*"},
-  {m:t=>/^Kaho \/ Miu/.test(t)||/^Kaho \/ Emiri/.test(t)||/^Emiri \/ Kaho/.test(t)||/^Miu \/ Kaho/.test(t)||/^Miu\/Kaho/.test(t)||/新卒/.test(t),c:"新卒 1on1"},
-  {m:t=>/^Masanori \/ Kaho/.test(t)||/^Satoshi \/ Kaho/.test(t)||/^\[上期評価FB\]/.test(t),c:"UM 1on1"},
-  {m:t=>/\[FY26\]PMP1[：:].*定例/.test(t)||/General MTG for PMPs/.test(t),c:"PMP"},
-];
+// カテゴリルール（編集可能）
+let CAT_WORDS={
+  "PJ":["JMB","タスク確認","JAL","SSNB","定例","リリース","Liquid","サーバ"],
+  "foobar*":["foobar","foobar*","MM","DCC","KAITEKI","カクヤス","Monthly Mixer","CTOs Beer","Designer Creative Circle","イベント","Circle"],
+  "新卒 1on1":["Kaho / Miu","Kaho / Emiri","Emiri / Kaho","Miu / Kaho","Miu/Kaho","新卒"],
+  "UM 1on1":["Masanori / Kaho","Satoshi / Kaho","[上期評価FB]"],
+  "PMP":["[FY26]PMP1：Unit定例","General MTG for PMPs"],
+};
+
+function buildRules(){
+  return Object.entries(CAT_WORDS).map(([cat,words])=>({
+    m:t=>words.some(w=>t.includes(w)),c:cat
+  }));
+}
+function categorize(t){
+  const rules=buildRules();
+  for(const r of rules)if(r.m(t))return r.c;
+  return"未分類";
+}
 
 function isExcluded(ev){return ev.colorId==="4"||ev.colorId==="8";}
-function categorize(t){for(const r of RULES)if(r.m(t))return r.c;return"未分類";}
 function fmtH(h){return h<0.05?"0h":h.toFixed(1)+"h";}
 function fmtDate(d){return`${d.getMonth()+1}/${d.getDate()}(${DAYS[d.getDay()]})`;}
 function fmtDateKey(s){return fmtDate(new Date(s));}
-function isWeekend(dateStr){const d=new Date(dateStr);return d.getDay()===0||d.getDay()===6;}
+function isWeekend(ds){const d=new Date(ds);return d.getDay()===0||d.getDay()===6;}
+
+let period="week",periodOffset=0,customStart=null,customEnd=null;
+let tokenClient=null,gapiLoaded=false,gisLoaded=false;
+let calData=[],taskData=[],locData={},updatedAt="";
+let openDetails={ev:{},tk:{},all:{}};
+let filters={all:{},ev:{},tk:{}};
+// itemOverrides: {type:{globalIdx: newCat}} — 個別アイテム単位
+let itemOverrides={ev:{},tk:{}};
+let locOpenDetail=null;
+let pickerMonth=new Date(),pickerState=null;
 
 function getRange(p){
-  const now=new Date();
-  // カスタム期間が設定されている場合
   if(customStart&&customEnd){
     const s=new Date(customStart);s.setHours(0,0,0,0);
     const e=new Date(customEnd);e.setHours(23,59,59,999);
     return{start:s,end:e};
   }
-  // 今日を最終日として計算（offsetで過去/未来にシフト）
+  const now=new Date();
   const endBase=new Date(now);
   if(p==="day")endBase.setDate(endBase.getDate()+periodOffset);
   else if(p==="week")endBase.setDate(endBase.getDate()+periodOffset*7);
@@ -137,30 +175,61 @@ function getPeriodLabel(p){
   if(p==="day")return fmtDate(start);
   return`${fmtDate(start)}〜${fmtDate(end)}`;
 }
-let period="week",periodOffset=0,customStart=null,customEnd=null,tokenClient,gapiDone=false,gisDone=false;
-let pickerState=null;// {step:"start"|"end", start:Date|null}
-let calData=[],taskData=[],locData={},updatedAt="";
-let openDetails={ev:{},tk:{},all:{}};
-let filters={all:{},ev:{},tk:{}};
-let overrides={ev:{},tk:{}};
-let locOpenDetail=null;
-let dragState=null;
 
+// ---- Google API 初期化 ----
 function tryReady(){
-  if(!gapiDone||!gisDone)return;
-  document.getElementById("app").innerHTML=`<div class="loading"><div style="font-size:15px;font-weight:500;margin-bottom:8px">作業レポートダッシュボード</div><div style="font-size:13px;color:#888;margin-bottom:20px">Googleアカウントでログインしてください</div><button onclick="signIn()" style="font-size:14px;padding:10px 28px;font-weight:500;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">Googleでログイン</button></div>`;
+  if(!gapiLoaded||!gisLoaded)return;
+  document.getElementById("app").innerHTML=`<div class="loading">
+    <div style="font-size:15px;font-weight:500;margin-bottom:8px">作業レポートダッシュボード</div>
+    <div style="font-size:13px;color:#888;margin-bottom:20px">Googleアカウントでログインしてください</div>
+    <button onclick="signIn()" style="font-size:14px;padding:10px 28px;font-weight:500;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">Googleでログイン</button>
+  </div>`;
 }
-function gapiInit(){gapi.load("client",async()=>{await gapi.client.load("https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest");gapiDone=true;tryReady();});}
-function gisInit(){tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:(resp)=>{if(resp.error){showError("認証エラー: "+resp.error);return;}fetchData();}});gisDone=true;tryReady();}
-function signIn(){tokenClient.requestAccessToken({prompt:"consent"});}
-function signOut(){const t=gapi.client.getToken();if(t)google.accounts.oauth2.revoke(t.access_token,()=>{});gapi.client.setToken(null);document.getElementById("app").innerHTML=`<div class="loading"><div style="margin-bottom:12px">ログアウトしました</div><button onclick="signIn()" style="font-size:14px;padding:10px 28px;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">再ログイン</button></div>`;}
-function showError(msg){let el=document.getElementById("err");if(!el){el=document.createElement("div");el.id="err";el.className="error";document.getElementById("app").prepend(el);}el.textContent=msg;}
+function gapiInit(){
+  gapi.load("client",async()=>{
+    await gapi.client.load("https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest");
+    gapiLoaded=true;tryReady();
+  });
+}
+function gisInit(){
+  tokenClient=google.accounts.oauth2.initTokenClient({
+    client_id:CLIENT_ID,scope:SCOPES,
+    callback:(resp)=>{
+      if(resp.error){showError("認証エラー: "+resp.error);return;}
+      fetchData();
+    }
+  });
+  gisLoaded=true;tryReady();
+}
+function signIn(){
+  if(!tokenClient){showError("認証クライアントが初期化されていません。ページを再読み込みしてください。");return;}
+  tokenClient.requestAccessToken({prompt:"consent"});
+}
+function signOut(){
+  try{
+    const t=gapi.client.getToken();
+    if(t)google.accounts.oauth2.revoke(t.access_token,()=>{});
+    gapi.client.setToken(null);
+  }catch(e){}
+  document.getElementById("app").innerHTML=`<div class="loading">
+    <div style="margin-bottom:12px">ログアウトしました</div>
+    <button onclick="signIn()" style="font-size:14px;padding:10px 28px;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">再ログイン</button>
+  </div>`;
+}
+function showError(msg){
+  let el=document.getElementById("err");
+  if(!el){el=document.createElement("div");el.id="err";el.className="error";document.getElementById("app").prepend(el);}
+  el.textContent=msg;
+}
+
+// ---- データ取得 ----
+// 全アイテムをフラットリストで保持（overrideのために）
+let allEvItems=[],allTkItems=[];
 
 async function fetchData(){
+  if(!gapiLoaded){showError("Google APIがまだ読み込まれていません。");return;}
   try{
     const{start,end}=getRange(period);
-
-    // 通常イベント取得
     const calRes=await gapi.client.calendar.events.list({
       calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),
       singleEvents:true,orderBy:"startTime",maxResults:500
@@ -169,29 +238,20 @@ async function fetchData(){
     let myEmail="";
     try{myEmail=(await gapi.client.calendar.calendarList.get({calendarId:"primary"})).result.id;}catch(e){}
 
-    // 勤務場所イベント取得（eventType=workingLocation）
+    // 勤務場所
     let locItems=[];
     try{
-      const locRes=await gapi.client.calendar.events.list({
+      const lr=await gapi.client.calendar.events.list({
         calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),
-        singleEvents:true,orderBy:"startTime",maxResults:500,
-        eventTypes:["workingLocation"]
+        singleEvents:true,orderBy:"startTime",maxResults:500,eventTypes:["workingLocation"]
       });
-      locItems=locRes.result.items||[];
-    }catch(e){
-      // フォールバック：eventTypesが未対応の場合
-      locItems=items.filter(ev=>ev.eventType==="workingLocation");
-    }
+      locItems=lr.result.items||[];
+    }catch(e){locItems=items.filter(ev=>ev.eventType==="workingLocation");}
 
-    const catMap={},taskMap={};
     const locDays={オフィス:new Map(),自宅:new Map(),その他:new Map()};
-
-    // 勤務場所イベントを日付→場所にマッピング
     locItems.forEach(ev=>{
-      const dateStr=ev.start?.date||ev.start?.dateTime?.slice(0,10);
-      if(!dateStr)return;
-      if(isWeekend(dateStr))return;
-      // workingLocation の場所判定
+      const ds=ev.start?.date||ev.start?.dateTime?.slice(0,10);
+      if(!ds||isWeekend(ds))return;
       const wl=ev.workingLocation;
       let loc=null;
       if(wl){
@@ -199,18 +259,10 @@ async function fetchData(){
         else if(wl.type==="officeLocation"||wl.office!=null||wl.officeLocation!=null)loc="オフィス";
         else if(wl.type==="customLocation"||wl.customLocation!=null)loc="その他";
       }
-      // フォールバック：タイトルで判定
-      if(!loc){
-        const t=(ev.summary||"").toLowerCase();
-        if(/自宅|home|リモート|remote|wfh/.test(t))loc="自宅";
-        else if(/オフィス|office|出社/.test(t))loc="オフィス";
-        else loc="その他";
-      }
-      const label=fmtDate(new Date(dateStr));
-      // 同じ日に複数設定がある場合は最初のものを優先
-      if(!locDays[loc].has(dateStr))locDays[loc].set(dateStr,label);
+      if(!loc){const t=(ev.summary||"").toLowerCase();if(/自宅|home|リモート|remote|wfh/.test(t))loc="自宅";else if(/オフィス|office|出社/.test(t))loc="オフィス";else loc="その他";}
+      const lbl=fmtDate(new Date(ds));
+      if(!locDays[loc].has(ds))locDays[loc].set(ds,lbl);
     });
-
     const totalLocDays=new Set([...locDays.オフィス.keys(),...locDays.自宅.keys(),...locDays.その他.keys()]).size||1;
     locData={
       オフィス:{days:locDays.オフィス.size,pct:Math.round(locDays.オフィス.size/totalLocDays*100),dates:[...locDays.オフィス.values()].sort()},
@@ -219,7 +271,8 @@ async function fetchData(){
       total:totalLocDays
     };
 
-    // 通常予定・タスク集計
+    // 予定・タスクをフラットに収集
+    allEvItems=[];allTkItems=[];
     items.forEach(ev=>{
       if(isExcluded(ev))return;
       if(ev.eventType==="workingLocation"||ev.eventType==="outOfOffice")return;
@@ -230,103 +283,130 @@ async function fetchData(){
       const title=ev.summary||"",desc=ev.description||"";
       const isTask=desc.includes("tasks.google.com/task/");
       if(!isTask&&(/^不在$/.test(title.trim())||/^移動$/.test(title.trim())))return;
-      const dateLabel=fmtDateKey(ev.start.dateTime);
-      const dateSort=ev.start.dateTime;
-      if(isTask){
-        const cat=categorize(title);
-        if(!taskMap[cat])taskMap[cat]={value:0,count:0,items:[]};
-        taskMap[cat].value+=dur;taskMap[cat].count++;taskMap[cat].items.push({title,dur,dateLabel,dateSort});
-        return;
-      }
-      if(ev.attendees&&ev.attendees.length>0){
+      if(!isTask&&ev.attendees&&ev.attendees.length>0){
         const me=ev.attendees.find(a=>a.self||(myEmail&&a.email===myEmail));
         if(me&&(me.responseStatus==="declined"||me.responseStatus==="tentative"||me.responseStatus==="needsAction"))return;
       }
-      const cat=categorize(title);
-      if(!catMap[cat])catMap[cat]={value:0,count:0,items:[]};
-      catMap[cat].value+=dur;catMap[cat].count++;catMap[cat].items.push({title,dur,dateLabel,dateSort});
+      const item={title,dur,dateLabel:fmtDateKey(ev.start.dateTime),dateSort:ev.start.dateTime,cat:categorize(title)};
+      if(isTask)allTkItems.push(item);else allEvItems.push(item);
     });
 
-    calData=Object.entries(catMap).map(([label,d])=>({label,value:d.value,count:d.count,items:d.items})).sort((a,b)=>b.value-a.value);
-    taskData=Object.entries(taskMap).map(([label,d])=>({label,value:d.value,count:d.count,items:d.items})).sort((a,b)=>b.value-a.value);
-
-    overrides={ev:{},tk:{}};openDetails={ev:{},tk:{},all:{}};
-    const allCats=[...new Set([...calData,...taskData].map(d=>d.label))];
-    ["all","ev","tk"].forEach(k=>{filters[k]={};allCats.forEach(c=>{filters[k][c]=true;});});
+    itemOverrides={ev:{},tk:{}};
+    openDetails={ev:{},tk:{},all:{}};
+    rebuildData();
     updatedAt=new Date().toLocaleTimeString("ja-JP");
     render();
   }catch(e){showError("データ取得エラー: "+(e.result?.error?.message||e.message||JSON.stringify(e)));}
 }
 
-function applyOverrides(data,type){
-  const map={};
-  data.forEach((d,i)=>{
-    const nc=overrides[type][i]||d.label;
-    if(!map[nc])map[nc]={label:nc,value:0,count:0,items:[]};
-    map[nc].value+=d.value;map[nc].count+=d.count;map[nc].items.push(...d.items);
+function rebuildData(){
+  // itemOverridesを適用してカテゴリ別に集計
+  function build(items,type){
+    const map={};
+    items.forEach((item,idx)=>{
+      const cat=itemOverrides[type][idx]||item.cat;
+      if(!map[cat])map[cat]={label:cat,value:0,count:0,items:[]};
+      map[cat].value+=item.dur;map[cat].count++;
+      map[cat].items.push({...item,globalIdx:idx});
+    });
+    return Object.values(map).sort((a,b)=>b.value-a.value);
+  }
+  calData=build(allEvItems,"ev");
+  taskData=build(allTkItems,"tk");
+  const allCats=[...new Set([...calData,...taskData].map(d=>d.label))];
+  ["all","ev","tk"].forEach(k=>{
+    allCats.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});
   });
-  return Object.values(map).sort((a,b)=>b.value-a.value);
 }
+
 function mergeData(a,b){
-  const map={};[...a,...b].forEach(d=>{if(!map[d.label])map[d.label]={label:d.label,value:0,count:0,items:[]};map[d.label].value+=d.value;map[d.label].count+=d.count;map[d.label].items.push(...d.items);});
+  const map={};[...a,...b].forEach(d=>{
+    if(!map[d.label])map[d.label]={label:d.label,value:0,count:0,items:[]};
+    map[d.label].value+=d.value;map[d.label].count+=d.count;map[d.label].items.push(...d.items);
+  });
   return Object.values(map).sort((a,b)=>b.value-a.value);
 }
 function filterData(data,sec){return data.filter(d=>filters[sec][d.label]!==false);}
 function toggleDetail(type,idx){openDetails[type][idx]=!openDetails[type][idx];render();}
 function toggleFilter(sec,cat){filters[sec][cat]=!filters[sec][cat];render();}
-function moveItem(type,fromIdx,newCat){overrides[type][fromIdx]=newCat;openDetails={ev:{},tk:{},all:{}};render();}
 function toggleLocDetail(loc){locOpenDetail=locOpenDetail===loc?null:loc;render();}
 
-function onDragStart(e,type,idx,label){
-  dragState={type,idx,label};
+// ---- D&D（個別アイテム単位） ----
+let dragItem=null;// {type, globalIdx, cat}
+function onItemDragStart(e,type,globalIdx,cat){
+  dragItem={type,globalIdx,cat};
   e.dataTransfer.effectAllowed="move";
-  e.dataTransfer.setData("text/plain",label);
-  setTimeout(()=>{const w=e.currentTarget.closest(".bar-wrap");if(w)w.classList.add("dragging");},0);
+  e.dataTransfer.setData("text/plain",cat);
+  setTimeout(()=>{
+    const el=document.querySelector(`[data-drag-id="${type}-${globalIdx}"]`);
+    if(el)el.classList.add("dragging-item");
+  },0);
 }
-function onDragEnd(){
-  dragState=null;
-  document.querySelectorAll(".bar-wrap").forEach(el=>el.classList.remove("dragging"));
-  document.querySelectorAll(".drop-zone").forEach(el=>el.classList.remove("drag-over"));
+function onItemDragEnd(){
+  dragItem=null;
+  document.querySelectorAll(".dragging-item").forEach(el=>el.classList.remove("dragging-item"));
+  document.querySelectorAll(".drag-over").forEach(el=>el.classList.remove("drag-over"));
+  document.querySelectorAll(".drag-over-item").forEach(el=>el.classList.remove("drag-over-item"));
 }
-function onDragOver(e){e.preventDefault();e.currentTarget.classList.add("drag-over");}
-function onDragLeave(e){e.currentTarget.classList.remove("drag-over");}
-function onDrop(e,type,newCat){
+function onCatDragOver(e,type,cat){
+  e.preventDefault();
+  if(!dragItem||dragItem.type!==type||dragItem.cat===cat)return;
+  e.currentTarget.classList.add("drag-over");
+}
+function onCatDragLeave(e){e.currentTarget.classList.remove("drag-over");}
+function onCatDrop(e,type,newCat){
   e.preventDefault();e.currentTarget.classList.remove("drag-over");
-  if(!dragState||dragState.type!==type||dragState.label===newCat)return;
-  moveItem(type,dragState.idx,newCat);dragState=null;
+  if(!dragItem||dragItem.type!==type||dragItem.cat===newCat)return;
+  itemOverrides[type][dragItem.globalIdx]=newCat;
+  dragItem=null;
+  openDetails={ev:{},tk:{},all:{}};
+  rebuildData();render();
 }
 
+// ---- グラフ描画 ----
 function filterBar(sec,allCats){
   return`<div class="filter-bar">${allCats.map(c=>`<label><input type="checkbox" ${filters[sec][c]!==false?"checked":""} onchange="toggleFilter('${sec}','${c}')">${c}</label>`).join("")}</div>`;
 }
-function detailBox(items){
+function itemList(items,type){
   const sorted=items.slice().sort((a,b)=>a.dateSort<b.dateSort?-1:1);
-  return`<div class="detail-box">${sorted.map(it=>`<div class="detail-row"><span class="detail-date">${it.dateLabel}</span><span class="detail-title">${it.title}</span><span class="detail-dur">${fmtH(it.dur)}</span></div>`).join("")}</div>`;
+  return`<div class="item-list">${sorted.map(it=>`
+    <div class="item-row" data-drag-id="${type}-${it.globalIdx}" draggable="true"
+      ondragstart="onItemDragStart(event,'${type}',${it.globalIdx},'${it.cat||""}')"
+      ondragend="onItemDragEnd()">
+      <span class="item-date">${it.dateLabel}</span>
+      <span class="item-title" title="${it.title}">${it.title}</span>
+      <span class="item-dur">${fmtH(it.dur)}</span>
+      <span class="drag-handle">⠿</span>
+    </div>`).join("")}</div>`;
 }
-function barChart(rawData,type){
-  const data=applyOverrides(rawData,type);
+function barChart(data,type){
+  if(!data.length)return'<div class="empty">データなし</div>';
   const filtered=filterData(data,type);
   if(!filtered.length)return'<div class="empty">データなし</div>';
   const max=Math.max(...filtered.map(d=>d.value),0.1);
-  return`<div style="font-size:10px;color:#bbb;text-align:right;margin-bottom:6px">← ドラッグ＆ドロップで移動</div>`+filtered.map((d,i)=>{
-    const isOpen=openDetails[type]&&openDetails[type][i];
-    return`<div class="bar-wrap drop-zone" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'${type}','${d.label}')">
-      <div class="bar-row" draggable="true" ondragstart="onDragStart(event,'${type}',${i},'${d.label}')" ondragend="onDragEnd()">
-        <div class="bar-label" title="${d.label}">${d.label}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#aaa"}"></div></div>
-        <button class="bar-btn" onclick="toggleDetail('${type}',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button>
-      </div>
-      ${isOpen?detailBox(d.items):""}
-    </div>`;
-  }).join("");
+  return`<div style="font-size:10px;color:#bbb;text-align:right;margin-bottom:6px">アイテムをドラッグ→別カテゴリへドロップ</div>`
+    +filtered.map((d,i)=>{
+      const isOpen=openDetails[type]&&openDetails[type][i];
+      return`<div class="bar-wrap drop-zone"
+        ondragover="onCatDragOver(event,'${type}','${d.label}')"
+        ondragleave="onCatDragLeave(event)"
+        ondrop="onCatDrop(event,'${type}','${d.label}')">
+        <div class="bar-row">
+          <div class="bar-label" title="${d.label}">${d.label}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#aaa"}"></div></div>
+          <button class="bar-btn" onclick="toggleDetail('${type}',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button>
+        </div>
+        ${isOpen?itemList(d.items,type):""}
+      </div>`;
+    }).join("");
 }
-function pieChart(data,colorMap){
-  const cm=colorMap||COLORS;
+function pieChart(data,cm){
+  const colorMap=cm||COLORS;
   const total=data.reduce((s,d)=>s+d.value,0);
   if(!total)return'<div class="empty">データなし</div>';
   let paths="";
   if(data.length===1){
-    paths=`<circle cx="75" cy="75" r="65" fill="${cm[data[0].label]||"#aaa"}"/>`;
+    paths=`<circle cx="75" cy="75" r="65" fill="${colorMap[data[0].label]||"#aaa"}"/>`;
   }else{
     let cum=-Math.PI/2;
     paths=data.map(d=>{
@@ -334,10 +414,10 @@ function pieChart(data,colorMap){
       const r=65,cx=75,cy=75;
       const x1=cx+r*Math.cos(sx),y1=cy+r*Math.sin(sx);
       const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);
-      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${cm[d.label]||"#aaa"}" stroke="#fff" stroke-width="1.5"/>`;
+      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${colorMap[d.label]||"#aaa"}" stroke="#fff" stroke-width="1.5"/>`;
     }).join("");
   }
-  const leg=data.map(d=>{const pct=Math.round(d.value/total*100);return`<div class="legend-item"><div class="legend-dot" style="background:${cm[d.label]||"#aaa"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${fmtH(d.value)}）</span></div>`;}).join("");
+  const leg=data.map(d=>{const pct=Math.round(d.value/total*100);return`<div class="legend-item"><div class="legend-dot" style="background:${colorMap[d.label]||"#aaa"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${fmtH(d.value)}）</span></div>`;}).join("");
   return`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><svg viewBox="0 0 150 150" width="120" height="120" style="flex-shrink:0">${paths}</svg><div class="legend">${leg}</div></div>`;
 }
 function locPieChart(){
@@ -366,111 +446,45 @@ function locationSection(){
     const d=locData[l]||{days:0,pct:0,dates:[]};
     const isOpen=locOpenDetail===l;
     const detail=isOpen&&d.dates.length?`<div class="loc-detail"><div class="loc-detail-dates">${d.dates.map(dt=>`<span class="loc-date-chip">${dt}</span>`).join("")}</div></div>`:"";
-    return`<div>
-      <div class="loc-bar-row" onclick="toggleLocDetail('${l}')">
-        <div class="loc-bar-label">${l}</div>
-        <div class="loc-bar-track"><div class="loc-bar-fill" style="width:${d.pct}%;background:${LOC_COLORS[l]}"></div></div>
-        <div class="loc-bar-val">${d.days}日 (${d.pct}%) ${isOpen?"▲":"▼"}</div>
-      </div>${detail}</div>`;
+    return`<div><div class="loc-bar-row" onclick="toggleLocDetail('${l}')"><div class="loc-bar-label">${l}</div><div class="loc-bar-track"><div class="loc-bar-fill" style="width:${d.pct}%;background:${LOC_COLORS[l]}"></div></div><div class="loc-bar-val">${d.days}日 (${d.pct}%) ${isOpen?"▲":"▼"}</div></div>${detail}</div>`;
   }).join("");
-  return`<div class="section-title">勤務場所</div>
-  <div class="loc-grid">
-    <div class="loc-box"><div class="box-title">日数</div>${bars}</div>
-    <div class="loc-box"><div class="box-title">割合</div>${locPieChart()}</div>
-  </div>`;
+  return`<div class="section-title">勤務場所</div><div class="loc-grid"><div class="loc-box"><div class="box-title">日数</div>${bars}</div><div class="loc-box"><div class="box-title">割合</div>${locPieChart()}</div></div>`;
 }
-function sectionHTML(title,rawData,type,allCats){
-  const applied=applyOverrides(rawData,type);
-  const filtered=filterData(applied,type);
-  return`<div class="section-title">${title}</div>${filterBar(type,allCats)}<div class="grid"><div class="box"><div class="box-title">カテゴリ別時間</div>${barChart(rawData,type)}</div><div class="box"><div class="box-title">割合</div>${pieChart(filtered)}</div></div>`;
+function sectionHTML(title,data,type,allCats){
+  const filtered=filterData(data,type);
+  return`<div class="section-title">${title}</div>${filterBar(type,allCats)}<div class="grid"><div class="box"><div class="box-title">カテゴリ別時間</div>${barChart(data,type)}</div><div class="box"><div class="box-title">割合</div>${pieChart(filtered)}</div></div>`;
 }
-function copyForAI(){
-  const labels={day:"1日",week:"直近1週間",month:"直近1ヶ月"};
-  const evD=applyOverrides(calData,"ev"),tkD=applyOverrides(taskData,"tk");
-  const ev=evD.map(d=>`${d.label}:${fmtH(d.value)}(${d.count}件)`).join(", ");
-  const tk=tkD.map(d=>`${d.label}:${fmtH(d.value)}(${d.count}件)`).join(", ");
-  const loc=["オフィス","自宅","その他"].map(l=>`${l}:${(locData[l]||{days:0}).days}日`).join(", ");
-  const text=`${labels[period]}（${getPeriodLabel(period)}）の作業データです。\n予定: ${ev||"なし"}\nタスク: ${tk||"なし"}\n勤務場所: ${loc}\n\n上記データをもとに100〜150字で振り返りコメントをください。`;
-  navigator.clipboard.writeText(text).then(()=>{const b=document.getElementById("copy-btn");if(b){b.textContent="コピーしました！";setTimeout(()=>{if(b)b.textContent="Claudeへのプロンプトをコピー";},2000);}});
-}
-function render(){
-  const evApplied=applyOverrides(calData,"ev");
-  const tkApplied=applyOverrides(taskData,"tk");
-  const allData=mergeData(evApplied,tkApplied);
-  const allCats=[...new Set(allData.map(d=>d.label))];
-  ["all","ev","tk"].forEach(k=>{allCats.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});});
-  const totalEv=evApplied.reduce((s,d)=>s+d.value,0);
-  const totalTk=tkApplied.reduce((s,d)=>s+d.value,0);
-  const countEv=evApplied.reduce((s,d)=>s+d.count,0);
-  const countTk=tkApplied.reduce((s,d)=>s+d.count,0);
-  const tabs=["month","week","day"].map(t=>`<button class="tab${period===t?" active":""}" onclick="changePeriod('${t}')">${{month:"1ヶ月",week:"1週間",day:"1日"}[t]}</button>`).join("");
-  const allFiltered=filterData(allData,"all");
-  const allBarHTML=allFiltered.length?allFiltered.map((d,i)=>{
-    const max=Math.max(...allFiltered.map(x=>x.value),0.1);
-    const isOpen=openDetails.all&&openDetails.all[i];
-    return`<div><div class="bar-row"><div class="bar-label" title="${d.label}">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#aaa"}"></div></div><button class="bar-btn" onclick="toggleDetail('all',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button></div>${isOpen?detailBox(d.items):""}</div>`;
-  }).join(""):'<div class="empty">データなし</div>';
 
-  document.getElementById("app").innerHTML=`
-    <div class="header"><h1>作業レポート</h1><div class="header-right">${updatedAt?`<span class="meta">${updatedAt} 更新</span>`:""}<button onclick="fetchData()">更新</button><button onclick="signOut()" style="opacity:0.6">ログアウト</button></div></div>
-    <div class="tabs">${tabs}</div>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-      <button onclick="shiftPeriod(-1)" style="padding:2px 10px;font-size:16px">&#8249;</button>
-      <button onclick="openPicker()" style="font-size:12px;color:#555;border:1px solid #ddd;background:#fff;border-radius:8px;padding:4px 12px;min-width:160px;text-align:center;cursor:pointer">${getPeriodLabel(period)}</button>
-      <button onclick="shiftPeriod(1)" style="padding:2px 10px;font-size:16px;opacity:${(()=>{const{end}=getRange(period);const now=new Date();now.setHours(23,59,59,999);return end>=now?0.3:1})()}">&#8250;</button>
-    </div>
-    <div class="summary-grid">
-      <div class="summary-col"><div class="summary-col-title">合計</div><div><div class="summary-label">合計時間</div><div class="summary-value">${fmtH(totalEv+totalTk)}</div></div><div><div class="summary-label">合計件数</div><div class="summary-value">${countEv+countTk}件</div></div></div>
-      <div class="summary-col"><div class="summary-col-title">予定</div><div><div class="summary-label">予定時間</div><div class="summary-value">${fmtH(totalEv)}</div></div><div><div class="summary-label">予定件数</div><div class="summary-value">${countEv}件</div></div></div>
-      <div class="summary-col"><div class="summary-col-title">タスク</div><div><div class="summary-label">タスク時間</div><div class="summary-value">${fmtH(totalTk)}</div></div><div><div class="summary-label">タスク件数</div><div class="summary-value">${countTk}件</div></div></div>
-    </div>
-    <div class="section-title">合計</div>${filterBar("all",allCats)}
-    <div class="grid"><div class="box"><div class="box-title">カテゴリ別時間</div>${allBarHTML}</div><div class="box"><div class="box-title">割合</div>${pieChart(allFiltered)}</div></div>
-    ${sectionHTML("予定",calData,"ev",allCats)}
-    ${sectionHTML("タスク",taskData,"tk",allCats)}
-    ${locationSection()}
-    <div class="ai-box">
-      <div class="ai-title">AI 振り返りコメント</div>
-      <div class="ai-text">データをコピーしてClaude.aiに貼り付けると振り返りコメントを生成できます。</div>
-      <div style="margin-top:10px"><button id="copy-btn" onclick="copyForAI()">Claudeへのプロンプトをコピー</button></div>
-      <div class="copy-hint">コピー後、claude.ai のチャットに貼り付けてください。</div>
-    </div>`;
-}
-// カレンダーピッカー（開始日→終了日の2ステップ選択）
-let pickerMonth=new Date();
+// ---- カレンダーピッカー ----
 function openPicker(){
-  const{start,end}=getRange(period);
+  const{start}=getRange(period);
   pickerMonth=new Date(start.getFullYear(),start.getMonth(),1);
   pickerState={step:"start",start:null};
   renderPicker();
 }
 function closePicker(){const el=document.getElementById("cal-picker");if(el)el.remove();pickerState=null;}
 function renderPicker(){
-  const existing=document.getElementById("cal-picker");if(existing)existing.remove();
-  const{start:curStart,end:curEnd}=getRange(period);
+  const ex=document.getElementById("cal-picker");if(ex)ex.remove();
   const y=pickerMonth.getFullYear(),m=pickerMonth.getMonth();
   const firstDow=new Date(y,m,1).getDay();
-  const daysInMonth=new Date(y,m+1,0).getDate();
+  const dim=new Date(y,m+1,0).getDate();
   const today=new Date();today.setHours(0,0,0,0);
-  const offset=(firstDow===0?6:firstDow-1);
-  const selStart=pickerState?.start||curStart;
-  const selEnd=pickerState?.step==="end"?null:curEnd;
-
+  const off=(firstDow===0?6:firstDow-1);
   let cells="";
-  for(let i=0;i<offset;i++)cells+=`<div class="cal-day faded"></div>`;
-  for(let d=1;d<=daysInMonth;d++){
+  for(let i=0;i<off;i++)cells+=`<div class="cal-day faded"></div>`;
+  for(let d=1;d<=dim;d++){
     const dt=new Date(y,m,d);
     const isFuture=dt>today;
     const isToday=dt.getTime()===today.getTime();
     const isSelStart=pickerState?.start&&dt.getTime()===new Date(pickerState.start).setHours(0,0,0,0);
-    const isInRange=pickerState?.start&&dt>=new Date(new Date(pickerState.start).setHours(0,0,0,0))&&dt<=today&&pickerState.step==="end";
+    const isInRange=pickerState?.start&&pickerState.step==="end"&&dt>=new Date(new Date(pickerState.start).setHours(0,0,0,0))&&dt<=today;
     const isWe=dt.getDay()===0||dt.getDay()===6;
     const cls=["cal-day",isFuture?"faded":"",isToday?"today":"",isSelStart?"selected":"",isInRange?"in-range":"",isWe&&!isFuture?"weekend":""].filter(Boolean).join(" ");
     cells+=`<button class="${cls}" ${isFuture?"disabled":""}onclick="pickDate(${y},${m},${d})">${d}</button>`;
   }
   const stepLabel=pickerState?.step==="start"?"開始日を選択":"終了日を選択（開始: "+fmtDate(pickerState.start)+")";
   const dows=["月","火","水","木","金","土","日"].map(d=>`<div class="cal-dow">${d}</div>`).join("");
-  const html=`<div class="cal-picker" id="cal-picker" onclick="if(event.target===this)closePicker()">
+  document.body.insertAdjacentHTML("beforeend",`<div class="cal-picker" id="cal-picker" onclick="if(event.target===this)closePicker()">
     <div class="cal-box">
       <div style="font-size:12px;color:#888;text-align:center;margin-bottom:10px">${stepLabel}</div>
       <div class="cal-header">
@@ -481,38 +495,155 @@ function renderPicker(){
       <div class="cal-grid">${dows}${cells}</div>
       <button class="cal-close" onclick="closePicker()">キャンセル</button>
     </div>
-  </div>`;
-  document.body.insertAdjacentHTML("beforeend",html);
+  </div>`);
 }
 function pickDate(y,m,d){
-  const picked=new Date(y,m,d);
-  const today=new Date();today.setHours(0,0,0,0);
+  const picked=new Date(y,m,d);const today=new Date();today.setHours(0,0,0,0);
   if(picked>today)return;
-  if(pickerState.step==="start"){
-    pickerState={step:"end",start:picked};
-    renderPicker();
-  }else{
-    // 終了日確定
+  if(pickerState.step==="start"){pickerState={step:"end",start:picked};renderPicker();}
+  else{
     let s=pickerState.start,e=picked;
-    if(s>e){[s,e]=[e,s];}// 逆順対応
-    customStart=new Date(s);customEnd=new Date(e);
-    periodOffset=0;
+    if(s>e)[s,e]=[e,s];
+    customStart=new Date(s);customEnd=new Date(e);periodOffset=0;
     closePicker();
-    openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;
+    openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;
     fetchData();
   }
 }
 function shiftPeriod(dir){
-  const{end}=getRange(period);
-  const now=new Date();now.setHours(23,59,59,999);
+  const{end}=getRange(period);const now=new Date();now.setHours(23,59,59,999);
   if(dir===1&&end>=now)return;
-  customStart=null;customEnd=null;
-  periodOffset+=dir;
-  openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;
+  customStart=null;customEnd=null;periodOffset+=dir;
+  openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;
   fetchData();
 }
-function changePeriod(p){period=p;periodOffset=0;customStart=null;customEnd=null;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};overrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
-setInterval(()=>{try{if(gapi.client.getToken())fetchData();}catch(e){}},300000);
+function changePeriod(p){period=p;periodOffset=0;customStart=null;customEnd=null;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
+
+// ---- カテゴリ編集画面 ----
+function openEditScreen(){
+  const existing=document.getElementById("edit-overlay");if(existing)existing.remove();
+  const blocks=Object.entries(CAT_WORDS).map(([cat,words])=>{
+    const chips=words.map((w,i)=>`<span class="edit-chip">${w}<button class="edit-chip-del" onclick="delWord('${cat}',${i})" title="削除">×</button></span>`).join("");
+    return`<div class="edit-cat-block">
+      <div class="edit-cat-header"><div class="edit-cat-dot" style="background:${COLORS[cat]||"#aaa"}"></div><div class="edit-cat-name">${cat}</div></div>
+      <div class="edit-words" id="words-${cat.replace(/[^a-zA-Z0-9]/g,'_')}">${chips}</div>
+      <div class="edit-add-row">
+        <input class="edit-add-input" id="add-input-${cat.replace(/[^a-zA-Z0-9]/g,'_')}" placeholder="ワードを追加…" onkeydown="if(event.key==='Enter')addWord('${cat}')">
+        <button class="edit-add-btn" onclick="addWord('${cat}')">追加</button>
+      </div>
+    </div>`;
+  }).join("");
+  document.body.insertAdjacentHTML("beforeend",`<div class="edit-overlay" id="edit-overlay" onclick="if(event.target===this)closeEditScreen()">
+    <div class="edit-box">
+      <div class="edit-title">カテゴリ編集</div>
+      ${blocks}
+      <button class="edit-close" onclick="closeEditScreen()">閉じる</button>
+    </div>
+  </div>`);
+}
+function closeEditScreen(){const el=document.getElementById("edit-overlay");if(el)el.remove();}
+function addWord(cat){
+  const id="add-input-"+cat.replace(/[^a-zA-Z0-9]/g,'_');
+  const el=document.getElementById(id);if(!el)return;
+  const w=el.value.trim();if(!w)return;
+  if(!CAT_WORDS[cat])CAT_WORDS[cat]=[];
+  if(!CAT_WORDS[cat].includes(w)){CAT_WORDS[cat].push(w);el.value="";}
+  openEditScreen();// 再描画
+  // データも再分類
+  allEvItems.forEach(item=>{item.cat=categorize(item.title);});
+  allTkItems.forEach(item=>{item.cat=categorize(item.title);});
+  itemOverrides={ev:{},tk:{}};rebuildData();render();
+}
+function delWord(cat,idx){
+  if(!CAT_WORDS[cat])return;
+  CAT_WORDS[cat].splice(idx,1);
+  openEditScreen();
+  allEvItems.forEach(item=>{item.cat=categorize(item.title);});
+  allTkItems.forEach(item=>{item.cat=categorize(item.title);});
+  itemOverrides={ev:{},tk:{}};rebuildData();render();
+}
+
+// ---- 共有リンクコピー ----
+function copyShareLink(){
+  const url=window.location.href.split("?")[0];
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.getElementById("share-btn");
+    if(btn){btn.textContent="コピーしました！";setTimeout(()=>{if(document.getElementById("share-btn"))document.getElementById("share-btn").textContent="🔗 リンクをコピー";},2000);}
+  }).catch(()=>{
+    prompt("URLをコピーしてください",window.location.href);
+  });
+}
+
+// ---- AIコピー ----
+function copyForAI(){
+  const labels={day:"1日",week:"直近1週間",month:"直近1ヶ月"};
+  const ev=calData.map(d=>`${d.label}:${fmtH(d.value)}(${d.count}件)`).join(", ");
+  const tk=taskData.map(d=>`${d.label}:${fmtH(d.value)}(${d.count}件)`).join(", ");
+  const loc=["オフィス","自宅","その他"].map(l=>`${l}:${(locData[l]||{days:0}).days}日`).join(", ");
+  const text=`${labels[period]}（${getPeriodLabel(period)}）の作業データです。\n予定: ${ev||"なし"}\nタスク: ${tk||"なし"}\n勤務場所: ${loc}\n\n上記データをもとに100〜150字で振り返りコメントをください。`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const b=document.getElementById("copy-btn");
+    if(b){b.textContent="コピーしました！";setTimeout(()=>{if(document.getElementById("copy-btn"))document.getElementById("copy-btn").textContent="Claudeへのプロンプトをコピー";},2000);}
+  });
+}
+
+// ---- メイン描画 ----
+function render(){
+  const allData=mergeData(calData,taskData);
+  const allCats=[...new Set(allData.map(d=>d.label))];
+  ["all","ev","tk"].forEach(k=>{allCats.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});});
+  const totalEv=calData.reduce((s,d)=>s+d.value,0);
+  const totalTk=taskData.reduce((s,d)=>s+d.value,0);
+  const countEv=calData.reduce((s,d)=>s+d.count,0);
+  const countTk=taskData.reduce((s,d)=>s+d.count,0);
+  const tabs=["month","week","day"].map(t=>`<button class="tab${period===t?" active":""}" onclick="changePeriod('${t}')">${{month:"1ヶ月",week:"1週間",day:"1日"}[t]}</button>`).join("");
+  const allFiltered=filterData(allData,"all");
+  const allBar=allFiltered.length?allFiltered.map((d,i)=>{
+    const max=Math.max(...allFiltered.map(x=>x.value),0.1);
+    const isOpen=openDetails.all&&openDetails.all[i];
+    return`<div class="bar-wrap"><div class="bar-row"><div class="bar-label" title="${d.label}">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#aaa"}"></div></div><button class="bar-btn" onclick="toggleDetail('all',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button></div>${isOpen?itemList(d.items,"all"):""}</div>`;
+  }).join(""):'<div class="empty">データなし</div>';
+
+  const futureDisabled=(()=>{const{end}=getRange(period);const now=new Date();now.setHours(23,59,59,999);return end>=now;})();
+
+  document.getElementById("app").innerHTML=`
+    <div class="header">
+      <h1>作業レポート</h1>
+      <div class="header-right">
+        ${updatedAt?`<span class="meta">${updatedAt} 更新</span>`:""}
+        <button onclick="fetchData()">更新</button>
+        <button onclick="openEditScreen()">⚙ カテゴリ編集</button>
+        <button onclick="signOut()" style="opacity:.6">ログアウト</button>
+        <button id="share-btn" onclick="copyShareLink()" style="font-size:12px">🔗 リンクをコピー</button>
+      </div>
+    </div>
+    <div class="tabs">${tabs}</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+      <button onclick="shiftPeriod(-1)" style="padding:2px 10px;font-size:16px">&#8249;</button>
+      <button onclick="openPicker()" style="font-size:12px;color:#555;border:1px solid #ddd;background:#fff;border-radius:8px;padding:4px 12px;min-width:160px;text-align:center;cursor:pointer">${getPeriodLabel(period)}</button>
+      <button onclick="shiftPeriod(1)" style="padding:2px 10px;font-size:16px;opacity:${futureDisabled?.3:1}" ${futureDisabled?"disabled":""}>&#8250;</button>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-col"><div class="summary-col-title">合計</div><div><div class="summary-label">合計時間</div><div class="summary-value">${fmtH(totalEv+totalTk)}</div></div><div><div class="summary-label">合計件数</div><div class="summary-value">${countEv+countTk}件</div></div></div>
+      <div class="summary-col"><div class="summary-col-title">予定</div><div><div class="summary-label">予定時間</div><div class="summary-value">${fmtH(totalEv)}</div></div><div><div class="summary-label">予定件数</div><div class="summary-value">${countEv}件</div></div></div>
+      <div class="summary-col"><div class="summary-col-title">タスク</div><div><div class="summary-label">タスク時間</div><div class="summary-value">${fmtH(totalTk)}</div></div><div><div class="summary-label">タスク件数</div><div class="summary-value">${countTk}件</div></div></div>
+    </div>
+    <div class="section-title">合計</div>${filterBar("all",allCats)}
+    <div class="grid"><div class="box"><div class="box-title">カテゴリ別時間</div>${allBar}</div><div class="box"><div class="box-title">割合</div>${pieChart(allFiltered)}</div></div>
+    ${sectionHTML("予定",calData,"ev",allCats)}
+    ${sectionHTML("タスク",taskData,"tk",allCats)}
+    ${locationSection()}
+    <div class="ai-box">
+      <div class="ai-title">AI 振り返りコメント</div>
+      <div class="ai-text">データをコピーしてClaude.aiに貼り付けると振り返りコメントを生成できます。</div>
+      <div style="margin-top:10px"><button id="copy-btn" onclick="copyForAI()">Claudeへのプロンプトをコピー</button></div>
+      <div class="copy-hint">コピー後、claude.ai のチャットに貼り付けてください。</div>
+    </div>`;
+}
+
+setInterval(()=>{
+  try{if(gapiLoaded&&gapi.client.getToken())fetchData();}catch(e){}
+},300000);
 </script>
 <script src="https://apis.google.com/js/api.js" onload="gapiInit()"></script>
 <script src="https://accounts.google.com/gsi/client" onload="gisInit()"></script>
