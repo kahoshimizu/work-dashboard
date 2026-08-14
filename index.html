@@ -116,17 +116,47 @@ const LOC_COLORS={"オフィス":"#6C9BD2","自宅":"#69BD83","その他":"#EF84
 let ALL_CATS=["PJ","新卒 1on1","UM 1on1","PMP","foobar*","未分類"];
 const DAYS=["日","月","火","水","木","金","土"];
 
-// カテゴリルール（編集可能）
-let CAT_WORDS={
+// ---- カテゴリ設定の永続化 ----
+const STORAGE_KEY_WORDS="dashCatWords";
+const STORAGE_KEY_COLORS="dashCatColors";
+
+const DEFAULT_CAT_WORDS={
   "PJ":["JMB","タスク確認","JAL","SSNB","定例","リリース","Liquid","サーバ"],
   "foobar*":["foobar","foobar*","MM","DCC","KAITEKI","カクヤス","Monthly Mixer","CTOs Beer","Designer Creative Circle","イベント","Circle"],
   "新卒 1on1":["Kaho / Miu","Kaho / Emiri","Emiri / Kaho","Miu / Kaho","Miu/Kaho","新卒"],
   "UM 1on1":["Masanori / Kaho","Satoshi / Kaho","[上期評価FB]"],
   "PMP":["[FY26]PMP1：Unit定例","General MTG for PMPs"],
 };
+const DEFAULT_CAT_COLORS={...COLORS};
 
-// カテゴリカラー（編集可能）
-let CAT_COLORS={...COLORS};
+function loadCatSettings(){
+  try{
+    const w=localStorage.getItem(STORAGE_KEY_WORDS);
+    const c=localStorage.getItem(STORAGE_KEY_COLORS);
+    CAT_WORDS=w?JSON.parse(w):{...DEFAULT_CAT_WORDS};
+    CAT_COLORS=c?JSON.parse(c):{...DEFAULT_CAT_COLORS};
+  }catch(e){
+    CAT_WORDS={...DEFAULT_CAT_WORDS};
+    CAT_COLORS={...DEFAULT_CAT_COLORS};
+  }
+}
+function saveCatSettings(){
+  try{
+    localStorage.setItem(STORAGE_KEY_WORDS,JSON.stringify(CAT_WORDS));
+    localStorage.setItem(STORAGE_KEY_COLORS,JSON.stringify(CAT_COLORS));
+  }catch(e){console.warn("設定の保存に失敗しました",e);}
+}
+function resetCatSettings(){
+  if(!confirm("カテゴリ設定をデフォルトに戻しますか？"))return;
+  CAT_WORDS={...DEFAULT_CAT_WORDS};
+  CAT_COLORS={...DEFAULT_CAT_COLORS};
+  saveCatSettings();
+  openEditScreen();recat();
+}
+
+// カテゴリルール（編集可能）
+let CAT_WORDS={};
+let CAT_COLORS={};
 
 function getCatColor(cat){return CAT_COLORS[cat]||COLORS[cat]||"#aaa";}
 function buildRules(){
@@ -202,6 +232,7 @@ function gapiInit(){
   });
 }
 function gisInit(){
+  loadCatSettings();// ← 起動時に保存済み設定を読み込む
   tokenClient=google.accounts.oauth2.initTokenClient({
     client_id:CLIENT_ID,scope:SCOPES,
     callback:(resp)=>{
@@ -347,9 +378,10 @@ function onItemDragStart(e,type,globalIdx,cat){
   dragItem={type,globalIdx,cat};
   e.dataTransfer.effectAllowed="move";
   e.dataTransfer.setData("text/plain",cat);
+  // ドラッグ開始時に全展開を閉じる
+  openDetails[type]={};
   setTimeout(()=>{
-    const el=document.querySelector(`[data-drag-id="${type}-${globalIdx}"]`);
-    if(el)el.classList.add("dragging-item");
+    render();
   },0);
 }
 function onItemDragEnd(){
@@ -394,29 +426,30 @@ function barChart(data,type){
   const filtered=filterData(data,type);
   if(!filtered.length)return'<div class="empty">データなし</div>';
   const max=Math.max(...filtered.map(d=>d.value),0.1);
-  return`<div style="font-size:10px;color:#bbb;text-align:right;margin-bottom:6px">アイテムをドラッグ→別カテゴリへドロップ</div>`
+  return`<div style="font-size:10px;color:#bbb;text-align:right;margin-bottom:6px">アイテムを掴んで別カテゴリへドロップ</div>`
     +filtered.map((d,i)=>{
       const isOpen=openDetails[type]&&openDetails[type][i];
-      return`<div class="bar-wrap drop-zone"
-        ondragover="onCatDragOver(event,'${type}','${d.label}')"
-        ondragleave="onCatDragLeave(event)"
-        ondrop="onCatDrop(event,'${type}','${d.label}')">
-        <div class="bar-row">
+      const items=isOpen?itemList(d.items,type):"";
+      return`<div class="bar-wrap">
+        <div class="bar-row drop-zone"
+          style="border-radius:8px;padding:3px 2px;transition:background .15s"
+          ondragover="onCatDragOver(event,'${type}','${d.label}')"
+          ondragleave="onCatDragLeave(event)"
+          ondrop="onCatDrop(event,'${type}','${d.label}')">
           <div class="bar-label" title="${d.label}">${d.label}</div>
-          <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#aaa"}"></div></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${getCatColor(d.label)}"></div></div>
           <button class="bar-btn" onclick="toggleDetail('${type}',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button>
         </div>
-        ${isOpen?itemList(d.items,type):""}
+        ${items}
       </div>`;
     }).join("");
 }
-function pieChart(data,cm){
-  const colorMap=cm||COLORS;
+function pieChart(data){
   const total=data.reduce((s,d)=>s+d.value,0);
   if(!total)return'<div class="empty">データなし</div>';
   let paths="";
   if(data.length===1){
-    paths=`<circle cx="75" cy="75" r="65" fill="${colorMap[data[0].label]||"#aaa"}"/>`;
+    paths=`<circle cx="75" cy="75" r="65" fill="${getCatColor(data[0].label)}"/>`;
   }else{
     let cum=-Math.PI/2;
     paths=data.map(d=>{
@@ -424,10 +457,10 @@ function pieChart(data,cm){
       const r=65,cx=75,cy=75;
       const x1=cx+r*Math.cos(sx),y1=cy+r*Math.sin(sx);
       const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);
-      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${colorMap[d.label]||"#aaa"}" stroke="#fff" stroke-width="1.5"/>`;
+      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${getCatColor(d.label)}" stroke="#fff" stroke-width="1.5"/>`;
     }).join("");
   }
-  const leg=data.map(d=>{const pct=Math.round(d.value/total*100);return`<div class="legend-item"><div class="legend-dot" style="background:${colorMap[d.label]||"#aaa"}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${fmtH(d.value)}）</span></div>`;}).join("");
+  const leg=data.map(d=>{const pct=Math.round(d.value/total*100);return`<div class="legend-item"><div class="legend-dot" style="background:${getCatColor(d.label)}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${fmtH(d.value)}）</span></div>`;}).join("");
   return`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><svg viewBox="0 0 150 150" width="120" height="120" style="flex-shrink:0">${paths}</svg><div class="legend">${leg}</div></div>`;
 }
 function locPieChart(){
@@ -567,17 +600,12 @@ function openEditScreen(){
           <button class="edit-add-btn" onclick="addCat()">追加</button>
         </div>
       </div>
-      <button class="edit-close" onclick="closeEditScreen()">閉じる</button>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="edit-close" onclick="closeEditScreen()" style="flex:1">閉じる</button>
+        <button onclick="resetCatSettings()" style="flex:0 0 auto;font-size:12px;color:#c33;border-color:#fcc">デフォルトに戻す</button>
+      </div>
     </div>
   </div>`);
-}
-
-function closeEditScreen(){const el=document.getElementById("edit-overlay");if(el)el.remove();}
-
-function recat(){
-  allEvItems.forEach(item=>{item.cat=categorize(item.title);});
-  allTkItems.forEach(item=>{item.cat=categorize(item.title);});
-  itemOverrides={ev:{},tk:{}};rebuildData();render();
 }
 
 function addWord(cat){
@@ -593,8 +621,17 @@ function delWord(cat,idx){
   CAT_WORDS[cat].splice(idx,1);
   openEditScreen();recat();
 }
+
+function recat(){
+  allEvItems.forEach(item=>{item.cat=categorize(item.title);});
+  allTkItems.forEach(item=>{item.cat=categorize(item.title);});
+  itemOverrides={ev:{},tk:{}};
+  saveCatSettings();
+  rebuildData();render();
+}
 function setCatColor(cat,color){
   CAT_COLORS[cat]=color;
+  saveCatSettings();
   openEditScreen();render();
 }
 function addCat(){
@@ -607,12 +644,14 @@ function addCat(){
   const color=colorEl?colorEl.value:"#888780";
   CAT_WORDS[name]=[];
   CAT_COLORS[name]=color;
+  saveCatSettings();
   openEditScreen();recat();
 }
 function deleteCat(cat){
   if(!confirm(`「${cat}」を削除しますか？\nこのカテゴリのワードはすべて削除され、該当予定・タスクは「未分類」になります。`))return;
   delete CAT_WORDS[cat];
   delete CAT_COLORS[cat];
+  saveCatSettings();
   openEditScreen();recat();
 }
 
