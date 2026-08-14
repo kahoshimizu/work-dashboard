@@ -532,21 +532,6 @@ function render(){
     el.addEventListener("click",()=>toggleDetail(el.dataset.toggleType,parseInt(el.dataset.toggleIdx)));
   });
 
-  // バー行（ドロップ先）
-  document.querySelectorAll("[data-drop-type]").forEach(el=>{
-    el.addEventListener("dragover",onBarDragOver);
-    el.addEventListener("dragleave",onBarDragLeave);
-    el.addEventListener("drop",onBarDrop);
-  });
-
-  // アイテム行（ドラッグ元）
-  document.querySelectorAll(".item-row[draggable]").forEach(el=>{
-    el.addEventListener("dragstart",e=>{
-      onItemDragStart(e,el.dataset.type,parseInt(el.dataset.gidx),el.dataset.cat);
-    });
-    el.addEventListener("dragend",onItemDragEnd);
-  });
-
   // 勤務場所
   document.querySelectorAll("[data-loc]").forEach(el=>{
     el.addEventListener("click",()=>toggleLocDetail(el.dataset.loc));
