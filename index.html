@@ -426,7 +426,7 @@ function barChart(data,type){
   const filtered=filterData(data,type);
   if(!filtered.length)return'<div class="empty">データなし</div>';
   const max=Math.max(...filtered.map(d=>d.value),0.1);
-  return`<div style="font-size:10px;color:#bbb;text-align:right;margin-bottom:6px">アイテムを掴んで別カテゴリへドロップ</div>`+filtered.map((d,i)=>{
+  return filtered.map((d,i)=>{
     const isOpen=openDetails[type]&&openDetails[type][i];
     return`<div class="bar-wrap"><div class="bar-row" ondragover="onBarDragOver(event,'${type}','${d.label}')" ondragleave="onBarDragLeave(event)" ondrop="onBarDrop(event,'${type}','${d.label}')"><div class="bar-label" title="${d.label}">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${getCatColor(d.label)}"></div></div><button class="bar-btn" onclick="toggleDetail('${type}',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button></div>${isOpen?itemList(d.items,type):""}</div>`;
   }).join("");
@@ -532,11 +532,19 @@ function render(){
     el.addEventListener("click",()=>toggleDetail(el.dataset.toggleType,parseInt(el.dataset.toggleIdx)));
   });
 
-  // アイテム行（ポインターダウンで準備、移動でドラッグ開始）
+  // バー行（ドロップ先）
+  document.querySelectorAll("[data-drop-type]").forEach(el=>{
+    el.addEventListener("dragover",onBarDragOver);
+    el.addEventListener("dragleave",onBarDragLeave);
+    el.addEventListener("drop",onBarDrop);
+  });
+
+  // アイテム行（ドラッグ元）
   document.querySelectorAll(".item-row").forEach(el=>{
-    el.addEventListener("pointerdown",e=>{
-      onItemPointerDown(e,el.dataset.type,parseInt(el.dataset.gidx),el.dataset.cat,el.dataset.title||el.querySelector(".item-title")?.textContent||"");
+    el.addEventListener("dragstart",e=>{
+      onItemDragStart(e,el.dataset.type,parseInt(el.dataset.gidx),el.dataset.cat);
     });
+    el.addEventListener("dragend",onItemDragEnd);
   });
 
   // 勤務場所
