@@ -116,7 +116,7 @@ const LOC_COLORS={"オフィス":"#6C9BD2","自宅":"#69BD83","その他":"#EF84
 let ALL_CATS=["PJ","新卒 1on1","UM 1on1","PMP","foobar*","未分類"];
 const DAYS=["日","月","火","水","木","金","土"];
 
-// ---- カテゴリ設定の永続化 ----
+// カテゴリ設定の永続化
 const STORAGE_KEY_WORDS="dashCatWords";
 const STORAGE_KEY_COLORS="dashCatColors";
 
@@ -128,36 +128,42 @@ const DEFAULT_CAT_WORDS={
   "PMP":["[FY26]PMP1：Unit定例","General MTG for PMPs","Monthly Kickoff","PMP","新等級要件","OKR"],
   "オムニチャネル":["オムニチャネル","協会","オムニ"],
 };
-const DEFAULT_CAT_COLORS={...COLORS};
+const DEFAULT_CAT_COLORS={
+  "PJ":"#54C3F1","foobar*":"#F9C270","未分類":"#C1DB81",
+  "新卒 1on1":"#EF858C","UM 1on1":"#EF845C","PMP":"#796BAF","オムニチャネル":"#69BD83"
+};
+
+// 起動時にlocalStorageから読み込み、なければデフォルトを使用
+let CAT_WORDS=(()=>{
+  try{const v=localStorage.getItem(STORAGE_KEY_WORDS);return v?JSON.parse(v):JSON.parse(JSON.stringify(DEFAULT_CAT_WORDS));}
+  catch(e){return JSON.parse(JSON.stringify(DEFAULT_CAT_WORDS));}
+})();
+let CAT_COLORS=(()=>{
+  try{const v=localStorage.getItem(STORAGE_KEY_COLORS);return v?JSON.parse(v):{...DEFAULT_CAT_COLORS};}
+  catch(e){return {...DEFAULT_CAT_COLORS};}
+})();
 
 function loadCatSettings(){
   try{
     const w=localStorage.getItem(STORAGE_KEY_WORDS);
     const c=localStorage.getItem(STORAGE_KEY_COLORS);
-    CAT_WORDS=w?JSON.parse(w):{...DEFAULT_CAT_WORDS};
-    CAT_COLORS=c?JSON.parse(c):{...DEFAULT_CAT_COLORS};
-  }catch(e){
-    CAT_WORDS={...DEFAULT_CAT_WORDS};
-    CAT_COLORS={...DEFAULT_CAT_COLORS};
-  }
+    if(w)CAT_WORDS=JSON.parse(w);
+    if(c)CAT_COLORS=JSON.parse(c);
+  }catch(e){console.warn("設定読み込みエラー",e);}
 }
 function saveCatSettings(){
   try{
     localStorage.setItem(STORAGE_KEY_WORDS,JSON.stringify(CAT_WORDS));
     localStorage.setItem(STORAGE_KEY_COLORS,JSON.stringify(CAT_COLORS));
-  }catch(e){console.warn("設定の保存に失敗しました",e);}
+  }catch(e){console.warn("設定保存エラー",e);}
 }
 function resetCatSettings(){
   if(!confirm("カテゴリ設定をデフォルトに戻しますか？"))return;
-  CAT_WORDS={...DEFAULT_CAT_WORDS};
+  CAT_WORDS=JSON.parse(JSON.stringify(DEFAULT_CAT_WORDS));
   CAT_COLORS={...DEFAULT_CAT_COLORS};
   saveCatSettings();
   openEditScreen();recat();
 }
-
-// カテゴリルール（編集可能）
-let CAT_WORDS={};
-let CAT_COLORS={};
 
 function getCatColor(cat){return CAT_COLORS[cat]||COLORS[cat]||"#aaa";}
 function buildRules(){
