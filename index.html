@@ -383,11 +383,28 @@ function renderPicker(){
     const isIR=pickerState?.start&&pickerState.step==="end"&&dt>=new Date(new Date(pickerState.start).setHours(0,0,0,0))&&dt<=today;
     const isWe=dt.getDay()===0||dt.getDay()===6;
     const cls=["cal-day",isFuture?"faded":"",isToday?"today":"",isSS?"selected":"",isIR?"in-range":"",isWe&&!isFuture?"weekend":""].filter(Boolean).join(" ");
-    cells+=`<button class="${cls}" ${isFuture?"disabled":""}onclick="pickDate(${y},${m},${d})">${d}</button>`;
+    cells+=`<button class="${cls}" data-y="${y}" data-m="${m}" data-d="${d}" ${isFuture?"disabled":""}>${d}</button>`;
   }
   const sl=pickerState?.step==="start"?"開始日を選択":`終了日を選択（開始: ${fmtDate(pickerState.start)})`;
   const dows=["月","火","水","木","金","土","日"].map(d=>`<div class="cal-dow">${d}</div>`).join("");
-  document.body.insertAdjacentHTML("beforeend",`<div class="cal-picker" id="cal-picker" onclick="if(event.target===this)closePicker()"><div class="cal-box"><div style="font-size:12px;color:#888;text-align:center;margin-bottom:10px">${sl}</div><div class="cal-header"><button class="cal-nav" onclick="pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()-1,1);renderPicker()">&#8249;</button><span class="cal-month-label">${y}年${m+1}月</span><button class="cal-nav" onclick="pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()+1,1);renderPicker()">&#8250;</button></div><div class="cal-grid">${dows}${cells}</div><button class="cal-close" onclick="closePicker()">キャンセル</button></div></div>`);
+
+  const wrap=document.createElement("div");
+  wrap.className="cal-picker";wrap.id="cal-picker";
+  wrap.innerHTML=`<div class="cal-box"><div style="font-size:12px;color:#888;text-align:center;margin-bottom:10px">${sl}</div><div class="cal-header"><button id="cal-prev" class="cal-nav">&#8249;</button><span class="cal-month-label">${y}年${m+1}月</span><button id="cal-next" class="cal-nav">&#8250;</button></div><div class="cal-grid">${dows}${cells}</div><button id="cal-cancel" class="cal-close">キャンセル</button></div>`;
+
+  wrap.addEventListener("click",e=>{if(e.target===wrap)closePicker();});
+  document.body.appendChild(wrap);
+
+  document.getElementById("cal-prev").addEventListener("click",()=>{pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()-1,1);renderPicker();});
+  document.getElementById("cal-next").addEventListener("click",()=>{pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()+1,1);renderPicker();});
+  document.getElementById("cal-cancel").addEventListener("click",closePicker);
+
+  wrap.querySelectorAll(".cal-day[data-d]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      if(btn.disabled)return;
+      pickDate(parseInt(btn.dataset.y),parseInt(btn.dataset.m),parseInt(btn.dataset.d));
+    });
+  });
 }
 function pickDate(y,m,d){
   const picked=new Date(y,m,d);const today=new Date();today.setHours(0,0,0,0);if(picked>today)return;
@@ -466,18 +483,18 @@ function render(){
   ["all","ev","tk"].forEach(k=>{allCats.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});});
   const tEv=calData.reduce((s,d)=>s+d.value,0),tTk=taskData.reduce((s,d)=>s+d.value,0);
   const cEv=calData.reduce((s,d)=>s+d.count,0),cTk=taskData.reduce((s,d)=>s+d.count,0);
-  const tabs=["month","week","day"].map(t=>`<button class="tab${period===t?" active":""}" onclick="changePeriod('${t}')">${{month:"1ヶ月",week:"1週間",day:"1日"}[t]}</button>`).join("");
+  const tabs=["month","week","day"].map(t=>`<button class="tab${period===t?" active":""}" data-period="${t}">${{month:"1ヶ月",week:"1週間",day:"1日"}[t]}</button>`).join("");
   const allFiltered=filterData(allData,"all");
   const allBar=allFiltered.length?allFiltered.map((d,i)=>{const max=Math.max(...allFiltered.map(x=>x.value),0.1);const isOpen=openDetails.all&&openDetails.all[i];return`<div class="bar-wrap"><div class="bar-row"><div class="bar-label" title="${d.label}">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${getCatColor(d.label)}"></div></div><button class="bar-btn" onclick="toggleDetail('all',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button></div>${isOpen?itemList(d.items,"all"):""}</div>`;}).join(""):'<div class="empty">データなし</div>';
   const futDis=(()=>{const{end}=getRange(period);const now=new Date();now.setHours(23,59,59,999);return end>=now;})();
 
   document.getElementById("app").innerHTML=`
-    <div class="header"><h1>作業レポート</h1><div class="header-right">${updatedAt?`<span class="meta">${updatedAt} 更新</span>`:""}<button onclick="fetchData()">更新</button><button id="btn-edit" onclick="openEditScreen()">⚙ カテゴリ編集</button><button onclick="signOut()" style="opacity:.6">ログアウト</button><button id="btn-share" onclick="copyShareLink()" style="font-size:12px">🔗 リンクをコピー</button></div></div>
+    <div class="header"><h1>作業レポート</h1><div class="header-right">${updatedAt?`<span class="meta">${updatedAt} 更新</span>`:""}<button id="btn-refresh">更新</button><button id="btn-edit">⚙ カテゴリ編集</button><button id="btn-logout" style="opacity:.6">ログアウト</button><button id="btn-share" style="font-size:12px">🔗 リンクをコピー</button></div></div>
     <div class="tabs">${tabs}</div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-      <button onclick="shiftPeriod(-1)" style="padding:2px 10px;font-size:16px">&#8249;</button>
-      <button onclick="openPicker()" style="font-size:12px;color:#555;border:1px solid #ddd;background:#fff;border-radius:8px;padding:4px 12px;min-width:160px;text-align:center;cursor:pointer">${getPeriodLabel(period)}</button>
-      <button onclick="shiftPeriod(1)" style="padding:2px 10px;font-size:16px;opacity:${futDis?.3:1}" ${futDis?"disabled":""}>&#8250;</button>
+      <button id="btn-prev" style="padding:2px 10px;font-size:16px">&#8249;</button>
+      <button id="btn-period" style="font-size:12px;color:#555;border:1px solid #ddd;background:#fff;border-radius:8px;padding:4px 12px;min-width:160px;text-align:center;cursor:pointer">${getPeriodLabel(period)}</button>
+      <button id="btn-next" style="padding:2px 10px;font-size:16px;opacity:${futDis?.3:1}" ${futDis?"disabled":""}>&#8250;</button>
     </div>
     <div class="summary-grid">
       <div class="summary-col"><div class="summary-col-title">合計</div><div><div class="summary-label">合計時間</div><div class="summary-value">${fmtH(tEv+tTk)}</div></div><div><div class="summary-label">合計件数</div><div class="summary-value">${cEv+cTk}件</div></div></div>
@@ -489,7 +506,56 @@ function render(){
     ${sectionHTML("予定",calData,"ev",allCats)}
     ${sectionHTML("タスク",taskData,"tk",allCats)}
     ${locationSection()}
-    <div class="ai-box"><div class="ai-title">AI 振り返りコメント</div><div class="ai-text">データをコピーしてClaude.aiに貼り付けると振り返りコメントを生成できます。</div><div style="margin-top:10px"><button id="btn-ai-copy" onclick="copyForAI()">Claudeへのプロンプトをコピー</button></div><div class="copy-hint">コピー後、claude.ai のチャットに貼り付けてください。</div></div>`;
+    <div class="ai-box"><div class="ai-title">AI 振り返りコメント</div><div class="ai-text">データをコピーしてClaude.aiに貼り付けると振り返りコメントを生成できます。</div><div style="margin-top:10px"><button id="btn-ai-copy">Claudeへのプロンプトをコピー</button></div><div class="copy-hint">コピー後、claude.ai のチャットに貼り付けてください。</div></div>`;
+
+  document.getElementById("btn-refresh").addEventListener("click",fetchData);
+  document.getElementById("btn-edit").addEventListener("click",openEditScreen);
+  document.getElementById("btn-logout").addEventListener("click",signOut);
+  document.getElementById("btn-share").addEventListener("click",copyShareLink);
+  document.getElementById("btn-prev").addEventListener("click",()=>shiftPeriod(-1));
+  document.getElementById("btn-period").addEventListener("click",openPicker);
+  document.getElementById("btn-next").addEventListener("click",()=>shiftPeriod(1));
+  document.getElementById("btn-ai-copy").addEventListener("click",copyForAI);
+
+  // タブ
+  document.querySelectorAll(".tab").forEach(el=>{
+    el.addEventListener("click",()=>changePeriod(el.dataset.period));
+  });
+
+  // フィルターチェックボックス
+  document.querySelectorAll(".filter-bar input[type=checkbox]").forEach(el=>{
+    el.addEventListener("change",()=>toggleFilter(el.dataset.sec,el.dataset.cat));
+  });
+
+  // バーボタン（展開トグル）
+  document.querySelectorAll("[data-toggle-type]").forEach(el=>{
+    el.addEventListener("click",()=>toggleDetail(el.dataset.toggleType,parseInt(el.dataset.toggleIdx)));
+  });
+
+  // バー行（ドロップ先）
+  document.querySelectorAll("[data-drop-type]").forEach(el=>{
+    el.addEventListener("dragover",e=>{e.preventDefault();if(dragItem&&dragItem.type===el.dataset.dropType&&dragItem.cat!==el.dataset.dropCat)el.classList.add("drop-target");});
+    el.addEventListener("dragleave",()=>el.classList.remove("drop-target"));
+    el.addEventListener("drop",e=>{e.preventDefault();el.classList.remove("drop-target");if(!dragItem||dragItem.type!==el.dataset.dropType||dragItem.cat===el.dataset.dropCat)return;itemOverrides[dragItem.type][dragItem.gIdx]=el.dataset.dropCat;dragItem=null;openDetails={ev:{},tk:{},all:{}};rebuildData();render();});
+  });
+
+  // アイテム行（ドラッグ元）
+  document.querySelectorAll(".item-row").forEach(el=>{
+    el.addEventListener("dragstart",e=>{
+      const type=el.dataset.type,gIdx=parseInt(el.dataset.gidx),cat=el.dataset.cat;
+      dragItem={type,gIdx,cat};
+      e.dataTransfer.effectAllowed="move";
+      e.dataTransfer.setData("text/plain",cat);
+      openDetails[type]={};openDetails.all={};
+      rebuildData();render();
+    });
+    el.addEventListener("dragend",()=>{dragItem=null;document.querySelectorAll(".bar-row").forEach(r=>r.classList.remove("drop-target"));});
+  });
+
+  // 勤務場所
+  document.querySelectorAll("[data-loc]").forEach(el=>{
+    el.addEventListener("click",()=>toggleLocDetail(el.dataset.loc));
+  });
 }
 
 setInterval(()=>{try{if(gapiLoaded&&gapi.client.getToken())fetchData();}catch(e){}},300000);
