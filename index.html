@@ -595,7 +595,7 @@ function openEditScreen(){
     </div>`;
   }).join("");
 
-  document.body.insertAdjacentHTML("beforeend",`<div class="edit-overlay" id="edit-overlay" onclick="if(event.target===this)closeEditScreen()">
+  document.body.insertAdjacentHTML("beforeend",`<div class="edit-overlay" id="edit-overlay" onclick="if(event.target.id==='edit-overlay')closeEditScreen()">
     <div class="edit-box">
       <div class="edit-title">カテゴリ編集</div>
       ${blocks}
