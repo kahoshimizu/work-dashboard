@@ -113,9 +113,6 @@ const CLIENT_ID="729656531255-stonbhee0o8m10gfbqckf1bp2fump90g.apps.googleuserco
 const SCOPES="https://www.googleapis.com/auth/calendar.readonly";
 const COLORS={"PJ":"#54C3F1","foobar*":"#F9C270","未分類":"#C1DB81","新卒 1on1":"#EF858C","UM 1on1":"#EF845C","PMP":"#796BAF"};
 const LOC_COLORS={"オフィス":"#6C9BD2","自宅":"#69BD83","その他":"#EF845C"};
-// ページ読み込み直後に即座に設定を復元
-loadCatSettings();
-
 let ALL_CATS=["PJ","新卒 1on1","UM 1on1","PMP","foobar*","未分類"];
 const DAYS=["日","月","火","水","木","金","土"];
 
@@ -223,6 +220,7 @@ function getPeriodLabel(p){
 // ---- Google API 初期化 ----
 function tryReady(){
   if(!gapiLoaded||!gisLoaded)return;
+  loadCatSettings(); // 両スクリプト読み込み完了後に設定を復元
   document.getElementById("app").innerHTML=`<div class="loading">
     <div style="font-size:15px;font-weight:500;margin-bottom:8px">作業レポートダッシュボード</div>
     <div style="font-size:13px;color:#888;margin-bottom:20px">Googleアカウントでログインしてください</div>
