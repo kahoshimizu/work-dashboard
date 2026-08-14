@@ -14,10 +14,9 @@ h1{font-size:18px;font-weight:500}
 .tabs{display:flex;gap:4px;border-bottom:1px solid #ddd;margin-bottom:4px}
 .tab{padding:8px 16px;border:none;background:transparent;cursor:pointer;font-size:14px;color:#666;border-bottom:2px solid transparent;margin-bottom:-1px}
 .tab.active{color:#1a1a1a;font-weight:500;border-bottom-color:#1a1a1a}
-.period-label{font-size:12px;color:#999;margin-bottom:14px}
 .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
 .summary-col{background:#fff;border-radius:10px;border:1px solid #eee;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
-.summary-col-title{font-size:11px;color:#aaa;font-weight:500;letter-spacing:.03em;margin-bottom:2px}
+.summary-col-title{font-size:11px;color:#aaa;font-weight:500;letter-spacing:.03em}
 .summary-label{font-size:11px;color:#888;margin-bottom:2px}
 .summary-value{font-size:18px;font-weight:500}
 .section-title{font-size:15px;font-weight:500;margin:18px 0 8px}
@@ -27,24 +26,21 @@ h1{font-size:18px;font-weight:500}
 .box{background:#fff;border-radius:12px;padding:14px 18px;border:1px solid #eee}
 .box-title{font-size:13px;font-weight:500;margin-bottom:10px;color:#444}
 .bar-wrap{margin-bottom:4px}
-.bar-row{display:flex;align-items:center;gap:8px;font-size:13px}
+.bar-row{display:flex;align-items:center;gap:8px;font-size:13px;border-radius:8px;padding:3px 2px;transition:background .15s}
+.bar-row.drop-target{background:rgba(84,195,241,.1);border:1px dashed #54C3F1}
 .bar-label{width:86px;text-align:right;color:#666;flex-shrink:0;font-size:12px;padding:4px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar-track{flex:1;background:#f0f0f0;border-radius:4px;height:16px;overflow:hidden}
 .bar-fill{height:100%;border-radius:4px}
 .bar-btn{border:none;background:transparent;cursor:pointer;font-size:11px;font-weight:500;color:#1a1a1a;padding:2px 5px;border-radius:4px;white-space:nowrap;min-width:80px;text-align:left}
 .bar-btn:hover{background:#f0f0f0}
-/* 個別アイテムのD&D */
-.item-list{margin:4px 0 8px 0}
-.item-row{display:grid;grid-template-columns:64px 1fr 40px 16px;gap:6px;align-items:center;padding:3px 4px;border-radius:6px;font-size:11px;color:#555;cursor:grab;transition:background .15s}
+.item-list{margin:2px 0 6px 0}
+.item-row{display:grid;grid-template-columns:64px 1fr 40px 16px;gap:6px;align-items:center;padding:3px 4px;border-radius:6px;font-size:11px;color:#555;cursor:grab}
 .item-row:hover{background:#f5f5f5}
-.item-row.drag-over-item{background:#e8f2fb;border:1px dashed #54C3F1}
 .item-row.dragging-item{opacity:.3}
 .item-date{color:#999;font-size:10px}
 .item-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .item-dur{text-align:right;font-weight:500}
-.drag-handle{color:#ccc;font-size:12px;cursor:grab}
-.drop-zone{border:2px dashed transparent;border-radius:8px;transition:border-color .2s,background .2s;padding:2px}
-.drop-zone.drag-over{border-color:#54C3F1;background:rgba(84,195,241,.06)}
+.drag-handle{color:#ccc;font-size:12px}
 .legend{display:flex;flex-direction:column;gap:5px;font-size:12px}
 .legend-item{display:flex;align-items:center;gap:6px}
 .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
@@ -55,14 +51,13 @@ h1{font-size:18px;font-weight:500}
 .loc-bar-track{flex:1;background:#f0f0f0;border-radius:4px;height:14px;overflow:hidden}
 .loc-bar-fill{height:100%;border-radius:4px}
 .loc-bar-val{font-size:11px;color:#444;min-width:70px}
-.loc-detail{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:8px 12px;margin:4px 0 8px 72px;font-size:11px}
+.loc-detail{background:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:8px 12px;margin:4px 0 8px 72px}
 .loc-detail-dates{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .loc-date-chip{background:#fff;border:1px solid #ddd;border-radius:10px;padding:2px 8px;font-size:11px;color:#555}
 .ai-box{background:#f9f9f9;border-radius:12px;padding:14px 18px;border:1px solid #eee;margin-top:14px}
 .ai-title{font-size:14px;font-weight:500;margin-bottom:6px}
 .ai-text{font-size:13px;color:#555;line-height:1.7}
 .copy-hint{font-size:11px;color:#888;margin-top:6px}
-/* カレンダーピッカー */
 .cal-picker{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3)}
 .cal-box{background:#fff;border-radius:14px;padding:16px;width:300px;box-shadow:0 8px 32px rgba(0,0,0,.18)}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -81,25 +76,23 @@ h1{font-size:18px;font-weight:500}
 .cal-day:disabled{color:#ddd;cursor:default}
 .cal-close{margin-top:12px;width:100%;padding:7px;font-size:13px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer}
 .cal-close:hover{background:#f0f0f0}
-/* 編集画面 */
-.edit-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4)}
-.edit-box{background:#fff;border-radius:14px;padding:20px;width:min(560px,92vw);max-height:85vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.2);position:relative;z-index:2001}
-.color-dot{display:inline-block;width:18px;height:18px;border-radius:4px;cursor:pointer;flex-shrink:0}
-.edit-title{font-size:16px;font-weight:500;margin-bottom:16px}
-.edit-cat-block{margin-bottom:16px;border:1px solid #eee;border-radius:10px;overflow:hidden}
+/* 編集画面 — シンプル */
+#edit-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;background:rgba(0,0,0,.45);align-items:center;justify-content:center}
+#edit-modal.open{display:flex}
+#edit-inner{background:#fff;border-radius:14px;padding:20px;width:min(560px,94vw);max-height:86vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.edit-cat-block{margin-bottom:14px;border:1px solid #eee;border-radius:10px;overflow:hidden}
 .edit-cat-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f9f9f9;border-bottom:1px solid #eee}
 .edit-cat-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 .edit-cat-name{font-size:13px;font-weight:500;flex:1}
-.edit-words{padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px}
-.edit-chip{display:flex;align-items:center;gap:4px;background:#f0f0f0;border-radius:12px;padding:3px 10px;font-size:12px}
-.edit-chip-del{background:none;border:none;cursor:pointer;color:#aaa;font-size:14px;line-height:1;padding:0 0 0 2px}
-.edit-chip-del:hover{color:#c33}
+.edit-words{padding:8px 14px;display:flex;flex-wrap:wrap;gap:6px;min-height:36px}
+.edit-chip{display:inline-flex;align-items:center;gap:3px;background:#f0f0f0;border-radius:12px;padding:3px 8px;font-size:12px}
+.edit-chip button{background:none;border:none;cursor:pointer;color:#aaa;font-size:13px;line-height:1;padding:0 0 0 2px}
+.edit-chip button:hover{color:#c33}
 .edit-add-row{display:flex;gap:6px;padding:0 14px 10px}
 .edit-add-input{flex:1;border:1px solid #ddd;border-radius:6px;padding:5px 8px;font-size:12px}
-.edit-add-btn{border:1px solid #ddd;border-radius:6px;padding:5px 10px;font-size:12px;background:#fff;cursor:pointer;white-space:nowrap}
-.edit-add-btn:hover{background:#f0f0f0}
-.edit-close{margin-top:8px;width:100%;padding:8px;font-size:13px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer}
-.edit-close:hover{background:#f0f0f0}
+.edit-add-btn-s{border:1px solid #ddd;border-radius:6px;padding:5px 10px;font-size:12px;background:#fff;cursor:pointer;white-space:nowrap}
+.edit-add-btn-s:hover{background:#f0f0f0}
+.color-swatch{display:inline-block;width:18px;height:18px;border-radius:4px;cursor:pointer;flex-shrink:0;margin:1px}
 button{background:#fff;border:1px solid #ddd;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:13px}
 button:hover{background:#f5f5f5}
 .loading{text-align:center;padding:48px;color:#888;font-size:14px}
@@ -108,20 +101,40 @@ button:hover{background:#f5f5f5}
 </style>
 </head>
 <body>
+
+<!-- 編集モーダル（常にDOM上に存在） -->
+<div id="edit-modal">
+  <div id="edit-inner">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:16px;font-weight:500">カテゴリ編集</div>
+      <button id="btn-close-edit" style="font-size:20px;border:none;background:none;cursor:pointer;color:#888;line-height:1;padding:4px 8px">×</button>
+    </div>
+    <div id="edit-body"></div>
+    <div id="new-cat-section" style="margin:12px 0 8px;padding:14px;background:#f9f9f9;border-radius:10px;border:1px solid #eee">
+      <div style="font-size:13px;font-weight:500;margin-bottom:8px">新しいカテゴリを追加</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <input id="new-cat-name" class="edit-add-input" style="flex:1;min-width:120px" placeholder="カテゴリ名">
+        <input id="new-cat-color" type="color" value="#888780" style="width:36px;height:32px;border:1px solid #ddd;border-radius:6px;cursor:pointer;padding:2px">
+        <button id="btn-add-cat" class="edit-add-btn-s">追加</button>
+      </div>
+    </div>
+    <button id="btn-close-edit2" style="margin-top:8px;width:100%;padding:8px;font-size:13px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer">閉じる</button>
+  </div>
+</div>
+
 <div id="app"><div class="loading">読み込み中…</div></div>
+
 <script>
+// ===== 定数 =====
 const CLIENT_ID="729656531255-stonbhee0o8m10gfbqckf1bp2fump90g.apps.googleusercontent.com";
 const SCOPES="https://www.googleapis.com/auth/calendar.readonly";
-const COLORS={"PJ":"#54C3F1","foobar*":"#F9C270","未分類":"#C1DB81","新卒 1on1":"#EF858C","UM 1on1":"#EF845C","PMP":"#796BAF"};
+const COLORS={"PJ":"#54C3F1","foobar*":"#F9C270","未分類":"#C1DB81","新卒 1on1":"#EF858C","UM 1on1":"#EF845C","PMP":"#796BAF","オムニチャネル":"#69BD83"};
 const LOC_COLORS={"オフィス":"#6C9BD2","自宅":"#69BD83","その他":"#EF845C"};
-let ALL_CATS=["PJ","新卒 1on1","UM 1on1","PMP","foobar*","未分類"];
 const DAYS=["日","月","火","水","木","金","土"];
+const PRESET_COLORS=["#54C3F1","#F9C270","#C1DB81","#EF858C","#EF845C","#796BAF","#6C9BD2","#69BD83","#EE87B4","#61C1BE","#BA79B1","#FFF67F","#888780","#3B6D11"];
+const SK_WORDS="dashCatWords", SK_COLORS="dashCatColors";
 
-// カテゴリ設定の永続化
-const STORAGE_KEY_WORDS="dashCatWords";
-const STORAGE_KEY_COLORS="dashCatColors";
-
-const DEFAULT_CAT_WORDS={
+const DEF_WORDS={
   "PJ":["JMB","タスク確認","JAL","SSNB","定例","リリース","Liquid","サーバ","Greens","GRS","Postmortem","TP","yumeno","SBJ","実行支援","GREENS","narumi","Narumi","Yumeno","議事録","[1466]","展開","売上","朱さん","障害","訪問","チケット","POS"],
   "foobar*":["foobar","foobar*","MM","DCC","KAITEKI","カクヤス","Monthly Mixer","CTOs Beer","Designer Creative Circle","イベント","Circle","ICHIYA","MKO","hubspot","IVS","アルムナイ","ノベルティ","MoMorph","小川","Kozue","figma","meet CTOs","SGG","ポスター"],
   "新卒 1on1":["Kaho / Miu","Kaho / Emiri","Emiri / Kaho","Miu / Kaho","Miu/Kaho","新卒"],
@@ -129,198 +142,173 @@ const DEFAULT_CAT_WORDS={
   "PMP":["[FY26]PMP1：Unit定例","General MTG for PMPs","Monthly Kickoff","PMP","新等級要件","OKR"],
   "オムニチャネル":["オムニチャネル","協会","オムニ"],
 };
-const DEFAULT_CAT_COLORS={
-  "PJ":"#54C3F1","foobar*":"#F9C270","未分類":"#C1DB81",
-  "新卒 1on1":"#EF858C","UM 1on1":"#EF845C","PMP":"#796BAF","オムニチャネル":"#69BD83"
-};
+const DEF_COLORS={...COLORS};
 
-// 起動時にlocalStorageから読み込み、なければデフォルトを使用
-let CAT_WORDS=(()=>{
-  try{const v=localStorage.getItem(STORAGE_KEY_WORDS);return v?JSON.parse(v):JSON.parse(JSON.stringify(DEFAULT_CAT_WORDS));}
-  catch(e){return JSON.parse(JSON.stringify(DEFAULT_CAT_WORDS));}
-})();
-let CAT_COLORS=(()=>{
-  try{const v=localStorage.getItem(STORAGE_KEY_COLORS);return v?JSON.parse(v):{...DEFAULT_CAT_COLORS};}
-  catch(e){return {...DEFAULT_CAT_COLORS};}
-})();
+// ===== カテゴリ設定（localStorage） =====
+let CAT_WORDS=(()=>{try{const v=localStorage.getItem(SK_WORDS);return v?JSON.parse(v):JSON.parse(JSON.stringify(DEF_WORDS));}catch(e){return JSON.parse(JSON.stringify(DEF_WORDS));}})();
+let CAT_COLORS=(()=>{try{const v=localStorage.getItem(SK_COLORS);return v?JSON.parse(v):{...DEF_COLORS};}catch(e){return {...DEF_COLORS};}})();
 
-function loadCatSettings(){
-  try{
-    const w=localStorage.getItem(STORAGE_KEY_WORDS);
-    const c=localStorage.getItem(STORAGE_KEY_COLORS);
-    if(w)CAT_WORDS=JSON.parse(w);
-    if(c)CAT_COLORS=JSON.parse(c);
-  }catch(e){console.warn("設定読み込みエラー",e);}
+function saveCat(){
+  try{localStorage.setItem(SK_WORDS,JSON.stringify(CAT_WORDS));localStorage.setItem(SK_COLORS,JSON.stringify(CAT_COLORS));}catch(e){}
 }
-function saveCatSettings(){
-  try{
-    localStorage.setItem(STORAGE_KEY_WORDS,JSON.stringify(CAT_WORDS));
-    localStorage.setItem(STORAGE_KEY_COLORS,JSON.stringify(CAT_COLORS));
-  }catch(e){console.warn("設定保存エラー",e);}
-}
-function resetCatSettings(){
-  if(!confirm("カテゴリ設定をデフォルトに戻しますか？"))return;
-  CAT_WORDS=JSON.parse(JSON.stringify(DEFAULT_CAT_WORDS));
-  CAT_COLORS={...DEFAULT_CAT_COLORS};
-  saveCatSettings();
-  openEditScreen();recat();
-}
-
 function getCatColor(cat){return CAT_COLORS[cat]||COLORS[cat]||"#aaa";}
-function buildRules(){
-  return Object.entries(CAT_WORDS).map(([cat,words])=>({
-    m:t=>words.some(w=>t.includes(w)),c:cat
-  }));
-}
-// ALL_CATSをCAT_WORDSから動的に生成（未分類は末尾固定）
-function getAllCats(){
-  const cats=Object.keys(CAT_WORDS).filter(c=>c!=="未分類");
-  cats.push("未分類");
-  return cats;
-}
-function categorize(t){
-  const rules=buildRules();
-  for(const r of rules)if(r.m(t))return r.c;
-  return"未分類";
+function getAllCats(){return [...Object.keys(CAT_WORDS).filter(c=>c!=="未分類"),"未分類"];}
+function buildRules(){return Object.entries(CAT_WORDS).map(([cat,words])=>({m:t=>words.some(w=>t.includes(w)),c:cat}));}
+function categorize(t){for(const r of buildRules())if(r.m(t))return r.c;return"未分類";}
+
+// ===== 編集モーダル =====
+function openEditScreen(){
+  const body=document.getElementById("edit-body");
+  body.innerHTML=Object.entries(CAT_WORDS).map(([cat,words],ci)=>{
+    const chips=words.map((w,i)=>`<span class="edit-chip">${w}<button data-action="del-word" data-ci="${ci}" data-wi="${i}">×</button></span>`).join("")||'<span style="font-size:12px;color:#aaa">ワードなし</span>';
+    const swatches=PRESET_COLORS.map((c)=>`<span class="color-swatch" data-action="set-color" data-ci="${ci}" data-color="${c}" style="background:${c};border:2px solid ${getCatColor(cat)===c?'#333':'transparent'}"></span>`).join("");
+    const canDel=cat!=="未分類";
+    return`<div class="edit-cat-block">
+      <div class="edit-cat-header">
+        <div class="edit-cat-dot" style="background:${getCatColor(cat)}"></div>
+        <div class="edit-cat-name">${cat}</div>
+        ${canDel?`<button data-action="del-cat" data-ci="${ci}" style="margin-left:auto;font-size:11px;color:#c33;border:1px solid #fcc;border-radius:6px;padding:2px 8px;background:#fff;cursor:pointer">カテゴリ削除</button>`:""}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;padding:8px 14px 4px;border-bottom:1px solid #f5f5f5">${swatches}</div>
+      <div class="edit-words">${chips}</div>
+      <div class="edit-add-row">
+        <input class="edit-add-input" id="wi-${ci}" placeholder="ワードを追加…">
+        <button class="edit-add-btn-s" data-action="add-word" data-ci="${ci}">追加</button>
+      </div>
+    </div>`;
+  }).join("");
+  document.getElementById("edit-modal").classList.add("open");
 }
 
-function isExcluded(ev){return ev.colorId==="4"||ev.colorId==="8";}
-function fmtH(h){return h<0.05?"0h":h.toFixed(1)+"h";}
-function fmtDate(d){return`${d.getMonth()+1}/${d.getDate()}(${DAYS[d.getDay()]})`;}
-function fmtDateKey(s){return fmtDate(new Date(s));}
-function isWeekend(ds){const d=new Date(ds);return d.getDay()===0||d.getDay()===6;}
+function closeEditScreen(){
+  document.getElementById("edit-modal").classList.remove("open");
+}
 
-let period="week",periodOffset=0,customStart=null,customEnd=null;
+window.addEventListener("DOMContentLoaded",function(){
+  const modal=document.getElementById("edit-modal");
+  const inner=document.getElementById("edit-inner");
+  modal.addEventListener("click",function(e){if(e.target===modal)closeEditScreen();});
+  inner.addEventListener("click",function(e){e.stopPropagation();});
+  document.getElementById("btn-close-edit").addEventListener("click",function(){closeEditScreen();});
+  document.getElementById("btn-close-edit2").addEventListener("click",function(){closeEditScreen();});
+  document.getElementById("btn-add-cat").addEventListener("click",function(){addCat();});
+  document.getElementById("new-cat-name").addEventListener("keydown",function(e){if(e.key==="Enter")addCat();});
+  document.getElementById("edit-body").addEventListener("click",function(e){
+    const btn=e.target.closest("[data-action]");
+    if(!btn)return;
+    const cats=Object.keys(CAT_WORDS);
+    const ci=parseInt(btn.dataset.ci);
+    const cat=cats[ci];
+    if(!cat)return;
+    const action=btn.dataset.action;
+    if(action==="del-word"){
+      CAT_WORDS[cat].splice(parseInt(btn.dataset.wi),1);
+      saveCat();recat();openEditScreen();
+    }else if(action==="set-color"){
+      CAT_COLORS[cat]=btn.dataset.color;
+      saveCat();render();openEditScreen();
+    }else if(action==="add-word"){
+      const inp=document.getElementById("wi-"+ci);
+      if(!inp)return;
+      const w=inp.value.trim();if(!w)return;
+      if(!CAT_WORDS[cat].includes(w))CAT_WORDS[cat].push(w);
+      saveCat();recat();openEditScreen();
+    }else if(action==="del-cat"){
+      if(!confirm(`「${cat}」を削除しますか？`))return;
+      delete CAT_WORDS[cat];delete CAT_COLORS[cat];
+      saveCat();recat();openEditScreen();
+    }
+  });
+});
+
+function addCat(){
+  const name=(document.getElementById("new-cat-name").value||"").trim();
+  if(!name)return;
+  if(CAT_WORDS[name]){alert("同名のカテゴリが既に存在します");return;}
+  const color=document.getElementById("new-cat-color").value||"#888780";
+  CAT_WORDS[name]=[];CAT_COLORS[name]=color;
+  document.getElementById("new-cat-name").value="";
+  saveCat();recat();openEditScreen();
+}
+function recat(){
+  allEvItems.forEach(it=>{it.cat=categorize(it.title);});
+  allTkItems.forEach(it=>{it.cat=categorize(it.title);});
+  itemOverrides={ev:{},tk:{}};
+  rebuildData();render();
+}
+
+// ===== Google API =====
 let tokenClient=null,gapiLoaded=false,gisLoaded=false;
+function tryReady(){
+  if(!gapiLoaded||!gisLoaded)return;
+  document.getElementById("app").innerHTML=`<div class="loading"><div style="font-size:15px;font-weight:500;margin-bottom:8px">作業レポートダッシュボード</div><div style="font-size:13px;color:#888;margin-bottom:20px">Googleアカウントでログインしてください</div><button id="btn-login" style="font-size:14px;padding:10px 28px;font-weight:500;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">Googleでログイン</button></div>`;
+  document.getElementById("btn-login").addEventListener("click",signIn);
+}
+function gapiInit(){gapi.load("client",async()=>{await gapi.client.load("https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest");gapiLoaded=true;tryReady();});}
+function gisInit(){tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:(r)=>{if(r.error){showError("認証エラー: "+r.error);return;}fetchData();}});gisLoaded=true;tryReady();}
+function signIn(){if(!tokenClient)return;tokenClient.requestAccessToken({prompt:"consent"});}
+function signOut(){try{const t=gapi.client.getToken();if(t)google.accounts.oauth2.revoke(t.access_token,()=>{});gapi.client.setToken(null);}catch(e){}document.getElementById("app").innerHTML=`<div class="loading"><div style="margin-bottom:12px">ログアウトしました</div><button id="btn-login2" style="font-size:14px;padding:10px 28px;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">再ログイン</button></div>`;document.getElementById("btn-login2").addEventListener("click",signIn);}
+function showError(msg){let el=document.getElementById("err");if(!el){el=document.createElement("div");el.id="err";el.className="error";document.getElementById("app").prepend(el);}el.textContent=msg;}
+
+// ===== 状態 =====
+let period="week",periodOffset=0,customStart=null,customEnd=null;
 let calData=[],taskData=[],locData={},updatedAt="";
 let openDetails={ev:{},tk:{},all:{}};
 let filters={all:{},ev:{},tk:{}};
-// itemOverrides: {type:{globalIdx: newCat}} — 個別アイテム単位
 let itemOverrides={ev:{},tk:{}};
 let locOpenDetail=null;
+let allEvItems=[],allTkItems=[];
+let dragItem=null;
 let pickerMonth=new Date(),pickerState=null;
 
+// ===== 日付ユーティリティ =====
+function fmtH(h){return h<0.05?"0h":h.toFixed(1)+"h";}
+function fmtDate(d){return`${d.getMonth()+1}/${d.getDate()}(${DAYS[d.getDay()]})`;}
+function fmtDateKey(s){return fmtDate(new Date(s));}
+function isWE(ds){const d=new Date(ds);return d.getDay()===0||d.getDay()===6;}
+function isExcluded(ev){return ev.colorId==="4"||ev.colorId==="8";}
+
 function getRange(p){
-  if(customStart&&customEnd){
-    const s=new Date(customStart);s.setHours(0,0,0,0);
-    const e=new Date(customEnd);e.setHours(23,59,59,999);
-    return{start:s,end:e};
-  }
+  if(customStart&&customEnd){const s=new Date(customStart);s.setHours(0,0,0,0);const e=new Date(customEnd);e.setHours(23,59,59,999);return{start:s,end:e};}
   const now=new Date();
-  const endBase=new Date(now);
-  if(p==="day")endBase.setDate(endBase.getDate()+periodOffset);
-  else if(p==="week")endBase.setDate(endBase.getDate()+periodOffset*7);
-  else endBase.setDate(endBase.getDate()+periodOffset*30);
-  const e=new Date(endBase);e.setHours(23,59,59,999);
-  const s=new Date(endBase);
+  const eb=new Date(now);
+  if(p==="day")eb.setDate(eb.getDate()+periodOffset);
+  else if(p==="week")eb.setDate(eb.getDate()+periodOffset*7);
+  else eb.setDate(eb.getDate()+periodOffset*30);
+  const e=new Date(eb);e.setHours(23,59,59,999);
+  const s=new Date(eb);
   if(p==="day")s.setHours(0,0,0,0);
-  else if(p==="week"){s.setDate(endBase.getDate()-6);s.setHours(0,0,0,0);}
-  else{s.setDate(endBase.getDate()-29);s.setHours(0,0,0,0);}
+  else if(p==="week"){s.setDate(eb.getDate()-6);s.setHours(0,0,0,0);}
+  else{s.setDate(eb.getDate()-29);s.setHours(0,0,0,0);}
   return{start:s,end:e};
 }
-function getPeriodLabel(p){
-  const{start,end}=getRange(p);
-  if(p==="day")return fmtDate(start);
-  return`${fmtDate(start)}〜${fmtDate(end)}`;
-}
+function getPeriodLabel(p){const{start,end}=getRange(p);if(p==="day")return fmtDate(start);return`${fmtDate(start)}〜${fmtDate(end)}`;}
 
-// ---- Google API 初期化 ----
-function tryReady(){
-  if(!gapiLoaded||!gisLoaded)return;
-  loadCatSettings(); // 両スクリプト読み込み完了後に設定を復元
-  document.getElementById("app").innerHTML=`<div class="loading">
-    <div style="font-size:15px;font-weight:500;margin-bottom:8px">作業レポートダッシュボード</div>
-    <div style="font-size:13px;color:#888;margin-bottom:20px">Googleアカウントでログインしてください</div>
-    <button onclick="signIn()" style="font-size:14px;padding:10px 28px;font-weight:500;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">Googleでログイン</button>
-  </div>`;
-}
-function gapiInit(){
-  gapi.load("client",async()=>{
-    await gapi.client.load("https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest");
-    gapiLoaded=true;tryReady();
-  });
-}
-function gisInit(){
-  tokenClient=google.accounts.oauth2.initTokenClient({
-    client_id:CLIENT_ID,scope:SCOPES,
-    callback:(resp)=>{
-      if(resp.error){showError("認証エラー: "+resp.error);return;}
-      fetchData();
-    }
-  });
-  gisLoaded=true;tryReady();
-}
-function signIn(){
-  if(!tokenClient){showError("認証クライアントが初期化されていません。ページを再読み込みしてください。");return;}
-  tokenClient.requestAccessToken({prompt:"consent"});
-}
-function signOut(){
-  try{
-    const t=gapi.client.getToken();
-    if(t)google.accounts.oauth2.revoke(t.access_token,()=>{});
-    gapi.client.setToken(null);
-  }catch(e){}
-  document.getElementById("app").innerHTML=`<div class="loading">
-    <div style="margin-bottom:12px">ログアウトしました</div>
-    <button onclick="signIn()" style="font-size:14px;padding:10px 28px;background:#1a73e8;color:#fff;border:none;border-radius:8px;cursor:pointer">再ログイン</button>
-  </div>`;
-}
-function showError(msg){
-  let el=document.getElementById("err");
-  if(!el){el=document.createElement("div");el.id="err";el.className="error";document.getElementById("app").prepend(el);}
-  el.textContent=msg;
-}
-
-// ---- データ取得 ----
-// 全アイテムをフラットリストで保持（overrideのために）
-let allEvItems=[],allTkItems=[];
-
+// ===== データ取得 =====
 async function fetchData(){
-  if(!gapiLoaded){showError("Google APIがまだ読み込まれていません。");return;}
+  if(!gapiLoaded)return;
   try{
     const{start,end}=getRange(period);
-    const calRes=await gapi.client.calendar.events.list({
-      calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),
-      singleEvents:true,orderBy:"startTime",maxResults:500
-    });
-    const items=calRes.result.items||[];
-    let myEmail="";
-    try{myEmail=(await gapi.client.calendar.calendarList.get({calendarId:"primary"})).result.id;}catch(e){}
+    const res=await gapi.client.calendar.events.list({calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),singleEvents:true,orderBy:"startTime",maxResults:500});
+    const items=res.result.items||[];
+    let myEmail="";try{myEmail=(await gapi.client.calendar.calendarList.get({calendarId:"primary"})).result.id;}catch(e){}
 
-    // 勤務場所
     let locItems=[];
-    try{
-      const lr=await gapi.client.calendar.events.list({
-        calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),
-        singleEvents:true,orderBy:"startTime",maxResults:500,eventTypes:["workingLocation"]
-      });
-      locItems=lr.result.items||[];
-    }catch(e){locItems=items.filter(ev=>ev.eventType==="workingLocation");}
+    try{const lr=await gapi.client.calendar.events.list({calendarId:"primary",timeMin:start.toISOString(),timeMax:end.toISOString(),singleEvents:true,maxResults:500,eventTypes:["workingLocation"]});locItems=lr.result.items||[];}
+    catch(e){locItems=items.filter(ev=>ev.eventType==="workingLocation");}
 
     const locDays={オフィス:new Map(),自宅:new Map(),その他:new Map()};
     locItems.forEach(ev=>{
       const ds=ev.start?.date||ev.start?.dateTime?.slice(0,10);
-      if(!ds||isWeekend(ds))return;
-      const wl=ev.workingLocation;
-      let loc=null;
-      if(wl){
-        if(wl.type==="homeOffice"||wl.homeOffice!=null)loc="自宅";
-        else if(wl.type==="officeLocation"||wl.office!=null||wl.officeLocation!=null)loc="オフィス";
-        else if(wl.type==="customLocation"||wl.customLocation!=null)loc="その他";
-      }
+      if(!ds||isWE(ds))return;
+      const wl=ev.workingLocation;let loc=null;
+      if(wl){if(wl.type==="homeOffice"||wl.homeOffice!=null)loc="自宅";else if(wl.type==="officeLocation"||wl.office!=null||wl.officeLocation!=null)loc="オフィス";else if(wl.type==="customLocation"||wl.customLocation!=null)loc="その他";}
       if(!loc){const t=(ev.summary||"").toLowerCase();if(/自宅|home|リモート|remote|wfh/.test(t))loc="自宅";else if(/オフィス|office|出社/.test(t))loc="オフィス";else loc="その他";}
-      const lbl=fmtDate(new Date(ds));
-      if(!locDays[loc].has(ds))locDays[loc].set(ds,lbl);
+      if(!locDays[loc].has(ds))locDays[loc].set(ds,fmtDate(new Date(ds)));
     });
-    const totalLocDays=new Set([...locDays.オフィス.keys(),...locDays.自宅.keys(),...locDays.その他.keys()]).size||1;
-    locData={
-      オフィス:{days:locDays.オフィス.size,pct:Math.round(locDays.オフィス.size/totalLocDays*100),dates:[...locDays.オフィス.values()].sort()},
-      自宅:{days:locDays.自宅.size,pct:Math.round(locDays.自宅.size/totalLocDays*100),dates:[...locDays.自宅.values()].sort()},
-      その他:{days:locDays.その他.size,pct:Math.round(locDays.その他.size/totalLocDays*100),dates:[...locDays.その他.values()].sort()},
-      total:totalLocDays
-    };
+    const tld=new Set([...locDays.オフィス.keys(),...locDays.自宅.keys(),...locDays.その他.keys()]).size||1;
+    locData={オフィス:{days:locDays.オフィス.size,pct:Math.round(locDays.オフィス.size/tld*100),dates:[...locDays.オフィス.values()].sort()},自宅:{days:locDays.自宅.size,pct:Math.round(locDays.自宅.size/tld*100),dates:[...locDays.自宅.values()].sort()},その他:{days:locDays.その他.size,pct:Math.round(locDays.その他.size/tld*100),dates:[...locDays.その他.values()].sort()},total:tld};
 
-    // 予定・タスクをフラットに収集
     allEvItems=[];allTkItems=[];
     items.forEach(ev=>{
       if(isExcluded(ev))return;
@@ -332,418 +320,179 @@ async function fetchData(){
       const title=ev.summary||"",desc=ev.description||"";
       const isTask=desc.includes("tasks.google.com/task/");
       if(!isTask&&(/^不在$/.test(title.trim())||/^移動$/.test(title.trim())))return;
-      if(!isTask&&ev.attendees&&ev.attendees.length>0){
-        const me=ev.attendees.find(a=>a.self||(myEmail&&a.email===myEmail));
-        if(me&&(me.responseStatus==="declined"||me.responseStatus==="tentative"||me.responseStatus==="needsAction"))return;
-      }
+      if(!isTask&&ev.attendees?.length>0){const me=ev.attendees.find(a=>a.self||(myEmail&&a.email===myEmail));if(me&&(me.responseStatus==="declined"||me.responseStatus==="tentative"||me.responseStatus==="needsAction"))return;}
       const item={title,dur,dateLabel:fmtDateKey(ev.start.dateTime),dateSort:ev.start.dateTime,cat:categorize(title)};
       if(isTask)allTkItems.push(item);else allEvItems.push(item);
     });
-
-    itemOverrides={ev:{},tk:{}};
-    openDetails={ev:{},tk:{},all:{}};
+    itemOverrides={ev:{},tk:{}};openDetails={ev:{},tk:{},all:{}};
     rebuildData();
+    const ac=getAllCats();["all","ev","tk"].forEach(k=>{ac.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});});
     updatedAt=new Date().toLocaleTimeString("ja-JP");
     render();
-  }catch(e){showError("データ取得エラー: "+(e.result?.error?.message||e.message||JSON.stringify(e)));}
+  }catch(e){showError("エラー: "+(e.result?.error?.message||e.message||String(e)));}
 }
 
 function rebuildData(){
-  // itemOverridesを適用してカテゴリ別に集計
   function build(items,type){
     const map={};
-    items.forEach((item,idx)=>{
-      const cat=itemOverrides[type][idx]||item.cat;
+    items.forEach((it,idx)=>{
+      const cat=itemOverrides[type][idx]||it.cat;
       if(!map[cat])map[cat]={label:cat,value:0,count:0,items:[]};
-      map[cat].value+=item.dur;map[cat].count++;
-                map[cat].items.push({...item,globalIdx:idx,cat});
+      map[cat].value+=it.dur;map[cat].count++;map[cat].items.push({...it,globalIdx:idx,cat});
     });
     return Object.values(map).sort((a,b)=>b.value-a.value);
   }
-  calData=build(allEvItems,"ev");
-  taskData=build(allTkItems,"tk");
-  const allCats=[...new Set([...calData,...taskData].map(d=>d.label))];
-  ["all","ev","tk"].forEach(k=>{
-    allCats.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});
-  });
+  calData=build(allEvItems,"ev");taskData=build(allTkItems,"tk");
+  const ac=getAllCats();["all","ev","tk"].forEach(k=>{ac.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});});
 }
-
-function mergeData(a,b){
-  const map={};[...a,...b].forEach(d=>{
-    if(!map[d.label])map[d.label]={label:d.label,value:0,count:0,items:[]};
-    map[d.label].value+=d.value;map[d.label].count+=d.count;map[d.label].items.push(...d.items);
-  });
-  return Object.values(map).sort((a,b)=>b.value-a.value);
-}
+function mergeData(a,b){const m={};[...a,...b].forEach(d=>{if(!m[d.label])m[d.label]={label:d.label,value:0,count:0,items:[]};m[d.label].value+=d.value;m[d.label].count+=d.count;m[d.label].items.push(...d.items);});return Object.values(m).sort((a,b)=>b.value-a.value);}
 function filterData(data,sec){return data.filter(d=>filters[sec][d.label]!==false);}
+
+// ===== インタラクション =====
 function toggleDetail(type,idx){openDetails[type][idx]=!openDetails[type][idx];render();}
 function toggleFilter(sec,cat){filters[sec][cat]=!filters[sec][cat];render();}
 function toggleLocDetail(loc){locOpenDetail=locOpenDetail===loc?null:loc;render();}
 
-// ---- D&D（個別アイテム単位） ----
-let dragItem=null;// {type, globalIdx, cat}
-function onItemDragStart(e,type,globalIdx,cat){
-  dragItem={type,globalIdx,cat};
+// D&D
+function onItemDragStart(e,type,gIdx,cat){
+  dragItem={type,gIdx,cat};
   e.dataTransfer.effectAllowed="move";
   e.dataTransfer.setData("text/plain",cat);
-  // 即座に全展開を閉じてバー行だけ表示
-  openDetails[type]={};
-  openDetails.all={};
-  rebuildData();
-  render();
-}
-function onItemDragEnd(){
-  dragItem=null;
-  document.querySelectorAll(".dragging-item").forEach(el=>el.classList.remove("dragging-item"));
-  document.querySelectorAll(".drag-over").forEach(el=>el.classList.remove("drag-over"));
-  document.querySelectorAll(".drag-over-item").forEach(el=>el.classList.remove("drag-over-item"));
-}
-function onCatDragOver(e,type,cat){
-  e.preventDefault();
-  if(!dragItem||dragItem.type!==type||dragItem.cat===cat)return;
-  e.currentTarget.classList.add("drag-over");
-}
-function onCatDragLeave(e){e.currentTarget.classList.remove("drag-over");}
-function onCatDrop(e,type,newCat){
-  e.preventDefault();e.currentTarget.classList.remove("drag-over");
-  if(!dragItem||dragItem.type!==type||dragItem.cat===newCat)return;
-  itemOverrides[type][dragItem.globalIdx]=newCat;
-  dragItem=null;
-  openDetails={ev:{},tk:{},all:{}};
+  openDetails[type]={};openDetails.all={};
   rebuildData();render();
 }
+function onItemDragEnd(){dragItem=null;document.querySelectorAll(".bar-row").forEach(el=>el.classList.remove("drop-target"));}
+function onBarDragOver(e,type,cat){e.preventDefault();if(!dragItem||dragItem.type!==type||dragItem.cat===cat)return;e.currentTarget.classList.add("drop-target");}
+function onBarDragLeave(e){e.currentTarget.classList.remove("drop-target");}
+function onBarDrop(e,type,newCat){e.preventDefault();e.currentTarget.classList.remove("drop-target");if(!dragItem||dragItem.type!==type||dragItem.cat===newCat)return;itemOverrides[type][dragItem.gIdx]=newCat;dragItem=null;openDetails={ev:{},tk:{},all:{}};rebuildData();render();}
 
-// ---- グラフ描画 ----
-function filterBar(sec,allCats){
-  return`<div class="filter-bar">${allCats.map(c=>`<label><input type="checkbox" ${filters[sec][c]!==false?"checked":""} onchange="toggleFilter('${sec}','${c}')">${c}</label>`).join("")}</div>`;
+// カレンダーピッカー
+function openPicker(){const{start}=getRange(period);pickerMonth=new Date(start.getFullYear(),start.getMonth(),1);pickerState={step:"start",start:null};renderPicker();}
+function closePicker(){const el=document.getElementById("cal-picker");if(el)el.remove();pickerState=null;}
+function renderPicker(){
+  const ex=document.getElementById("cal-picker");if(ex)ex.remove();
+  const y=pickerMonth.getFullYear(),m=pickerMonth.getMonth();
+  const fd=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+  const today=new Date();today.setHours(0,0,0,0);
+  const off=fd===0?6:fd-1;
+  let cells="";
+  for(let i=0;i<off;i++)cells+=`<div class="cal-day faded"></div>`;
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(y,m,d);const isFuture=dt>today;const isToday=dt.getTime()===today.getTime();
+    const isSS=pickerState?.start&&dt.getTime()===new Date(pickerState.start).setHours(0,0,0,0);
+    const isIR=pickerState?.start&&pickerState.step==="end"&&dt>=new Date(new Date(pickerState.start).setHours(0,0,0,0))&&dt<=today;
+    const isWe=dt.getDay()===0||dt.getDay()===6;
+    const cls=["cal-day",isFuture?"faded":"",isToday?"today":"",isSS?"selected":"",isIR?"in-range":"",isWe&&!isFuture?"weekend":""].filter(Boolean).join(" ");
+    cells+=`<button class="${cls}" ${isFuture?"disabled":""}onclick="pickDate(${y},${m},${d})">${d}</button>`;
+  }
+  const sl=pickerState?.step==="start"?"開始日を選択":`終了日を選択（開始: ${fmtDate(pickerState.start)})`;
+  const dows=["月","火","水","木","金","土","日"].map(d=>`<div class="cal-dow">${d}</div>`).join("");
+  document.body.insertAdjacentHTML("beforeend",`<div class="cal-picker" id="cal-picker" onclick="if(event.target===this)closePicker()"><div class="cal-box"><div style="font-size:12px;color:#888;text-align:center;margin-bottom:10px">${sl}</div><div class="cal-header"><button class="cal-nav" onclick="pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()-1,1);renderPicker()">&#8249;</button><span class="cal-month-label">${y}年${m+1}月</span><button class="cal-nav" onclick="pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()+1,1);renderPicker()">&#8250;</button></div><div class="cal-grid">${dows}${cells}</div><button class="cal-close" onclick="closePicker()">キャンセル</button></div></div>`);
 }
+function pickDate(y,m,d){
+  const picked=new Date(y,m,d);const today=new Date();today.setHours(0,0,0,0);if(picked>today)return;
+  if(pickerState.step==="start"){pickerState={step:"end",start:picked};renderPicker();}
+  else{let s=pickerState.start,e=picked;if(s>e)[s,e]=[e,s];customStart=new Date(s);customEnd=new Date(e);periodOffset=0;closePicker();openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
+}
+function shiftPeriod(dir){const{end}=getRange(period);const now=new Date();now.setHours(23,59,59,999);if(dir===1&&end>=now)return;customStart=null;customEnd=null;periodOffset+=dir;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
+function changePeriod(p){period=p;periodOffset=0;customStart=null;customEnd=null;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
+
+// ===== 描画 =====
+function filterBar(sec,allCats){return`<div class="filter-bar">${allCats.map(c=>`<label><input type="checkbox" ${filters[sec][c]!==false?"checked":""} onchange="toggleFilter('${sec}','${c}')">${c}</label>`).join("")}</div>`;}
+
 function itemList(items,type){
-  const sorted=items.slice().sort((a,b)=>a.dateSort<b.dateSort?-1:1);
-  return`<div class="item-list">${sorted.map(it=>`
-    <div class="item-row" data-drag-id="${type}-${it.globalIdx}" draggable="true"
-      ondragstart="onItemDragStart(event,'${type}',${it.globalIdx},'${it.cat||""}')"
-      ondragend="onItemDragEnd()">
-      <span class="item-date">${it.dateLabel}</span>
-      <span class="item-title" title="${it.title}">${it.title}</span>
-      <span class="item-dur">${fmtH(it.dur)}</span>
-      <span class="drag-handle">⠿</span>
-    </div>`).join("")}</div>`;
+  return`<div class="item-list">${items.slice().sort((a,b)=>a.dateSort<b.dateSort?-1:1).map(it=>`<div class="item-row" draggable="true" ondragstart="onItemDragStart(event,'${type}',${it.globalIdx},'${it.cat}')" ondragend="onItemDragEnd()"><span class="item-date">${it.dateLabel}</span><span class="item-title" title="${it.title}">${it.title}</span><span class="item-dur">${fmtH(it.dur)}</span><span class="drag-handle">⠿</span></div>`).join("")}</div>`;
 }
+
 function barChart(data,type){
   if(!data.length)return'<div class="empty">データなし</div>';
   const filtered=filterData(data,type);
   if(!filtered.length)return'<div class="empty">データなし</div>';
   const max=Math.max(...filtered.map(d=>d.value),0.1);
-  return`<div style="font-size:10px;color:#bbb;text-align:right;margin-bottom:6px">アイテムを掴んで別カテゴリへドロップ</div>`
-    +filtered.map((d,i)=>{
-      const isOpen=openDetails[type]&&openDetails[type][i];
-      const items=isOpen?itemList(d.items,type):"";
-      return`<div class="bar-wrap">
-        <div class="bar-row drop-zone"
-          style="border-radius:8px;padding:3px 2px;transition:background .15s"
-          ondragover="onCatDragOver(event,'${type}','${d.label}')"
-          ondragleave="onCatDragLeave(event)"
-          ondrop="onCatDrop(event,'${type}','${d.label}')">
-          <div class="bar-label" title="${d.label}">${d.label}</div>
-          <div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${getCatColor(d.label)}"></div></div>
-          <button class="bar-btn" onclick="toggleDetail('${type}',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button>
-        </div>
-        ${items}
-      </div>`;
-    }).join("");
+  return`<div style="font-size:10px;color:#bbb;text-align:right;margin-bottom:6px">アイテムを掴んで別カテゴリへドロップ</div>`+filtered.map((d,i)=>{
+    const isOpen=openDetails[type]&&openDetails[type][i];
+    return`<div class="bar-wrap"><div class="bar-row" ondragover="onBarDragOver(event,'${type}','${d.label}')" ondragleave="onBarDragLeave(event)" ondrop="onBarDrop(event,'${type}','${d.label}')"><div class="bar-label" title="${d.label}">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${getCatColor(d.label)}"></div></div><button class="bar-btn" onclick="toggleDetail('${type}',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button></div>${isOpen?itemList(d.items,type):""}</div>`;
+  }).join("");
 }
+
 function pieChart(data){
   const total=data.reduce((s,d)=>s+d.value,0);
   if(!total)return'<div class="empty">データなし</div>';
   let paths="";
-  if(data.length===1){
-    paths=`<circle cx="75" cy="75" r="65" fill="${getCatColor(data[0].label)}"/>`;
-  }else{
-    let cum=-Math.PI/2;
-    paths=data.map(d=>{
-      const a=(d.value/total)*2*Math.PI;const sx=cum;cum+=a;
-      const r=65,cx=75,cy=75;
-      const x1=cx+r*Math.cos(sx),y1=cy+r*Math.sin(sx);
-      const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);
-      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${getCatColor(d.label)}" stroke="#fff" stroke-width="1.5"/>`;
-    }).join("");
-  }
+  if(data.length===1){paths=`<circle cx="75" cy="75" r="65" fill="${getCatColor(data[0].label)}"/>`;}
+  else{let cum=-Math.PI/2;paths=data.map(d=>{const a=(d.value/total)*2*Math.PI;const sx=cum;cum+=a;const r=65,cx=75,cy=75;const x1=cx+r*Math.cos(sx),y1=cy+r*Math.sin(sx);const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${getCatColor(d.label)}" stroke="#fff" stroke-width="1.5"/>`;}).join("");}
   const leg=data.map(d=>{const pct=Math.round(d.value/total*100);return`<div class="legend-item"><div class="legend-dot" style="background:${getCatColor(d.label)}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${fmtH(d.value)}）</span></div>`;}).join("");
   return`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><svg viewBox="0 0 150 150" width="120" height="120" style="flex-shrink:0">${paths}</svg><div class="legend">${leg}</div></div>`;
 }
+
 function locPieChart(){
   const locs=["オフィス","自宅","その他"].filter(l=>(locData[l]||{days:0}).days>0);
   const total=locs.reduce((s,l)=>s+(locData[l]||{days:0}).days,0);
   if(!total)return'<div class="empty">データなし</div>';
-  const data=locs.map(l=>({label:l,value:(locData[l]||{days:0}).days}));
+  const data=locs.map(l=>({label:l,value:(locData[l]).days}));
   let paths="";
   if(data.length===1){paths=`<circle cx="75" cy="75" r="65" fill="${LOC_COLORS[data[0].label]}"/>`;}
-  else{
-    let cum=-Math.PI/2;
-    paths=data.map(d=>{
-      const a=(d.value/total)*2*Math.PI;const sx=cum;cum+=a;
-      const r=65,cx=75,cy=75;
-      const x1=cx+r*Math.cos(sx),y1=cy+r*Math.sin(sx);
-      const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);
-      return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${LOC_COLORS[d.label]}" stroke="#fff" stroke-width="1.5"/>`;
-    }).join("");
-  }
+  else{let cum=-Math.PI/2;paths=data.map(d=>{const a=(d.value/total)*2*Math.PI;const sx=cum;cum+=a;const r=65,cx=75,cy=75;const x1=cx+r*Math.cos(sx),y1=cy+r*Math.sin(sx);const x2=cx+r*Math.cos(cum),y2=cy+r*Math.sin(cum);return`<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r},0,${a>Math.PI?1:0},1,${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${LOC_COLORS[d.label]}" stroke="#fff" stroke-width="1.5"/>`;}).join("");}
   const leg=data.map(d=>{const pct=Math.round(d.value/total*100);return`<div class="legend-item"><div class="legend-dot" style="background:${LOC_COLORS[d.label]}"></div><span style="color:#666">${d.label}</span><span style="font-weight:500;margin-left:4px">${pct}%（${d.value}日）</span></div>`;}).join("");
   return`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><svg viewBox="0 0 150 150" width="120" height="120" style="flex-shrink:0">${paths}</svg><div class="legend">${leg}</div></div>`;
 }
+
 function locationSection(){
   const locs=["オフィス","自宅","その他"];
-  const bars=locs.map(l=>{
-    const d=locData[l]||{days:0,pct:0,dates:[]};
-    const isOpen=locOpenDetail===l;
-    const detail=isOpen&&d.dates.length?`<div class="loc-detail"><div class="loc-detail-dates">${d.dates.map(dt=>`<span class="loc-date-chip">${dt}</span>`).join("")}</div></div>`:"";
-    return`<div><div class="loc-bar-row" onclick="toggleLocDetail('${l}')"><div class="loc-bar-label">${l}</div><div class="loc-bar-track"><div class="loc-bar-fill" style="width:${d.pct}%;background:${LOC_COLORS[l]}"></div></div><div class="loc-bar-val">${d.days}日 (${d.pct}%) ${isOpen?"▲":"▼"}</div></div>${detail}</div>`;
-  }).join("");
+  const bars=locs.map(l=>{const d=locData[l]||{days:0,pct:0,dates:[]};const isOpen=locOpenDetail===l;const detail=isOpen&&d.dates.length?`<div class="loc-detail"><div class="loc-detail-dates">${d.dates.map(dt=>`<span class="loc-date-chip">${dt}</span>`).join("")}</div></div>`:"";return`<div><div class="loc-bar-row" onclick="toggleLocDetail('${l}')"><div class="loc-bar-label">${l}</div><div class="loc-bar-track"><div class="loc-bar-fill" style="width:${d.pct}%;background:${LOC_COLORS[l]}"></div></div><div class="loc-bar-val">${d.days}日 (${d.pct}%) ${isOpen?"▲":"▼"}</div></div>${detail}</div>`;}).join("");
   return`<div class="section-title">勤務場所</div><div class="loc-grid"><div class="loc-box"><div class="box-title">日数</div>${bars}</div><div class="loc-box"><div class="box-title">割合</div>${locPieChart()}</div></div>`;
 }
+
 function sectionHTML(title,data,type,allCats){
   const filtered=filterData(data,type);
   return`<div class="section-title">${title}</div>${filterBar(type,allCats)}<div class="grid"><div class="box"><div class="box-title">カテゴリ別時間</div>${barChart(data,type)}</div><div class="box"><div class="box-title">割合</div>${pieChart(filtered)}</div></div>`;
 }
 
-// ---- カレンダーピッカー ----
-function openPicker(){
-  const{start}=getRange(period);
-  pickerMonth=new Date(start.getFullYear(),start.getMonth(),1);
-  pickerState={step:"start",start:null};
-  renderPicker();
-}
-function closePicker(){const el=document.getElementById("cal-picker");if(el)el.remove();pickerState=null;}
-function renderPicker(){
-  const ex=document.getElementById("cal-picker");if(ex)ex.remove();
-  const y=pickerMonth.getFullYear(),m=pickerMonth.getMonth();
-  const firstDow=new Date(y,m,1).getDay();
-  const dim=new Date(y,m+1,0).getDate();
-  const today=new Date();today.setHours(0,0,0,0);
-  const off=(firstDow===0?6:firstDow-1);
-  let cells="";
-  for(let i=0;i<off;i++)cells+=`<div class="cal-day faded"></div>`;
-  for(let d=1;d<=dim;d++){
-    const dt=new Date(y,m,d);
-    const isFuture=dt>today;
-    const isToday=dt.getTime()===today.getTime();
-    const isSelStart=pickerState?.start&&dt.getTime()===new Date(pickerState.start).setHours(0,0,0,0);
-    const isInRange=pickerState?.start&&pickerState.step==="end"&&dt>=new Date(new Date(pickerState.start).setHours(0,0,0,0))&&dt<=today;
-    const isWe=dt.getDay()===0||dt.getDay()===6;
-    const cls=["cal-day",isFuture?"faded":"",isToday?"today":"",isSelStart?"selected":"",isInRange?"in-range":"",isWe&&!isFuture?"weekend":""].filter(Boolean).join(" ");
-    cells+=`<button class="${cls}" ${isFuture?"disabled":""}onclick="pickDate(${y},${m},${d})">${d}</button>`;
-  }
-  const stepLabel=pickerState?.step==="start"?"開始日を選択":"終了日を選択（開始: "+fmtDate(pickerState.start)+")";
-  const dows=["月","火","水","木","金","土","日"].map(d=>`<div class="cal-dow">${d}</div>`).join("");
-  document.body.insertAdjacentHTML("beforeend",`<div class="cal-picker" id="cal-picker" onclick="if(event.target===this)closePicker()">
-    <div class="cal-box">
-      <div style="font-size:12px;color:#888;text-align:center;margin-bottom:10px">${stepLabel}</div>
-      <div class="cal-header">
-        <button class="cal-nav" onclick="pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()-1,1);renderPicker()">&#8249;</button>
-        <span class="cal-month-label">${y}年${m+1}月</span>
-        <button class="cal-nav" onclick="pickerMonth=new Date(pickerMonth.getFullYear(),pickerMonth.getMonth()+1,1);renderPicker()">&#8250;</button>
-      </div>
-      <div class="cal-grid">${dows}${cells}</div>
-      <button class="cal-close" onclick="closePicker()">キャンセル</button>
-    </div>
-  </div>`);
-}
-function pickDate(y,m,d){
-  const picked=new Date(y,m,d);const today=new Date();today.setHours(0,0,0,0);
-  if(picked>today)return;
-  if(pickerState.step==="start"){pickerState={step:"end",start:picked};renderPicker();}
-  else{
-    let s=pickerState.start,e=picked;
-    if(s>e)[s,e]=[e,s];
-    customStart=new Date(s);customEnd=new Date(e);periodOffset=0;
-    closePicker();
-    openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;
-    fetchData();
-  }
-}
-function shiftPeriod(dir){
-  const{end}=getRange(period);const now=new Date();now.setHours(23,59,59,999);
-  if(dir===1&&end>=now)return;
-  customStart=null;customEnd=null;periodOffset+=dir;
-  openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;
-  fetchData();
-}
-function changePeriod(p){period=p;periodOffset=0;customStart=null;customEnd=null;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
-
-// ---- カテゴリ編集画面 ----
-const PRESET_COLORS=["#54C3F1","#F9C270","#C1DB81","#EF858C","#EF845C","#796BAF","#6C9BD2","#69BD83","#EE87B4","#61C1BE","#BA79B1","#FFF67F","#EF845C","#888780"];
-
-function openEditScreen(){
-  const existing=document.getElementById("edit-overlay");if(existing)existing.remove();
-
-  const blocks=Object.entries(CAT_WORDS).map(([cat,words])=>{
-    const catId=cat.replace(/[^a-zA-Z0-9]/g,'_');
-    const chips=words.map((w,i)=>`<span class="edit-chip">${w}<button class="edit-chip-del" onclick="delWord('${cat}',${i})" title="削除">×</button></span>`).join("");
-    const colorDots=PRESET_COLORS.map(c=>`<span onclick="setCatColor('${cat}','${c}')" style="display:inline-block;width:18px;height:18px;border-radius:4px;background:${c};cursor:pointer;border:2px solid ${getCatColor(cat)===c?'#333':'transparent'};flex-shrink:0"></span>`).join("");
-    const canDelete=!["未分類"].includes(cat);// 未分類は削除不可
-    return`<div class="edit-cat-block">
-      <div class="edit-cat-header">
-        <div class="edit-cat-dot" style="background:${getCatColor(cat)}"></div>
-        <div class="edit-cat-name">${cat}</div>
-        ${canDelete?`<button onclick="deleteCat('${cat}')" style="margin-left:auto;font-size:11px;color:#c33;border-color:#fcc;padding:2px 8px">カテゴリ削除</button>`:""}
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:4px;padding:8px 14px 4px;border-bottom:1px solid #f5f5f5">${colorDots}</div>
-      <div class="edit-words">${chips||'<span style="font-size:12px;color:#aaa">ワードなし</span>'}</div>
-      <div class="edit-add-row">
-        <input class="edit-add-input" id="add-input-${catId}" placeholder="ワードを追加…" onkeydown="if(event.key==='Enter')addWord('${cat}')">
-        <button class="edit-add-btn" onclick="addWord('${cat}')">追加</button>
-      </div>
-    </div>`;
-  }).join("");
-
-  document.body.insertAdjacentHTML("beforeend",`<div class="edit-overlay" id="edit-overlay" onclick="if(event.target.id==='edit-overlay')closeEditScreen()">
-    <div class="edit-box">
-      <div class="edit-title">カテゴリ編集</div>
-      ${blocks}
-      <div style="margin:12px 0 8px;padding:14px;background:#f9f9f9;border-radius:10px;border:1px solid #eee">
-        <div style="font-size:13px;font-weight:500;margin-bottom:8px">新しいカテゴリを追加</div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <input id="new-cat-name" class="edit-add-input" style="flex:1;min-width:120px" placeholder="カテゴリ名">
-          <input id="new-cat-color" type="color" value="#888780" style="width:36px;height:32px;border:1px solid #ddd;border-radius:6px;cursor:pointer;padding:2px">
-          <button class="edit-add-btn" onclick="addCat()">追加</button>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="edit-close" onclick="closeEditScreen()" style="flex:1">閉じる</button>
-        <button onclick="resetCatSettings()" style="flex:0 0 auto;font-size:12px;color:#c33;border-color:#fcc">デフォルトに戻す</button>
-      </div>
-    </div>
-  </div>`);
-}
-
-function addWord(cat){
-  const id="add-input-"+cat.replace(/[^a-zA-Z0-9]/g,'_');
-  const el=document.getElementById(id);if(!el)return;
-  const w=el.value.trim();if(!w)return;
-  if(!CAT_WORDS[cat])CAT_WORDS[cat]=[];
-  if(!CAT_WORDS[cat].includes(w))CAT_WORDS[cat].push(w);
-  openEditScreen();recat();
-}
-function delWord(cat,idx){
-  if(!CAT_WORDS[cat])return;
-  CAT_WORDS[cat].splice(idx,1);
-  openEditScreen();recat();
-}
-
-function recat(){
-  allEvItems.forEach(item=>{item.cat=categorize(item.title);});
-  allTkItems.forEach(item=>{item.cat=categorize(item.title);});
-  itemOverrides={ev:{},tk:{}};
-  saveCatSettings();
-  rebuildData();render();
-}
-function setCatColor(cat,color){
-  CAT_COLORS[cat]=color;
-  saveCatSettings();
-  openEditScreen();render();
-}
-function addCat(){
-  const nameEl=document.getElementById("new-cat-name");
-  const colorEl=document.getElementById("new-cat-color");
-  if(!nameEl)return;
-  const name=nameEl.value.trim();
-  if(!name){nameEl.focus();return;}
-  if(CAT_WORDS[name]){alert("同名のカテゴリが既に存在します");return;}
-  const color=colorEl?colorEl.value:"#888780";
-  CAT_WORDS[name]=[];
-  CAT_COLORS[name]=color;
-  saveCatSettings();
-  openEditScreen();recat();
-}
-function deleteCat(cat){
-  if(!confirm(`「${cat}」を削除しますか？\nこのカテゴリのワードはすべて削除され、該当予定・タスクは「未分類」になります。`))return;
-  delete CAT_WORDS[cat];
-  delete CAT_COLORS[cat];
-  saveCatSettings();
-  openEditScreen();recat();
-}
-
-// ---- 共有リンクコピー ----
 function copyShareLink(){
-  const url=window.location.href.split("?")[0];
-  navigator.clipboard.writeText(url).then(()=>{
-    const btn=document.getElementById("share-btn");
-    if(btn){btn.textContent="コピーしました！";setTimeout(()=>{if(document.getElementById("share-btn"))document.getElementById("share-btn").textContent="🔗 リンクをコピー";},2000);}
-  }).catch(()=>{
-    prompt("URLをコピーしてください",window.location.href);
-  });
-}
+  navigator.clipboard.writeText(window.location.href.split("?")[0]).then(()=>{const b=document.getElementById("btn-share");if(b){b.textContent="コピーしました！";setTimeout(()=>{if(document.getElementById("btn-share"))document.getElementById("btn-share").textContent="🔗 リンクをコピー";},2000);}}).catch(()=>prompt("URLをコピーしてください",window.location.href));}
 
-// ---- AIコピー ----
 function copyForAI(){
   const labels={day:"1日",week:"直近1週間",month:"直近1ヶ月"};
   const ev=calData.map(d=>`${d.label}:${fmtH(d.value)}(${d.count}件)`).join(", ");
   const tk=taskData.map(d=>`${d.label}:${fmtH(d.value)}(${d.count}件)`).join(", ");
   const loc=["オフィス","自宅","その他"].map(l=>`${l}:${(locData[l]||{days:0}).days}日`).join(", ");
   const text=`${labels[period]}（${getPeriodLabel(period)}）の作業データです。\n予定: ${ev||"なし"}\nタスク: ${tk||"なし"}\n勤務場所: ${loc}\n\n上記データをもとに100〜150字で振り返りコメントをください。`;
-  navigator.clipboard.writeText(text).then(()=>{
-    const b=document.getElementById("copy-btn");
-    if(b){b.textContent="コピーしました！";setTimeout(()=>{if(document.getElementById("copy-btn"))document.getElementById("copy-btn").textContent="Claudeへのプロンプトをコピー";},2000);}
-  });
+  navigator.clipboard.writeText(text).then(()=>{const b=document.getElementById("btn-ai-copy");if(b){b.textContent="コピーしました！";setTimeout(()=>{if(document.getElementById("btn-ai-copy"))document.getElementById("btn-ai-copy").textContent="Claudeへのプロンプトをコピー";},2000);}});
 }
 
-// ---- メイン描画 ----
 function render(){
   const allData=mergeData(calData,taskData);
   const allCats=[...new Set([...getAllCats(),...allData.map(d=>d.label)])];
   ["all","ev","tk"].forEach(k=>{allCats.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});});
-  const totalEv=calData.reduce((s,d)=>s+d.value,0);
-  const totalTk=taskData.reduce((s,d)=>s+d.value,0);
-  const countEv=calData.reduce((s,d)=>s+d.count,0);
-  const countTk=taskData.reduce((s,d)=>s+d.count,0);
+  const tEv=calData.reduce((s,d)=>s+d.value,0),tTk=taskData.reduce((s,d)=>s+d.value,0);
+  const cEv=calData.reduce((s,d)=>s+d.count,0),cTk=taskData.reduce((s,d)=>s+d.count,0);
   const tabs=["month","week","day"].map(t=>`<button class="tab${period===t?" active":""}" onclick="changePeriod('${t}')">${{month:"1ヶ月",week:"1週間",day:"1日"}[t]}</button>`).join("");
   const allFiltered=filterData(allData,"all");
-  const allBar=allFiltered.length?allFiltered.map((d,i)=>{
-    const max=Math.max(...allFiltered.map(x=>x.value),0.1);
-    const isOpen=openDetails.all&&openDetails.all[i];
-    return`<div class="bar-wrap"><div class="bar-row"><div class="bar-label" title="${d.label}">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${COLORS[d.label]||"#aaa"}"></div></div><button class="bar-btn" onclick="toggleDetail('all',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button></div>${isOpen?itemList(d.items,"all"):""}</div>`;
-  }).join(""):'<div class="empty">データなし</div>';
-
-  const futureDisabled=(()=>{const{end}=getRange(period);const now=new Date();now.setHours(23,59,59,999);return end>=now;})();
+  const allBar=allFiltered.length?allFiltered.map((d,i)=>{const max=Math.max(...allFiltered.map(x=>x.value),0.1);const isOpen=openDetails.all&&openDetails.all[i];return`<div class="bar-wrap"><div class="bar-row"><div class="bar-label" title="${d.label}">${d.label}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.max((d.value/max)*100,2).toFixed(1)}%;background:${getCatColor(d.label)}"></div></div><button class="bar-btn" onclick="toggleDetail('all',${i})">${fmtH(d.value)} (${d.count}) ${isOpen?"▲":"▼"}</button></div>${isOpen?itemList(d.items,"all"):""}</div>`;}).join(""):'<div class="empty">データなし</div>';
+  const futDis=(()=>{const{end}=getRange(period);const now=new Date();now.setHours(23,59,59,999);return end>=now;})();
 
   document.getElementById("app").innerHTML=`
-    <div class="header">
-      <h1>作業レポート</h1>
-      <div class="header-right">
-        ${updatedAt?`<span class="meta">${updatedAt} 更新</span>`:""}
-        <button onclick="fetchData()">更新</button>
-        <button onclick="openEditScreen()">⚙ カテゴリ編集</button>
-        <button onclick="signOut()" style="opacity:.6">ログアウト</button>
-        <button id="share-btn" onclick="copyShareLink()" style="font-size:12px">🔗 リンクをコピー</button>
-      </div>
-    </div>
+    <div class="header"><h1>作業レポート</h1><div class="header-right">${updatedAt?`<span class="meta">${updatedAt} 更新</span>`:""}<button onclick="fetchData()">更新</button><button id="btn-edit" onclick="openEditScreen()">⚙ カテゴリ編集</button><button onclick="signOut()" style="opacity:.6">ログアウト</button><button id="btn-share" onclick="copyShareLink()" style="font-size:12px">🔗 リンクをコピー</button></div></div>
     <div class="tabs">${tabs}</div>
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
       <button onclick="shiftPeriod(-1)" style="padding:2px 10px;font-size:16px">&#8249;</button>
       <button onclick="openPicker()" style="font-size:12px;color:#555;border:1px solid #ddd;background:#fff;border-radius:8px;padding:4px 12px;min-width:160px;text-align:center;cursor:pointer">${getPeriodLabel(period)}</button>
-      <button onclick="shiftPeriod(1)" style="padding:2px 10px;font-size:16px;opacity:${futureDisabled?.3:1}" ${futureDisabled?"disabled":""}>&#8250;</button>
+      <button onclick="shiftPeriod(1)" style="padding:2px 10px;font-size:16px;opacity:${futDis?.3:1}" ${futDis?"disabled":""}>&#8250;</button>
     </div>
     <div class="summary-grid">
-      <div class="summary-col"><div class="summary-col-title">合計</div><div><div class="summary-label">合計時間</div><div class="summary-value">${fmtH(totalEv+totalTk)}</div></div><div><div class="summary-label">合計件数</div><div class="summary-value">${countEv+countTk}件</div></div></div>
-      <div class="summary-col"><div class="summary-col-title">予定</div><div><div class="summary-label">予定時間</div><div class="summary-value">${fmtH(totalEv)}</div></div><div><div class="summary-label">予定件数</div><div class="summary-value">${countEv}件</div></div></div>
-      <div class="summary-col"><div class="summary-col-title">タスク</div><div><div class="summary-label">タスク時間</div><div class="summary-value">${fmtH(totalTk)}</div></div><div><div class="summary-label">タスク件数</div><div class="summary-value">${countTk}件</div></div></div>
+      <div class="summary-col"><div class="summary-col-title">合計</div><div><div class="summary-label">合計時間</div><div class="summary-value">${fmtH(tEv+tTk)}</div></div><div><div class="summary-label">合計件数</div><div class="summary-value">${cEv+cTk}件</div></div></div>
+      <div class="summary-col"><div class="summary-col-title">予定</div><div><div class="summary-label">予定時間</div><div class="summary-value">${fmtH(tEv)}</div></div><div><div class="summary-label">予定件数</div><div class="summary-value">${cEv}件</div></div></div>
+      <div class="summary-col"><div class="summary-col-title">タスク</div><div><div class="summary-label">タスク時間</div><div class="summary-value">${fmtH(tTk)}</div></div><div><div class="summary-label">タスク件数</div><div class="summary-value">${cTk}件</div></div></div>
     </div>
     <div class="section-title">合計</div>${filterBar("all",allCats)}
     <div class="grid"><div class="box"><div class="box-title">カテゴリ別時間</div>${allBar}</div><div class="box"><div class="box-title">割合</div>${pieChart(allFiltered)}</div></div>
     ${sectionHTML("予定",calData,"ev",allCats)}
     ${sectionHTML("タスク",taskData,"tk",allCats)}
     ${locationSection()}
-    <div class="ai-box">
-      <div class="ai-title">AI 振り返りコメント</div>
-      <div class="ai-text">データをコピーしてClaude.aiに貼り付けると振り返りコメントを生成できます。</div>
-      <div style="margin-top:10px"><button id="copy-btn" onclick="copyForAI()">Claudeへのプロンプトをコピー</button></div>
-      <div class="copy-hint">コピー後、claude.ai のチャットに貼り付けてください。</div>
-    </div>`;
+    <div class="ai-box"><div class="ai-title">AI 振り返りコメント</div><div class="ai-text">データをコピーしてClaude.aiに貼り付けると振り返りコメントを生成できます。</div><div style="margin-top:10px"><button id="btn-ai-copy" onclick="copyForAI()">Claudeへのプロンプトをコピー</button></div><div class="copy-hint">コピー後、claude.ai のチャットに貼り付けてください。</div></div>`;
 }
 
-setInterval(()=>{
-  try{if(gapiLoaded&&gapi.client.getToken())fetchData();}catch(e){}
-},300000);
+setInterval(()=>{try{if(gapiLoaded&&gapi.client.getToken())fetchData();}catch(e){}},300000);
 </script>
 <script src="https://apis.google.com/js/api.js" onload="gapiInit()"></script>
 <script src="https://accounts.google.com/gsi/client" onload="gisInit()"></script>
