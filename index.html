@@ -539,8 +539,8 @@ function render(){
     el.addEventListener("drop",onBarDrop);
   });
 
-  // アイテム行（ドラッグ元 — ハンドルのみ draggable）
-  document.querySelectorAll(".drag-handle[draggable]").forEach(el=>{
+  // アイテム行（ドラッグ元）
+  document.querySelectorAll(".item-row[draggable]").forEach(el=>{
     el.addEventListener("dragstart",e=>{
       onItemDragStart(e,el.dataset.type,parseInt(el.dataset.gidx),el.dataset.cat);
     });
