@@ -533,6 +533,25 @@ function render(){
     el.addEventListener("click",()=>toggleDetail(el.dataset.toggleType,parseInt(el.dataset.toggleIdx)));
   });
 
+  // ドラッグハンドル：クリックで掴む→移動→ドロップ先クリックで確定（3本指ドラッグ対応）
+  document.querySelectorAll("[data-drag]").forEach(el=>{
+    el.addEventListener("mousedown",e=>{
+      e.preventDefault();e.stopPropagation();
+      armDrag(el.dataset.type,parseInt(el.dataset.gidx),el.dataset.cat,el.dataset.title);
+    });
+    el.addEventListener("click",e=>{
+      e.preventDefault();e.stopPropagation();
+      // クリックだけで掴む（3本指ドラッグ用）
+      if(!dragItem&&!pendingDrag){
+        armDrag(el.dataset.type,parseInt(el.dataset.gidx),el.dataset.cat,el.dataset.title);
+        beginDrag();
+        // 掴んだ位置にゴースト
+        const r=el.getBoundingClientRect();
+        if(ghostEl){ghostEl.style.left=(r.right+12)+"px";ghostEl.style.top=r.top+"px";}
+      }
+    });
+  });
+
   // 勤務場所
   document.querySelectorAll("[data-loc]").forEach(el=>{
     el.addEventListener("click",()=>toggleLocDetail(el.dataset.loc));
