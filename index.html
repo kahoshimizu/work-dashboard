@@ -125,11 +125,15 @@ let CAT_WORDS={
   "PMP":["[FY26]PMP1：Unit定例","General MTG for PMPs"],
 };
 
+// カテゴリカラー（編集可能）
+let CAT_COLORS={...COLORS};
+
 function buildRules(){
   return Object.entries(CAT_WORDS).map(([cat,words])=>({
     m:t=>words.some(w=>t.includes(w)),c:cat
   }));
 }
+function getCatColor(cat){return CAT_COLORS[cat]||COLORS[cat]||"#aaa";}
 function categorize(t){
   const rules=buildRules();
   for(const r of rules)if(r.m(t))return r.c;
@@ -307,7 +311,7 @@ function rebuildData(){
       const cat=itemOverrides[type][idx]||item.cat;
       if(!map[cat])map[cat]={label:cat,value:0,count:0,items:[]};
       map[cat].value+=item.dur;map[cat].count++;
-      map[cat].items.push({...item,globalIdx:idx});
+                map[cat].items.push({...item,globalIdx:idx,cat});
     });
     return Object.values(map).sort((a,b)=>b.value-a.value);
   }
@@ -520,47 +524,92 @@ function shiftPeriod(dir){
 function changePeriod(p){period=p;periodOffset=0;customStart=null;customEnd=null;openDetails={ev:{},tk:{},all:{}};filters={all:{},ev:{},tk:{}};itemOverrides={ev:{},tk:{}};locOpenDetail=null;fetchData();}
 
 // ---- カテゴリ編集画面 ----
+const PRESET_COLORS=["#54C3F1","#F9C270","#C1DB81","#EF858C","#EF845C","#796BAF","#6C9BD2","#69BD83","#EE87B4","#61C1BE","#BA79B1","#FFF67F","#EF845C","#888780"];
+
 function openEditScreen(){
   const existing=document.getElementById("edit-overlay");if(existing)existing.remove();
+
   const blocks=Object.entries(CAT_WORDS).map(([cat,words])=>{
+    const catId=cat.replace(/[^a-zA-Z0-9]/g,'_');
     const chips=words.map((w,i)=>`<span class="edit-chip">${w}<button class="edit-chip-del" onclick="delWord('${cat}',${i})" title="削除">×</button></span>`).join("");
+    const colorDots=PRESET_COLORS.map(c=>`<span onclick="setCatColor('${cat}','${c}')" style="display:inline-block;width:18px;height:18px;border-radius:4px;background:${c};cursor:pointer;border:2px solid ${getCatColor(cat)===c?'#333':'transparent'};flex-shrink:0"></span>`).join("");
+    const canDelete=!["未分類"].includes(cat);// 未分類は削除不可
     return`<div class="edit-cat-block">
-      <div class="edit-cat-header"><div class="edit-cat-dot" style="background:${COLORS[cat]||"#aaa"}"></div><div class="edit-cat-name">${cat}</div></div>
-      <div class="edit-words" id="words-${cat.replace(/[^a-zA-Z0-9]/g,'_')}">${chips}</div>
+      <div class="edit-cat-header">
+        <div class="edit-cat-dot" style="background:${getCatColor(cat)}"></div>
+        <div class="edit-cat-name">${cat}</div>
+        ${canDelete?`<button onclick="deleteCat('${cat}')" style="margin-left:auto;font-size:11px;color:#c33;border-color:#fcc;padding:2px 8px">カテゴリ削除</button>`:""}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;padding:8px 14px 4px;border-bottom:1px solid #f5f5f5">${colorDots}</div>
+      <div class="edit-words">${chips||'<span style="font-size:12px;color:#aaa">ワードなし</span>'}</div>
       <div class="edit-add-row">
-        <input class="edit-add-input" id="add-input-${cat.replace(/[^a-zA-Z0-9]/g,'_')}" placeholder="ワードを追加…" onkeydown="if(event.key==='Enter')addWord('${cat}')">
+        <input class="edit-add-input" id="add-input-${catId}" placeholder="ワードを追加…" onkeydown="if(event.key==='Enter')addWord('${cat}')">
         <button class="edit-add-btn" onclick="addWord('${cat}')">追加</button>
       </div>
     </div>`;
   }).join("");
+
   document.body.insertAdjacentHTML("beforeend",`<div class="edit-overlay" id="edit-overlay" onclick="if(event.target===this)closeEditScreen()">
     <div class="edit-box">
       <div class="edit-title">カテゴリ編集</div>
       ${blocks}
+      <div style="margin:12px 0 8px;padding:14px;background:#f9f9f9;border-radius:10px;border:1px solid #eee">
+        <div style="font-size:13px;font-weight:500;margin-bottom:8px">新しいカテゴリを追加</div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input id="new-cat-name" class="edit-add-input" style="flex:1;min-width:120px" placeholder="カテゴリ名">
+          <input id="new-cat-color" type="color" value="#888780" style="width:36px;height:32px;border:1px solid #ddd;border-radius:6px;cursor:pointer;padding:2px">
+          <button class="edit-add-btn" onclick="addCat()">追加</button>
+        </div>
+      </div>
       <button class="edit-close" onclick="closeEditScreen()">閉じる</button>
     </div>
   </div>`);
 }
+
 function closeEditScreen(){const el=document.getElementById("edit-overlay");if(el)el.remove();}
+
+function recat(){
+  allEvItems.forEach(item=>{item.cat=categorize(item.title);});
+  allTkItems.forEach(item=>{item.cat=categorize(item.title);});
+  itemOverrides={ev:{},tk:{}};rebuildData();render();
+}
+
 function addWord(cat){
   const id="add-input-"+cat.replace(/[^a-zA-Z0-9]/g,'_');
   const el=document.getElementById(id);if(!el)return;
   const w=el.value.trim();if(!w)return;
   if(!CAT_WORDS[cat])CAT_WORDS[cat]=[];
-  if(!CAT_WORDS[cat].includes(w)){CAT_WORDS[cat].push(w);el.value="";}
-  openEditScreen();// 再描画
-  // データも再分類
-  allEvItems.forEach(item=>{item.cat=categorize(item.title);});
-  allTkItems.forEach(item=>{item.cat=categorize(item.title);});
-  itemOverrides={ev:{},tk:{}};rebuildData();render();
+  if(!CAT_WORDS[cat].includes(w))CAT_WORDS[cat].push(w);
+  openEditScreen();recat();
 }
 function delWord(cat,idx){
   if(!CAT_WORDS[cat])return;
   CAT_WORDS[cat].splice(idx,1);
-  openEditScreen();
-  allEvItems.forEach(item=>{item.cat=categorize(item.title);});
-  allTkItems.forEach(item=>{item.cat=categorize(item.title);});
-  itemOverrides={ev:{},tk:{}};rebuildData();render();
+  openEditScreen();recat();
+}
+function setCatColor(cat,color){
+  CAT_COLORS[cat]=color;
+  openEditScreen();render();
+}
+function addCat(){
+  const nameEl=document.getElementById("new-cat-name");
+  const colorEl=document.getElementById("new-cat-color");
+  if(!nameEl)return;
+  const name=nameEl.value.trim();
+  if(!name){nameEl.focus();return;}
+  if(CAT_WORDS[name]){alert("同名のカテゴリが既に存在します");return;}
+  const color=colorEl?colorEl.value:"#888780";
+  CAT_WORDS[name]=[];
+  CAT_COLORS[name]=color;
+  ALL_CATS.push(name);
+  openEditScreen();recat();
+}
+function deleteCat(cat){
+  if(!confirm(`「${cat}」を削除しますか？\nこのカテゴリのワードはすべて削除され、該当予定・タスクは「未分類」になります。`))return;
+  delete CAT_WORDS[cat];
+  delete CAT_COLORS[cat];
+  const idx=ALL_CATS.indexOf(cat);if(idx>-1)ALL_CATS.splice(idx,1);
+  openEditScreen();recat();
 }
 
 // ---- 共有リンクコピー ----
