@@ -532,24 +532,22 @@ function render(){
     el.addEventListener("click",()=>toggleDetail(el.dataset.toggleType,parseInt(el.dataset.toggleIdx)));
   });
 
-  // バー行（ドロップ先）
+  // バー行（ドロップ先）— pointerup で受け取る
   document.querySelectorAll("[data-drop-type]").forEach(el=>{
-    el.addEventListener("dragover",e=>{e.preventDefault();if(dragItem&&dragItem.type===el.dataset.dropType&&dragItem.cat!==el.dataset.dropCat)el.classList.add("drop-target");});
-    el.addEventListener("dragleave",()=>el.classList.remove("drop-target"));
-    el.addEventListener("drop",e=>{e.preventDefault();el.classList.remove("drop-target");if(!dragItem||dragItem.type!==el.dataset.dropType||dragItem.cat===el.dataset.dropCat)return;itemOverrides[dragItem.type][dragItem.gIdx]=el.dataset.dropCat;dragItem=null;openDetails={ev:{},tk:{},all:{}};rebuildData();render();});
+    el.addEventListener("pointerup",()=>{
+      if(!isDragging||!dragItem||dragItem.type!==el.dataset.dropType||dragItem.cat===el.dataset.dropCat)return;
+      itemOverrides[dragItem.type][dragItem.gIdx]=el.dataset.dropCat;
+      endDrag();
+      openDetails={ev:{},tk:{},all:{}};rebuildData();render();
+    });
   });
 
-  // アイテム行（ドラッグ元）
+  // アイテム行（長押しドラッグ開始）
   document.querySelectorAll(".item-row").forEach(el=>{
-    el.addEventListener("dragstart",e=>{
-      const type=el.dataset.type,gIdx=parseInt(el.dataset.gidx),cat=el.dataset.cat;
-      dragItem={type,gIdx,cat};
-      e.dataTransfer.effectAllowed="move";
-      e.dataTransfer.setData("text/plain",cat);
-      openDetails[type]={};openDetails.all={};
-      rebuildData();render();
+    el.addEventListener("pointerdown",e=>{
+      onItemPointerDown(e,el.dataset.type,parseInt(el.dataset.gidx),el.dataset.cat,el.dataset.title||el.querySelector(".item-title")?.textContent||"");
     });
-    el.addEventListener("dragend",()=>{dragItem=null;document.querySelectorAll(".bar-row").forEach(r=>r.classList.remove("drop-target"));});
+    el.addEventListener("pointerup",onItemPointerUp);
   });
 
   // 勤務場所
