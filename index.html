@@ -378,11 +378,11 @@ function onItemDragStart(e,type,globalIdx,cat){
   dragItem={type,globalIdx,cat};
   e.dataTransfer.effectAllowed="move";
   e.dataTransfer.setData("text/plain",cat);
-  // ドラッグ開始時に全展開を閉じる
+  // 即座に全展開を閉じてバー行だけ表示
   openDetails[type]={};
-  setTimeout(()=>{
-    render();
-  },0);
+  openDetails.all={};
+  rebuildData();
+  render();
 }
 function onItemDragEnd(){
   dragItem=null;
