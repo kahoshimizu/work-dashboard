@@ -113,7 +113,7 @@ const CLIENT_ID="729656531255-stonbhee0o8m10gfbqckf1bp2fump90g.apps.googleuserco
 const SCOPES="https://www.googleapis.com/auth/calendar.readonly";
 const COLORS={"PJ":"#54C3F1","foobar*":"#F9C270","未分類":"#C1DB81","新卒 1on1":"#EF858C","UM 1on1":"#EF845C","PMP":"#796BAF"};
 const LOC_COLORS={"オフィス":"#6C9BD2","自宅":"#69BD83","その他":"#EF845C"};
-const ALL_CATS=["PJ","新卒 1on1","UM 1on1","PMP","foobar*","未分類"];
+let ALL_CATS=["PJ","新卒 1on1","UM 1on1","PMP","foobar*","未分類"];
 const DAYS=["日","月","火","水","木","金","土"];
 
 // カテゴリルール（編集可能）
@@ -128,12 +128,18 @@ let CAT_WORDS={
 // カテゴリカラー（編集可能）
 let CAT_COLORS={...COLORS};
 
+function getCatColor(cat){return CAT_COLORS[cat]||COLORS[cat]||"#aaa";}
 function buildRules(){
   return Object.entries(CAT_WORDS).map(([cat,words])=>({
     m:t=>words.some(w=>t.includes(w)),c:cat
   }));
 }
-function getCatColor(cat){return CAT_COLORS[cat]||COLORS[cat]||"#aaa";}
+// ALL_CATSをCAT_WORDSから動的に生成（未分類は末尾固定）
+function getAllCats(){
+  const cats=Object.keys(CAT_WORDS).filter(c=>c!=="未分類");
+  cats.push("未分類");
+  return cats;
+}
 function categorize(t){
   const rules=buildRules();
   for(const r of rules)if(r.m(t))return r.c;
@@ -601,14 +607,12 @@ function addCat(){
   const color=colorEl?colorEl.value:"#888780";
   CAT_WORDS[name]=[];
   CAT_COLORS[name]=color;
-  ALL_CATS.push(name);
   openEditScreen();recat();
 }
 function deleteCat(cat){
   if(!confirm(`「${cat}」を削除しますか？\nこのカテゴリのワードはすべて削除され、該当予定・タスクは「未分類」になります。`))return;
   delete CAT_WORDS[cat];
   delete CAT_COLORS[cat];
-  const idx=ALL_CATS.indexOf(cat);if(idx>-1)ALL_CATS.splice(idx,1);
   openEditScreen();recat();
 }
 
@@ -639,7 +643,7 @@ function copyForAI(){
 // ---- メイン描画 ----
 function render(){
   const allData=mergeData(calData,taskData);
-  const allCats=[...new Set(allData.map(d=>d.label))];
+  const allCats=[...new Set([...getAllCats(),...allData.map(d=>d.label)])];
   ["all","ev","tk"].forEach(k=>{allCats.forEach(c=>{if(filters[k][c]===undefined)filters[k][c]=true;});});
   const totalEv=calData.reduce((s,d)=>s+d.value,0);
   const totalTk=taskData.reduce((s,d)=>s+d.value,0);
