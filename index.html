@@ -532,22 +532,11 @@ function render(){
     el.addEventListener("click",()=>toggleDetail(el.dataset.toggleType,parseInt(el.dataset.toggleIdx)));
   });
 
-  // バー行（ドロップ先）— pointerup で受け取る
-  document.querySelectorAll("[data-drop-type]").forEach(el=>{
-    el.addEventListener("pointerup",()=>{
-      if(!isDragging||!dragItem||dragItem.type!==el.dataset.dropType||dragItem.cat===el.dataset.dropCat)return;
-      itemOverrides[dragItem.type][dragItem.gIdx]=el.dataset.dropCat;
-      endDrag();
-      openDetails={ev:{},tk:{},all:{}};rebuildData();render();
-    });
-  });
-
-  // アイテム行（長押しドラッグ開始）
+  // アイテム行（ポインターダウンで準備、移動でドラッグ開始）
   document.querySelectorAll(".item-row").forEach(el=>{
     el.addEventListener("pointerdown",e=>{
       onItemPointerDown(e,el.dataset.type,parseInt(el.dataset.gidx),el.dataset.cat,el.dataset.title||el.querySelector(".item-title")?.textContent||"");
     });
-    el.addEventListener("pointerup",onItemPointerUp);
   });
 
   // 勤務場所
